@@ -55,9 +55,6 @@ public class Advert {
 
     private String location;
 
-
-    // *******************Buradan sonraki kisimlar diger class'larin olusturulmasina bagli oldugu icin simdilik hata veriyor   *******************
-
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime create_at;
@@ -65,6 +62,8 @@ public class Advert {
     @Column(nullable = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime update_at;
+
+    // *******************Buradan sonraki kisimlar diger class'larin olusturulmasina bagli oldugu icin simdilik hata veriyor   *******************
 
     @ManyToOne
     @JsonIgnore
