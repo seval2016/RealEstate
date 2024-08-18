@@ -17,7 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 
-public class userRole {
+public class UserRole {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
