@@ -10,28 +10,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Set;
 
-
-@Entity
-@Table(name="roles")
-
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-
-public class UserRole {
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
-
-    @Enumerated(EnumType.STRING)
-    @Column(length=20)
-    private Role roleType;
-
-    private String roleName;
-
 @Entity
 @Table(name = "roles")
 @Data

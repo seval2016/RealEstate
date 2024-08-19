@@ -13,7 +13,7 @@ public class SuccessMessages {
     public static final String USER_CREATED = "User is Saved Successfully";
     public static final String USER_FOUND = "User is Found Successfully";
     public static final String USER_DELETED = "User is Deleted Successfully";
-    public static final String USER_UPDATED = " User is Updated Successfully";  // bu satir ve alttaki mesajlari satiri yer degistirdim, gozden gecirelim
+    public static final String USER_UPDATED = " User is Updated Successfully";  // bu satir ve alttaki satirin description kismini yer degistirdim, gozden gecirelim
     public static final String USER_UPDATE_MESSAGE = "Your information has been updated successfully";
 
     // Customer Messages
