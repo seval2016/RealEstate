@@ -95,41 +95,4 @@ public class Advert {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-
-
-    // ******************************SLUGYFY START*************Bu islemi frontend tarafinda yapabiliyoruz aslinda, gerekli olup olmadigini bir dusunelim***********************//
-
-
-    public class Slugify {
-
-        public static String slugify(String input) {
-            // Convert to lowercase
-            String slug = input.toLowerCase();
-
-            // Normalize the string and remove accents
-            slug = Normalizer.normalize(slug, Normalizer.Form.NFD);
-            slug = slug.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-
-            // Replace all non-alphanumeric characters with hyphens
-            slug = slug.replaceAll("[^a-z0-9\\s]", "-");
-
-            // Replace spaces with hyphens
-            slug = slug.replaceAll("\\s+", "-");
-
-            // Remove any leading or trailing hyphens
-            slug = slug.replaceAll("^-|-$", "");
-
-            return slug;
-        }
-
-        public static void main(String[] args) {
-            String title = "Java Programming: An Introductory Guide!";
-            String slug = slugify(title);
-            System.out.println("Original: " + title);
-            System.out.println("Slugified: " + slug);
-        }
-    }
-
-    // *****************************SLUGYFY END*******************************************//
-
 }
