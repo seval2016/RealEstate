@@ -8,6 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,32 +25,34 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String username;
+
     @Column(nullable = false, length = 30)
     private String firstName;
 
     @Column(nullable = false, length = 30)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 80)
     private String email;
 
-    @Column(unique = true, length = 15)
+    @Column(unique = true)
     private String phone;
 
-    @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String passwordHash;
 
-    @Column
     private String resetPasswordCode;
 
     private boolean builtIn = false;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
-    private LocalDateTime createAt = LocalDateTime.now();
+    private LocalDateTime createAt;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
     private LocalDateTime updateAt;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -57,7 +60,8 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private List<UserRole> userRole ;
+
 
     // Diğer ilişkiler burada tanımlanacak (adverts, favorites, logs, tourRequests vs.)
 
