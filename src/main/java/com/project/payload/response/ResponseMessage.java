@@ -1,4 +1,4 @@
-package com.project.payload.response.business;
+package com.project.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -10,23 +10,11 @@ import org.springframework.http.HttpStatus;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-<<<<<<< HEAD
 @Builder(toBuilder = true)
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseMessage<E> {
-=======
-@Builder(toBuilder=true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResponseMessage <E>{
->>>>>>> main
 
     private E object;
     private String message;
-    private HttpStatus httpStatus;
-<<<<<<< HEAD
-
-
-=======
->>>>>>> main
+    private HttpStatus status;
 }
