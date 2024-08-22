@@ -17,9 +17,12 @@ public class AdvertController {
     private final AdvertService advertService;
 
   // Save methodunu yazabilmek icin spring security'i maven'a eklemek gerekiyor, simdilik burada birakiyorum
+    // Yorumlu satirlari security katmani yazildiktan sonra aktif edecegim
     @PostMapping("/save")  // http://localhost:8080/adverts/save + POST + JSON
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','ASSISTANT_MANAGER')")
-    public ResponseMessage<AdvertResponse>
+    //@PreAuthorize("hasAnyAuthority('ADMIN','CUSTOMER','MANAGER')")
+    public ResponseMessage<AdvertResponse> saveAdvert(){
+
+    }
 
 
 }
