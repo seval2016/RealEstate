@@ -1,16 +1,23 @@
 package com.project.entity.concretes.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.entity.enums.Role;
 import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name="t_user")
+@Table(name="users")
+
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder(toBuilder = true)
 public class User {
 
@@ -18,36 +25,44 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 30)
+    @Column(unique = true)
     private String username;
 
-    @Column(name = "first_name", nullable = false, length = 30)
+    @Column(nullable = false, length = 30)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 30)
+    @Column(nullable = false, length = 30)
     private String lastName;
 
-    @Column(unique = true, nullable = false, length = 80)
+    @Column(nullable = false, unique = true, length = 80)
     private String email;
 
-    @Column(nullable = false, length = 15)
+    @Column(unique = true)
     private String phone;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "reset_password_code")
     private String resetPasswordCode;
 
-    @Column(name = "built_in", nullable = false)
-    private Boolean builtIn = false;
+    private boolean builtIn = false;
 
-    @Column(name = "create_at", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
     private LocalDateTime createAt;
 
-    @Column(name = "update_at")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
     private LocalDateTime updateAt;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<UserRole> userRole ;
+
+
+    // Diğer ilişkiler burada tanımlanacak (adverts, favorites, logs, tourRequests vs.)
 
 }
