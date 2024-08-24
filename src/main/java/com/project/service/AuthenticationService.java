@@ -89,17 +89,17 @@ public class AuthenticationService {
         User user = userRepository.findByUsername(userName);
 
         //!!! Built_IN kontrolu
-        if(Boolean.TRUE.equals(user.getBuilt_in())){ // TRUE - FALSE - NULL ( NullPointerException )
+        if(Boolean.TRUE.equals(user.isBuiltIn())){ // TRUE - FALSE - NULL ( NullPointerException )
             throw new BadRequestException(ErrorMessages.NOT_PERMITTED_METHOD_MESSAGE);
         }
-        //!!! Eski sifre biligsi dogrumu ?
-        if(!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.getPassword())){
+        //!!! Eski sifre bilgisi dogrumu ?
+        if(!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.getPasswordHash())){
             throw new BadRequestException(ErrorMessages.PASSWORD_NOT_MATCHED);
         }
         //!!! Yeni sifre encode edilecek
         String hashedPassword = passwordEncoder.encode(updatePasswordRequest.getNewPassword());
         //!!! update
-        user.setPassword(hashedPassword);
+        user.setPasswordHash(hashedPassword);
         userRepository.save(user);
 
     }

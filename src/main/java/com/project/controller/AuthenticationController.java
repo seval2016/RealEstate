@@ -9,7 +9,7 @@ import com.project.payload.response.authentication.AuthResponse;
 
 
 import com.project.service.AuthenticationService;
-import com.project.service.UserService;
+import com.project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,7 +33,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/user") // http://localhost:8080/auth/user + GET
-    @PreAuthorize("hasAnyAuthority('ADMIN')") // Admin
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','CUSTOMER')")
     public ResponseEntity<UserResponse> findByUsername(HttpServletRequest request){
         String username = (String) request.getAttribute("username");
         UserResponse userResponse =  authenticationService.findByUsername(username);

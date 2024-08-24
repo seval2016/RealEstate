@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     user.getUsername(),
                     user.getFirstName(),
                     user.getPasswordHash(),
-                    user.getRoles().stream()
+                    user.getUserRole().stream()
                             .findFirst()
                             .orElseThrow(() -> new RuntimeException("Role not found"))
                             .getRole()
