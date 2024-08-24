@@ -25,6 +25,7 @@ public class ErrorMessages {
     public static final String ADVERT_NOT_FOUND = "Error : The requested advert is not found.";
     public static final String ADVERT_CREATION_ERROR = "Error : Advert is not created. Please try again.";
     public static final String ADVERT_UPDATE_ERROR = "Error : Advert Update is not updated.";
+    // public static final String ADVERT_UPDATE_DATE_IS_EARLIER_THAN_CREATE_DATE_ERROR = " Error : The update date is earlier than the create date.";
     public static final String ADVERT_DELETE_ERROR = "Error : Advert is not deleted";
 
     // Country Errors

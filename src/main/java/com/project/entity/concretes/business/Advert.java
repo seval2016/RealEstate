@@ -2,6 +2,7 @@ package com.project.entity.concretes.business;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.entity.concretes.user.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,8 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-import java.text.Normalizer;
-// import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "adverts")
@@ -45,7 +44,7 @@ public class Advert {
     private int status = 0;
 
     @NotNull
-    private Boolean builtIn =false;  // Bu satiri gozden gecir
+    private Boolean builtIn =false;
 
     @NotNull
     private Boolean isActive = true;
@@ -55,7 +54,7 @@ public class Advert {
 
     private String location;
 
-    @NotNull
+    @NotNull ( message = " Create date must not be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime create_at;
 
