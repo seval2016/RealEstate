@@ -2,6 +2,7 @@ package com.project.service.business;
 
 import com.project.entity.concretes.business.Advert;
 import com.project.exception.BadRequestException;
+import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.AdvertMapper;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
@@ -10,7 +11,11 @@ import com.project.payload.response.business.AdvertResponse;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.repository.business.AdvertRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,22 +30,26 @@ public class AdvertService {
 
         return ResponseMessage.<AdvertResponse>builder()
                 .message((SuccessMessages.ADVERT_SAVED))
-                .object()
-
-
-
+                .object(advertMapper.mapAdvertToAdvertResponse(savedAdvert))
+                .httpStatus(HttpStatus.CREATED)
+                .build();
     }
 
-/*    private void validateAdvertDatesForRequest(AdvertRequest advertRequest){
-        // Bu methodda request'ten gelen create date ve update date arasindaki uyumluluk kontrol ediliyor
-
-        if(advertRequest.getUpdate_at().isBefore(advertRequest.getCreate_at())){
-
-            throw new BadRequestException(ErrorMessages.ADVERT_UPDATE_DATE_IS_EARLIER_THAN_CREATE_DATE_ERROR);
-
-        }*/
-
-
+    public AdvertResponse getAdvertById(Long id) {
+        Advert advert = isAdvertExist(id);
+        return advertMapper.mapAdvertToAdvertResponse(advert);
     }
 
+    private Advert isAdvertExist(Long id){
+        return advertRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException(String.format(ErrorMessages.ADVERT_NOT_FOUND, id)));
+    }
+
+    public List<AdvertResponse> getAllAdverts() {
+
+    return advertRepository.findAll()
+            .stream()
+            .map(advertMapper::mapAdvertToAdvertResponse)
+            .collect(Collectors.toList());
+    }
 }

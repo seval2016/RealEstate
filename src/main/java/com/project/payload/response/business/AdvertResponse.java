@@ -1,7 +1,7 @@
 package com.project.payload.response.business;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.entity.concretes.business.Category;
+import com.project.entity.concretes.business.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

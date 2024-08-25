@@ -36,9 +36,17 @@ public class AdvertMapper {
                // .slug(advert.getSlug())
                 .price(advert.getPrice())
                 .status(advert.getStatus())
-
-                // deveam ediyor
-
+                .isActive(advert.getIsActive())
+                .location(advert.getLocation())
+                .create_at(advert.getCreate_at())
+                .update_at(advert.getUpdate_at())
+                .viewCount(advert.getViewCount())
+                .advertType(advert.getAdvertType())
+                .country(advert.getCountry())
+                .city(advert.getCity())
+                .district(advert.getDistrict())
+                .category(advert.getCategory())
+                .build();
 
     }
 
