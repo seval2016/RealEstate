@@ -50,5 +50,16 @@ public class AdvertMapper {
 
     }
 
+    // Update icin kullaniyoruz
+    public Advert mapAdvertRequestToUpdatedAdvert(Long id, AdvertRequest advertRequest){
+        return mapAdvertRequestToAdvert(advertRequest)
+                .toBuilder()
+                .advertId(id)
+                .build();
+
+    }
+
+
+
 
 }

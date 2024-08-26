@@ -36,21 +36,24 @@ public class AdvertRequest {
     @NotNull(message = " Price  must not be empty")
     private Float price;
 
-/*    @NotNull(message = " Status must not be empty")
-    private int status = 0;*/
+    @NotNull(message = " Status must not be empty")
+    private int status = 0;
 
-    /*
 
-    @NotNull
-    private Boolean builtIn =false;
 
-    @NotNull
-    private Boolean isActive = true;
+   // @NotNull
+   // private Boolean builtIn =false;
 
     @NotNull(message = " View Count must not be empty")
     private int viewCount = 0;
 
-    */
+   // @NotNull
+   // private Boolean isActive = true;
+
+
+
+
+
 
     private String location;
 
