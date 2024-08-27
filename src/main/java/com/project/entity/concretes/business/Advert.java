@@ -31,7 +31,7 @@ public class Advert {
 
     @NotNull
     @Size(max = 300)
-    private String desc;
+    private String description;
 
     @NotNull
     @Size(min = 5, max = 200)
@@ -64,7 +64,7 @@ public class Advert {
 
     // *******************Buradan sonraki kisimlar diger class'larin olusturulmasina bagli oldugu icin simdilik hata veriyor   *******************
 
-    @ManyToOne
+/*    @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "advert_type_id", nullable = false)
     private AdvertType advertType;
@@ -92,6 +92,6 @@ public class Advert {
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    private Category category;*/
 
 }

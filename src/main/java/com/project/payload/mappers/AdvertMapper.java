@@ -15,7 +15,7 @@ public class AdvertMapper {
     public Advert mapAdvertRequestToAdvert(AdvertRequest advertRequest){
         return Advert.builder()
                 .title(advertRequest.getTitle())
-                .desc(advertRequest.getDesc())
+                .description(advertRequest.getDesc())
                 .price(advertRequest.getPrice())
                 .status(advertRequest.getStatus())
                 .viewCount(advertRequest.getViewCount())
@@ -32,7 +32,7 @@ public class AdvertMapper {
         return AdvertResponse.builder()
                 .advertId(advert.getAdvertId())
                 .title(advert.getTitle())
-                .desc(advert.getDesc())
+                .desc(advert.getDescription())
                // .slug(advert.getSlug())
                 .price(advert.getPrice())
                 .status(advert.getStatus())
@@ -41,11 +41,11 @@ public class AdvertMapper {
                 .create_at(advert.getCreate_at())
                 .update_at(advert.getUpdate_at())
                 .viewCount(advert.getViewCount())
-                .advertType(advert.getAdvertType())
+/*                .advertType(advert.getAdvertType())
                 .country(advert.getCountry())
                 .city(advert.getCity())
                 .district(advert.getDistrict())
-                .category(advert.getCategory())
+                .category(advert.getCategory())*/
                 .build();
 
     }
