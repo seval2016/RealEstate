@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Callable;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +54,7 @@ public class ContactMessageService {
 
     }
 
-    public Page<ContactMessageResponse> searchByEmail(String email, int page, int size, String sort, String type) {
+    public Page<ContactMessageResponse> searchByContactEmail(String email, int page, int size, String sort, String type) {
 
         Pageable pageable = PageRequest.of(page,size, Sort.by(sort).ascending());
 
@@ -63,12 +62,12 @@ public class ContactMessageService {
             pageable = PageRequest.of(page,size, Sort.by(sort).descending());
         }
 
-        return contactMessageRepository.findByEmailEquals(email, pageable).
+        return contactMessageRepository.findByContactEmailEquals(email, pageable).
                 map(contactMessageMapper::contactMessageToResponse);
 
     }
 
-    public Page<ContactMessageResponse> searchBySubject(String subject, int page, int size, String sort, String type) {
+    public Page<ContactMessageResponse> searchByContactSubject(String subject, int page, int size, String sort, String type) {
 
         Pageable pageable = PageRequest.of(page,size, Sort.by(sort).ascending());
 
@@ -76,7 +75,7 @@ public class ContactMessageService {
             pageable = PageRequest.of(page,size, Sort.by(sort).descending());
         }
 
-        return contactMessageRepository.findBySubjectEquals(subject, pageable).
+        return contactMessageRepository.findByContactSubjectEquals(subject, pageable).
                 map(contactMessageMapper::contactMessageToResponse);
 
     }

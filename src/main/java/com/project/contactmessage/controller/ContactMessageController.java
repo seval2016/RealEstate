@@ -38,29 +38,29 @@ public class ContactMessageController {
     }
 
 
-    @GetMapping("/searchByEmail") // http://localhost:8080/contactMessages/searchByEmail?email=aaa@bbb.com + GET
-    public Page<ContactMessageResponse> searchByEmail(
-            @RequestParam(value = "email") String email,
+    @GetMapping("/searchByContactEmail") // http://localhost:8080/contactMessages/searchByContactEmail?contactEmail=aaa@bbb.com + GET
+    public Page<ContactMessageResponse> searchByContactEmail(
+            @RequestParam(value = "contactEmail") String contactEmail,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "dateTime") String sort,
             @RequestParam(value = "type", defaultValue = "desc") String type
     ) {
-        return contactMessageService.searchByEmail(email,page,size,sort,type);
+        return contactMessageService.searchByContactEmail(contactEmail,page,size,sort,type);
     }
 
-    @GetMapping("/searchBySubject") // http://localhost:8080/contactMessages/searchBySubject?subject=deneme
-    public Page<ContactMessageResponse> searchBySubject(
-            @RequestParam(value = "subject") String subject,
+    @GetMapping("/searchByContactSubject") // http://localhost:8080/contactMessages/searchByContactSubject?contactSubject=deneme
+    public Page<ContactMessageResponse> searchByContactSubject(
+            @RequestParam(value = "contactSubject") String contactSubject,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "sort", defaultValue = "dateTime") String sort,
             @RequestParam(value = "type", defaultValue = "desc") String type
     ) {
-        return contactMessageService.searchBySubject(subject,page,size,sort,type);
+        return contactMessageService.searchByContactSubject(contactSubject,page,size,sort,type);
     }
 
-    @DeleteMapping("/deleteById/{contactMessageId}") // http://localhost:8080/contactMessages/deleteById/2
+    @DeleteMapping("/deleteById/{contactMessageId}") // http://localhost:8080/contactMessages/deleteById/11
     public ResponseEntity<String> deleteByIdPath(@PathVariable Long contactMessageId){
         return ResponseEntity.ok(contactMessageService.deleteById(contactMessageId));
 
@@ -71,7 +71,7 @@ public class ContactMessageController {
         return ResponseEntity.ok(contactMessageService.deleteById(contactMessageId));
     }
 
-    @GetMapping("/searchBetweenDates") // http://localhost:8080/contactMessages/searchBetweenDates?beginDate=2023-09-13&endDate=2023-09-15 + GET
+    @GetMapping("/searchBetweenDates") // http://localhost:8080/contactMessages/searchBetweenDates?beginDate=2024-08-26&endDate=2024-08-28 + GET
     public ResponseEntity<List<ContactMessage>> searchBetweenDates(
             @RequestParam(value = "beginDate") String beginDateString,
             @RequestParam(value = "endDate") String endDateString
@@ -81,7 +81,7 @@ public class ContactMessageController {
 
     }
 
-    @GetMapping("/searchBetweenTimes")// http://localhost:8080/contactMessages/searchBetweenTimes?startHour=09&startMinute=00&endHour=17&endMinute=30 + GET
+    @GetMapping("/searchBetweenTimes")//  http://localhost:8080/contactMessages/searchBetweenTimes?startHour=16&startMinute=00&endHour=17&endMinute=25 + GET
     public ResponseEntity<List<ContactMessage>> searchBetweenTimes(
             @RequestParam(value = "startHour") String startHourString,
             @RequestParam(value = "startMinute") String startMinuteString,
@@ -92,5 +92,16 @@ public class ContactMessageController {
         List<ContactMessage> contactMessages = contactMessageService.searchBetweenTimes(startHourString,startMinuteString, endHourString, endMinuteString);
         return ResponseEntity.ok(contactMessages);
     }
+
+    @GetMapping("/getByIdParam")// http://localhost:8080/contactMessages/getByIdParam?contactMessageId=5 + GET
+    public ResponseEntity<ContactMessage> getById(@RequestParam(value = "contactMessageId") Long contactMessageId){
+        return ResponseEntity.ok(contactMessageService.getContactMessageById(contactMessageId));
+    }
+
+    @GetMapping("/getById/{contactMessageId}")// http://localhost:8080/contactMessages/getById/5 + GET
+    public ResponseEntity<ContactMessage> getByIdPath(@PathVariable Long contactMessageId) {
+        return ResponseEntity.ok(contactMessageService.getContactMessageById(contactMessageId));
+    }
+
 
 }

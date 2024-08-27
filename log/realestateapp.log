@@ -1,0 +1,37 @@
+"2024-08-27 14:04:32,312 INFO  [main] com.project.RealEstateApplication:Starting RealEstateApplication using Java 17.0.9 on LAPTOP-UVO8DN5J with PID 16232 (C:\Users\hp\IdeaProjects\realestate-backend\target\classes started by hp in C:\Users\hp\IdeaProjects\realestate-backend)
+""2024-08-27 14:04:32,317 INFO  [main] com.project.RealEstateApplication:No active profile set, falling back to 1 default profile: "default"
+""2024-08-27 14:04:34,775 INFO  [main] org.springframework.data.repository.config.RepositoryConfigurationDelegate:Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+""2024-08-27 14:04:35,052 INFO  [main] org.springframework.data.repository.config.RepositoryConfigurationDelegate:Finished Spring Data repository scanning in 171 ms. Found 1 JPA repository interfaces.
+""2024-08-27 14:04:36,747 INFO  [main] org.springframework.boot.web.embedded.tomcat.TomcatWebServer:Tomcat initialized with port(s): 8080 (http)
+""2024-08-27 14:04:36,781 INFO  [main] org.apache.catalina.core.StandardService:Starting service [Tomcat]
+""2024-08-27 14:04:36,782 INFO  [main] org.apache.catalina.core.StandardEngine:Starting Servlet engine: [Apache Tomcat/9.0.68]
+""2024-08-27 14:04:37,059 INFO  [main] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]:Initializing Spring embedded WebApplicationContext
+""2024-08-27 14:04:37,060 INFO  [main] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext:Root WebApplicationContext: initialization completed in 4621 ms
+""2024-08-27 14:04:37,571 INFO  [main] org.hibernate.jpa.internal.util.LogHelper:HHH000204: Processing PersistenceUnitInfo [name: default]
+""2024-08-27 14:04:37,672 INFO  [main] org.hibernate.Version:HHH000412: Hibernate ORM core version 5.6.12.Final
+""2024-08-27 14:04:38,056 INFO  [main] org.hibernate.annotations.common.Version:HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+""2024-08-27 14:04:38,245 INFO  [main] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Starting...
+""2024-08-27 14:04:38,652 INFO  [main] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Start completed.
+""2024-08-27 14:04:38,682 INFO  [main] org.hibernate.dialect.Dialect:HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL81Dialect
+""2024-08-27 14:04:40,305 INFO  [main] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator:HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+""2024-08-27 14:04:40,315 INFO  [main] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean:Initialized JPA EntityManagerFactory for persistence unit 'default'
+""2024-08-27 14:04:41,668 WARN  [main] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration:spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+""2024-08-27 14:04:42,650 INFO  [main] org.springframework.boot.web.embedded.tomcat.TomcatWebServer:Tomcat started on port(s): 8080 (http) with context path ''
+""2024-08-27 14:04:42,678 INFO  [main] com.project.RealEstateApplication:Started RealEstateApplication in 11.402 seconds (JVM running for 12.168)
+""2024-08-27 14:09:14,353 INFO  [http-nio-8080-exec-2] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]:Initializing Spring DispatcherServlet 'dispatcherServlet'
+""2024-08-27 15:14:38,364 WARN  [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool:HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h59s434ms411µs400ns).
+""2024-08-27 17:12:40,716 WARN  [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool:HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h50m32s235ms243µs700ns).
+""2024-08-27 17:17:13,754 WARN  [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool:HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4m33s38ms262µs200ns).
+""2024-08-27 17:32:27,761 WARN  [http-nio-8080-exec-8] org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver:Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'contactEmail' for method parameter type String is not present]
+""2024-08-27 17:33:48,064 WARN  [http-nio-8080-exec-9] org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver:Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'contactEmail' for method parameter type String is not present]
+""2024-08-27 17:43:44,110 WARN  [http-nio-8080-exec-2] org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver:Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'contactEmail' for method parameter type String is not present]
+""2024-08-27 17:44:10,450 WARN  [http-nio-8080-exec-4] org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver:Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'contactEmail' for method parameter type String is not present]
+""2024-08-27 17:47:02,642 WARN  [http-nio-8080-exec-5] org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver:Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'contactEmail' for method parameter type String is not present]
+""2024-08-27 17:48:25,634 WARN  [http-nio-8080-exec-10] org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver:Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'contactEmail' for method parameter type String is not present]
+""2024-08-27 17:49:24,816 WARN  [http-nio-8080-exec-9] org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver:Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'contactEmail' for method parameter type String is not present]
+""2024-08-27 19:34:53,033 WARN  [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool:HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h34m38s600ms936µs400ns).
+""2024-08-27 19:57:40,326 WARN  [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool:HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=8m17s71ms295µs).
+""2024-08-27 20:09:36,868 INFO  [SpringApplicationShutdownHook] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean:Closing JPA EntityManagerFactory for persistence unit 'default'
+""2024-08-27 20:09:36,877 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Shutdown initiated...
+""2024-08-27 20:09:36,885 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource:HikariPool-1 - Shutdown completed.
+"
