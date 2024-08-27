@@ -3,13 +3,14 @@ package com.project.controller;
 import com.project.payload.messages.SuccessMessages;
 
 import com.project.payload.request.authentication.LoginRequest;
+import com.project.payload.request.business.ForgotPasswordRequest;
 import com.project.payload.request.business.UpdatePasswordRequest;
 import com.project.payload.response.UserResponse;
 import com.project.payload.response.authentication.AuthResponse;
 
 
 import com.project.service.AuthenticationService;
-import com.project.service.UserService;
+import com.project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,19 +34,25 @@ public class AuthenticationController {
     }
 
     @GetMapping("/user") // http://localhost:8080/auth/user + GET
-    @PreAuthorize("hasAnyAuthority('ADMIN')") // Admin
+    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','CUSTOMER')")
     public ResponseEntity<UserResponse> findByUsername(HttpServletRequest request){
         String username = (String) request.getAttribute("username");
         UserResponse userResponse =  authenticationService.findByUsername(username);
         return ResponseEntity.ok(userResponse);
     }
 
-    @PatchMapping("/updatePassword")  // http://localhost:8080/auth/updatePassword + PATCH + JSON
+    @PatchMapping("/reset-password")  // http://localhost:8080/auth/resetPassword + PATCH + JSON
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','CUSTOMER')")
     public ResponseEntity<String> updatePassword(@RequestBody @Valid UpdatePasswordRequest updatePasswordRequest,
                                                  HttpServletRequest request){
         authenticationService.updatePassword(updatePasswordRequest, request);
         String response = SuccessMessages.PASSWORD_CHANGED_RESPONSE_MESSAGE;
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody @Valid ForgotPasswordRequest forgotPasswordRequest) {
+        authenticationService.forgotPassword(forgotPasswordRequest);
+        return ResponseEntity.ok(SuccessMessages.PASSWORD_RESET_INSTRUCTIONS_SENT);
     }
 }
