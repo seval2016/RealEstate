@@ -3,14 +3,19 @@ package com.project.payload.mappers;
 import com.project.entity.concretes.user.User;
 import com.project.payload.request.abstracts.BaseUserRequest;
 import com.project.payload.request.user.UserRequest;
+import com.project.payload.request.user.UserRequestWithoutPassword;
 import com.project.payload.response.user.CustomerResponse;
 import com.project.payload.response.UserResponse;
 
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 @Component
 public class UserMapper {
     public UserResponse mapUserToUserResponse(User user) {
+        // Kullanıcı nesnesinden UserResponse nesnesi oluşturuluyor
         return UserResponse.builder()
                 .userId(user.getId())
                 .username(user.getUsername())
@@ -19,11 +24,9 @@ public class UserMapper {
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .userRole(user.getUserRole().stream()
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Role not found"))
-                .getRole()
-                .name())
-                .build();
+                        .map(role -> role.getRole().name())
+                        .collect(Collectors.toList()))  // Eğer roller null ise, boş bir liste dönüyor
+                .build();  // UserResponse nesnesi oluşturuluyor ve döndürülüyor
     }
 
     public User mapUserRequestToUser(BaseUserRequest userRequest) {
@@ -63,4 +66,15 @@ public class UserMapper {
                 .build();
 
     }
+
+   /* private User mapUserRequestToUpdatedUserWithoutPassword(UserRequestWithoutPassword userRequestWithoutPassword, Long userId) {
+        return User.builder()
+                .id(userId)
+                .username(userRequestWithoutPassword.getUsername())
+                .firstName(userRequestWithoutPassword.getFirstName())
+                .lastName(userRequestWithoutPassword.getLastName())
+                .phone(userRequestWithoutPassword.getPhone())
+                .email(userRequestWithoutPassword.getEmail())
+                .build();
+    }*/
 }

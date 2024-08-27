@@ -17,17 +17,17 @@ import javax.validation.constraints.Size;
 public abstract class AbstractUserRequest {
 
     @NotNull(message = "Please enter your username")
-    @Size(min = 4, max = 16, message = "Your username should be at least 4 chars" )
+    @Size(min = 3, max = 16, message = "Your username should be at least 4 chars" )
     @Pattern(regexp = "\\A(?!\\s*\\Z).+", message = "Your username must consist of the characters .")
     private String username;
 
     @NotNull(message = "Please enter your name")
-    @Size(min = 4, max = 16, message = "Your name should be at least 4 chars" )
+    @Size(min = 3, max = 16, message = "Your name should be at least 4 chars" )
     @Pattern(regexp = "\\A(?!\\s*\\Z).+", message = "Your name must consist of the characters .")
     private String firstName;
 
     @NotNull(message = "Please enter your surname")
-    @Size(min = 4, max = 16, message = "Your surname should be at least 4 chars" )
+    @Size(min = 3, max = 16, message = "Your surname should be at least 4 chars" )
     @Pattern(regexp = "\\A(?!\\s*\\Z).+", message = "Your surname must consist of the characters .")
     private String lastName;
 
@@ -41,4 +41,5 @@ public abstract class AbstractUserRequest {
     @Email(message = "Please enter valid email")
     @Size(min=5, max=50 , message = "Your email should be between 5 and 50 chars")
     private String email;
+
 }

@@ -58,9 +58,9 @@ public class UserService {
                 user.setBuiltIn(true);
             }
             //!!! admin rolu veriliyor
-            user.setUserRole(userRoleService.getAllUserRole(Role.ADMIN));
+            user.setUserRole(List.of(userRoleService.getUserRole(Role.ADMIN)));
         } else if (userRole.equalsIgnoreCase("Manager")) {
-            user.setUserRole(userRoleService.getAllUserRole(Role.MANAGER));
+            user.setUserRole(List.of(userRoleService.getUserRole(Role.MANAGER)));
         } else {
             throw new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER_USER_ROLE_MESSAGE,userRole));
         }
@@ -154,23 +154,22 @@ public class UserService {
 
     }
 
-    public ResponseEntity<String> updateUserForUsers(UserRequestWithoutPassword userRequest, HttpServletRequest request) {
+    public ResponseEntity<String> updateUserForUsers(UserRequestWithoutPassword userRequestWithoutPassword, HttpServletRequest request) {
         String userName = (String) request.getAttribute("username");
         User user = userRepository.findByUsernameEquals(userName);
 
         //!!! builtIn
-        methodHelper.checkBuiltIn(user);
+       methodHelper.checkBuiltIn(user);
 
         // unique kontrolu
-        uniquePropertyValidator.checkUniqueProperties(user, userRequest);
+        uniquePropertyValidator.checkUniqueProperties(user, userRequestWithoutPassword);
 
         //!!! DTO --> POJO
-        user.setUsername(userRequest.getUsername());
-
-        user.setEmail(userRequest.getEmail());
-        user.setPhone(userRequest.getPhone());
-        user.setFirstName(userRequest.getFirstName());
-        user.setLastName(userRequest.getLastName());
+        user.setUsername(userRequestWithoutPassword.getUsername());
+        user.setFirstName(userRequestWithoutPassword.getFirstName());
+        user.setLastName(userRequestWithoutPassword.getLastName());
+        user.setEmail(userRequestWithoutPassword.getEmail());
+        user.setPhone(userRequestWithoutPassword.getPhone());
 
         userRepository.save(user);
 
@@ -184,5 +183,24 @@ public class UserService {
                 .stream() // stream<User>
                 .map(userMapper::mapUserToUserResponse) // stream<UserResponse>
                 .collect(Collectors.toList()); // List<UserResponse>
+    }
+
+    //!!! Runner tarafi icin yazildi
+    public long countAllAdmins(){
+        return userRepository.countAdmin(Role.ADMIN);
+    }
+
+    public User getCustomerByUsername(String customerUsername){
+        return userRepository.findByUsername(customerUsername);
+    }
+
+    public User getUserByUserId(Long userId) {
+
+        return userRepository.findById(userId).orElseThrow(()->
+                new ResourceNotFoundException(ErrorMessages.NOT_FOUND_USER_MESSAGE));
+    }
+
+    public List<User> getCustomerById(Long[] customerIds) {
+        return userRepository.findByIdsEquals(customerIds);
     }
 }
