@@ -41,7 +41,7 @@ public class AuthenticationService {
     private final JwtUtils jwtUtils;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-   // private final EmailService emailService;
+    //private final EmailService emailService;
 
 
     public ResponseEntity<AuthResponse> authenticateUser(LoginRequest loginRequest) {

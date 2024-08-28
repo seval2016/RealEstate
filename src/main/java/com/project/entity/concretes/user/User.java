@@ -44,6 +44,7 @@ public class User {
     private String passwordHash;
 
     private String resetPasswordCode;
+    private String password;
 
     private boolean builtIn = false;
 

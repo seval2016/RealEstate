@@ -171,6 +171,7 @@ public class UserService {
         user.setEmail(userRequestWithoutPassword.getEmail());
         user.setPhone(userRequestWithoutPassword.getPhone());
 
+
         userRepository.save(user);
 
         String message = SuccessMessages.USER_UPDATED;
