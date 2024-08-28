@@ -15,14 +15,15 @@ public class AdvertMapper {
     public Advert mapAdvertRequestToAdvert(AdvertRequest advertRequest){
         return Advert.builder()
                 .title(advertRequest.getTitle())
-                .description(advertRequest.getDesc())
+                .description(advertRequest.getDescription())
                 .price(advertRequest.getPrice())
                 .status(advertRequest.getStatus())
                 .viewCount(advertRequest.getViewCount())
                 .location(advertRequest.getLocation())
-                .create_at(advertRequest.getCreate_at())
-                .update_at(advertRequest.getUpdate_at())
+                .createdAt(advertRequest.getCreatedAt())
+                .updatedAt(advertRequest.getUpdatedAt())
                 .build();
+
     }
 
     // POJO -> DTO
@@ -32,14 +33,14 @@ public class AdvertMapper {
         return AdvertResponse.builder()
                 .advertId(advert.getAdvertId())
                 .title(advert.getTitle())
-                .desc(advert.getDescription())
-               // .slug(advert.getSlug())
+                .description(advert.getDescription())
+                .slug(advert.getSlug())
                 .price(advert.getPrice())
                 .status(advert.getStatus())
                 .isActive(advert.getIsActive())
                 .location(advert.getLocation())
-                .create_at(advert.getCreate_at())
-                .update_at(advert.getUpdate_at())
+                .createdAt(advert.getCreatedAt())
+                .updatedAt(advert.getUpdatedAt())
                 .viewCount(advert.getViewCount())
 /*                .advertType(advert.getAdvertType())
                 .country(advert.getCountry())

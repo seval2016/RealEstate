@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -25,21 +26,17 @@ public class AdvertRequest {
 
     @NotNull(message = " Description must not be empty")
     @Size(max = 300)
-    private String desc;
+    private String description;
 
-    /*
     @NotNull ( message = " Slug must not be empty")
     @Size(min = 5, max = 200)
     private String slug;
-    */
 
     @NotNull(message = " Price  must not be empty")
     private Float price;
 
     @NotNull(message = " Status must not be empty")
     private int status = 0;
-
-
 
    // @NotNull
    // private Boolean builtIn =false;
@@ -50,18 +47,13 @@ public class AdvertRequest {
    // @NotNull
    // private Boolean isActive = true;
 
-
-
-
-
-
     private String location;
 
     @NotNull(message = " Create date must not be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDateTime create_at;
+    private LocalDate createdAt;
 
     @Column(nullable = true)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDateTime update_at;
+    private LocalDate updatedAt;
 }

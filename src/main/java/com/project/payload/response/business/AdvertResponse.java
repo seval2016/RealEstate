@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -18,13 +19,14 @@ public class AdvertResponse {
 
     private Long advertId;
     private String title;
-    private String desc;
+    private String description;
+    private String slug;
     private Float price;
     private int status; // primitive ou non-primitive ?
     private Boolean isActive;
     private String location;
-    private LocalDateTime create_at;
-    private LocalDateTime update_at;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
     private int viewCount; // primitive ou non-primitive ?
     private AdvertType advertType;
     private Country country;
