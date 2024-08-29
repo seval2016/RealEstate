@@ -2,14 +2,19 @@ package com.project.entity.concretes.business;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.entity.concretes.user.User;
+import com.project.entity.enums.Status;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -41,11 +46,14 @@ public class Advert {
     @NotNull
     private Float price;
 
-    @NotNull
-    private int status = 0;
+    @NotNull // (message = "Status cannot be null")
+    @Enumerated(EnumType.STRING)
+    @Min(0)
+    @Max(2)
+    private Status status = Status.PENDING;
 
     @NotNull
-    private Boolean builtIn =false;
+    private Boolean builtIn = false;
 
     @NotNull
     private Boolean isActive = true;
@@ -55,7 +63,7 @@ public class Advert {
 
     private String location;
 
-    @NotNull ( message = " Create date must not be empty")
+    @NotNull(message = " Create date must not be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate createdAt;
 
@@ -93,6 +101,29 @@ public class Advert {
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category;*/
+    private Category category;
+
+     @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
+   // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Images> images;
+
+     @OneToMany
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<CategoryPropertyValues> categoryPropertyValues;
+
+     @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Set<Favorites> favorites;
+
+     @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Logs> logs;
+
+     @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<TourRequests> tourRequests;
+
+    */
+
 
 }

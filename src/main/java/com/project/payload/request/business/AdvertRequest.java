@@ -1,6 +1,7 @@
 package com.project.payload.request.business;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.project.entity.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +37,7 @@ public class AdvertRequest {
     private Float price;
 
     @NotNull(message = " Status must not be empty")
-    private int status = 0;
+    private Status status = Status.PENDING;
 
    // @NotNull
    // private Boolean builtIn =false;

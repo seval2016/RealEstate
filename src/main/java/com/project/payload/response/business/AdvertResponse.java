@@ -2,6 +2,7 @@ package com.project.payload.response.business;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.entity.concretes.business.*;
+import com.project.entity.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class AdvertResponse {
     private String description;
     private String slug;
     private Float price;
-    private int status; // primitive ou non-primitive ?
+    private Status status; // primitive ou non-primitive ?
     private Boolean isActive;
     private String location;
     private LocalDate createdAt;
