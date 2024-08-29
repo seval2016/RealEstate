@@ -67,7 +67,7 @@ public class UserMapper {
 
     }
 
-   /* private User mapUserRequestToUpdatedUserWithoutPassword(UserRequestWithoutPassword userRequestWithoutPassword, Long userId) {
+    private User mapUserRequestToUpdatedUserWithoutPassword(UserRequestWithoutPassword userRequestWithoutPassword, Long userId) {
         return User.builder()
                 .id(userId)
                 .username(userRequestWithoutPassword.getUsername())
@@ -76,5 +76,5 @@ public class UserMapper {
                 .phone(userRequestWithoutPassword.getPhone())
                 .email(userRequestWithoutPassword.getEmail())
                 .build();
-    }*/
+    }
 }
