@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.Status;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -32,15 +33,15 @@ public class Advert {
     private Long advertId;
 
     @NotNull
-    @Size(min = 5, max = 150)
+    @Range(min = 5, max = 150)  // @Range anotasyonu ( min ve max degerleri belirlememizi saglar, valeur olarak
     private String title;
 
     @NotNull
-    @Size(max = 300)
+    @Range(max = 300)
     private String description;
 
     @NotNull
-    @Size(min = 5, max = 200)
+    @Range(min = 5, max = 200)
     private String slug;
 
     @NotNull
@@ -48,8 +49,9 @@ public class Advert {
 
     @NotNull // (message = "Status cannot be null")
     @Enumerated(EnumType.STRING)
-    @Min(0)
-    @Max(2)
+    @Range(min = 0, max =2)
+    //@Min(0)
+    //@Max(2)
     private Status status = Status.PENDING;
 
     @NotNull
@@ -71,12 +73,14 @@ public class Advert {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate updatedAt;
 
-    // *******************Buradan sonraki kisimlar diger class'larin olusturulmasina bagli oldugu icin simdilik hata veriyor   *******************
-
-/*    @ManyToOne
+    @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "advert_type_id", nullable = false)
     private AdvertType advertType;
+
+    // *******************Buradan sonraki kisimlar diger class'larin olusturulmasina bagli oldugu icin simdilik hata veriyor   *******************
+
+/*
 
     @ManyToOne
     @JsonIgnore
