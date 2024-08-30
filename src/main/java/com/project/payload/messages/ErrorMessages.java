@@ -2,6 +2,8 @@ package com.project.payload.messages;
 
 public class ErrorMessages {
 
+    public static final String NOT_FOUND_IMAGE_MESSAGE = " Error: Image not found";
+
     private ErrorMessages() {
     }
 

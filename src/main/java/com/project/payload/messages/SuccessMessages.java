@@ -2,6 +2,8 @@ package com.project.payload.messages;
 
 public class SuccessMessages {
 
+    public static final String IMAGE_FOUND = "Image is Found Successfully";
+
     private SuccessMessages() {
     }
 
