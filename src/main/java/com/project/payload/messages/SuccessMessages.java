@@ -6,7 +6,7 @@ public class SuccessMessages {
     }
 
     public static final String PASSWORD_CHANGED_RESPONSE_MESSAGE = "Password Successfully Changed";
-
+    public static final String PASSWORD_RESET_INSTRUCTIONS_SENT = "Password reset instructions have been sent to your e-mail address.";
     public static final String IMAGE_SAVED = "Image is Uploaded Successfully";
 
     // User Messages
@@ -45,6 +45,9 @@ public class SuccessMessages {
     public static final String TOUR_REQUEST_FOUND = "Tour Request is Found Successfully";
     public static final String TOUR_REQUEST_DECLINE = "Tour Request is Declined Successfully";
     public static final String TOUR_REQUEST_CANCELLED = "Tour Request is Canceled Successfully";
+    public static final String TOUR_REQUEST_DELETED = "Tour request is deleted successfully";
+    public static final String TOUR_REQUEST_APPROVED ="Tour request is approved successfully";
+
 
 
 }

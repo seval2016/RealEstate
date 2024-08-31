@@ -15,6 +15,7 @@ import com.project.payload.request.business.tourRequestRequests.TourRequestCreat
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.TourRequestResponse;
 import com.project.repository.business.TourRequestRepository;
+import com.project.service.helper.MethodHelper;
 import com.project.service.helper.PageableHelper;
 import com.project.service.user.UserRoleService;
 import com.project.service.user.UserService;
@@ -43,6 +44,7 @@ public class TourRequestService {
     private final PageableHelper pageableHelper;
     private final TourRequestMapper tourRequestMapper;
     private final UserRoleService userRoleService;
+    private final MethodHelper methodHelper;
 
 //    @Transactional anotasyonu, Java'da özellikle Spring Framework içerisinde kullanılan bir anotasyondur.
 //    Bu anotasyon, bir metodun veya sınıfın tamamının bir veritabanı işlemi (transaction) kapsamında yürütülmesini sağlar.
@@ -118,7 +120,7 @@ public class TourRequestService {
         return ResponseMessage.<TourRequestResponse>builder()
                 .object(tourRequestResponse)
                 .httpStatus(HttpStatus.CREATED)
-                .message(SuccessMessages.TOUR_REQUEST_CREATED)
+                .message(SuccessMessages.TOUR_REQUEST_SAVED)
                 .build();
     }
 
@@ -214,7 +216,7 @@ public class TourRequestService {
          return ResponseMessage.<TourRequestResponse>builder()
                 .httpStatus(HttpStatus.OK)
                 .message(SuccessMessages.TOUR_REQUEST_DELETED)
-                .build();;
+                .build();
     }
 
 
@@ -234,7 +236,7 @@ public class TourRequestService {
 
     public User getUser(HttpServletRequest servletRequest){
         String username =(String) servletRequest.getAttribute("username");
-        User user =  userService.findUserByUsername(username);
+        User user =  methodHelper.isUserExistByUsername(username);
         return user;
     }
 
