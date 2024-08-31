@@ -59,7 +59,7 @@ public class ErrorMessages {
     // TourRequest Errors
     public static final String TOUR_REQUEST_START_DATE_IS_EARLIER_THAN_LAST_REGISTRATION_DATE = "Error: The start date cannot be earlier than the last registration date";
     public static final String TOUR_REQUEST_END_DATE_IS_EARLIER_THAN_START_DATE = "Error: The end date cannot be earlier than start date";
-    public static final String TOUR_REQUEST_NOT_FOUND = "TError : Tour Request does not exist.";
+    public static final String TOUR_REQUEST_NOT_FOUND = "Error : Tour Request does not exist.";
     public static final String TOUR_REQUEST_CREATION_ERROR = "Error : Tour Request is not created. Please try again.";
     public static final String TOUR_REQUEST_UPDATE_ERROR = "Error : Tour Request is not updated. Please check your input.";
     public static final String TOUR_REQUEST_DELETE_ERROR = "Error : Tour Request is not deleted. Please ensure it exists.";
