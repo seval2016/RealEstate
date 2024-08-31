@@ -16,10 +16,10 @@ public class TourRequestMapper {
     public TourRequestResponse mapTourRequestToResponse(TourRequest request){
         return TourRequestResponse.builder()
                 .id(request.getId())
-                .tour_date(request.getTourDate())
-                .tour_time(request.getTourTime())
+                .tourDate(request.getTourDate())
+                .tourTime(request.getTourTime())
                 .status(request.getStatus().id)
-                .update_at(request.getUpdateAt())
+                .updateAt(request.getUpdateAt())
                 //.advert(request.getAdvert())
                 .ownerUser(request.getOwnerUser())
                 .guestUser(request.getGuestUser())

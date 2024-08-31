@@ -16,7 +16,7 @@ import com.project.payload.response.authentication.AuthResponse;
 import com.project.repository.user.UserRepository;
 import com.project.security.jwt.JwtUtils;
 import com.project.security.service.UserDetailsImpl;
-import com.project.service.email.EmailService;
+//import com.project.service.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,7 +41,7 @@ public class AuthenticationService {
     private final JwtUtils jwtUtils;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
+    //private final EmailService emailService;
 
 
     public ResponseEntity<AuthResponse> authenticateUser(LoginRequest loginRequest) {
@@ -116,6 +116,6 @@ public class AuthenticationService {
         userRepository.save(user);
 
         // Email gönderimi
-        emailService.sendPasswordResetEmail(user.getEmail(), resetPasswordCode);
+        //emailService.sendPasswordResetEmail(user.getEmail(), resetPasswordCode);
     }
 }

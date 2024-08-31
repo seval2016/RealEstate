@@ -20,17 +20,17 @@ public class TourRequestResponse {
 
     private Long id;
 
-    private LocalDate tour_date;
+    private LocalDate tourDate;
 
-    private LocalTime tour_time;
+    private LocalTime tourTime;
 
     private Integer status;
 
-    private LocalDateTime create_at;
+    private LocalDateTime createAt;
 
-    private LocalDateTime update_at;
+    private LocalDateTime updateAt;
 
-    private Advert advert;
+    //private Advert advert;
 
     private User ownerUser;
 
