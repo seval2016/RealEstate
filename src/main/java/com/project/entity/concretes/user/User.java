@@ -2,10 +2,13 @@ package com.project.entity.concretes.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.entity.concretes.business.Advert;
+import com.project.entity.concretes.business.Favorites;
 import com.project.entity.enums.Role;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -48,6 +51,7 @@ public class User {
 
     private boolean builtIn = false;
 
+    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
     private LocalDateTime createAt;
 
@@ -65,5 +69,14 @@ public class User {
 
 
     // Diğer ilişkiler burada tanımlanacak (adverts, favorites, logs, tourRequests vs.)
+
+
+    // Murat branch'inda eklendi BASLANGIC**************
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Advert> adverts;
+
+    // Murat branch'inda eklendi SON**************
+
+
 
 }

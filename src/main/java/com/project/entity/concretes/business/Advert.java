@@ -78,9 +78,18 @@ public class Advert {
     @JoinColumn(name = "advert_type_id", nullable = false)
     private AdvertType advertType;
 
-    // *******************Buradan sonraki kisimlar diger class'larin olusturulmasina bagli oldugu icin simdilik hata veriyor   *******************
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
-/*
+    @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Images> images;
+
+    @OneToMany(mappedBy = "advert")
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<CategoryPropertyValues> categoryPropertyValues;
 
     @ManyToOne
     @JsonIgnore
@@ -97,37 +106,25 @@ public class Advert {
     @JoinColumn(name = "district_id", nullable = false)
     private District district;
 
+
     @ManyToOne
-    @JsonIgnore
+    //@JsonIgnore
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
 
-     @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
-   // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<Images> images;
-
-     @OneToMany
-    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<CategoryPropertyValues> categoryPropertyValues;
-
-     @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
     // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<Favorites> favorites;
 
-     @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
     // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Logs> logs;
 
-     @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
     // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<TourRequests> tourRequests;
 
-    */
-
+    // *******************Buradan sonraki kisimlar diger class'larin olusturulmasina bagli oldugu icin simdilik hata veriyor   *******************
 
 }

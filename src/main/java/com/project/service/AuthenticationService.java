@@ -115,7 +115,7 @@ public class AuthenticationService {
         user.setResetPasswordCode(resetPasswordCode);
         userRepository.save(user);
 
-        // Email gönderimi
-       // emailService.sendPasswordResetEmail(user.getEmail(), resetPasswordCode);
+         //Email gönderimi
+      // emailService.sendPasswordResetEmail(user.getEmail(), resetPasswordCode);
     }
 }

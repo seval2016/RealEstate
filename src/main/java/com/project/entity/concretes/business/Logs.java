@@ -1,23 +1,21 @@
 package com.project.entity.concretes.business;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-@Entity
+
 @Getter
 @Setter
-@Table(name = "images")
+@Entity
+//@Table(name = "logs")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Images {
+@Builder(toBuilder = true)
+public class Logs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @ManyToOne
     @JoinColumn(name = "advert_id")
