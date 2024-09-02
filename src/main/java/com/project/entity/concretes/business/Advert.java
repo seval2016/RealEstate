@@ -126,5 +126,4 @@ public class Advert {
     private List<TourRequests> tourRequests;
 
     // *******************Buradan sonraki kisimlar diger class'larin olusturulmasina bagli oldugu icin simdilik hata veriyor   *******************
-
 }
