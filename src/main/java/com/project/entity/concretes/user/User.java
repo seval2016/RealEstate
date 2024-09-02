@@ -10,6 +10,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -65,18 +66,23 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<UserRole> userRole ;
+    private List<UserRole> userRole;
 
 
     // Diğer ilişkiler burada tanımlanacak (adverts, favorites, logs, tourRequests vs.)
 
 
-    // Murat branch'inda eklendi BASLANGIC**************
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Advert> adverts;
 
-    // Murat branch'inda eklendi SON**************
+    // Constructor veya Builder metotlarında `createAt` alanı otomatik olarak atanmalıdır
+    @PrePersist
+    protected void onCreate() {
+        createAt = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+    }
 
-
-
+    @PreUpdate
+    protected void onUpdate() {
+        updateAt = LocalDateTime.now();
+    }
 }

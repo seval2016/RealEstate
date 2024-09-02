@@ -66,15 +66,13 @@ public class UserMapper {
                 .build();
 
     }
+    // Other mapping methods
 
-    private User mapUserRequestToUpdatedUserWithoutPassword(UserRequestWithoutPassword userRequestWithoutPassword, Long userId) {
-        return User.builder()
-                .id(userId)
-                .username(userRequestWithoutPassword.getUsername())
-                .firstName(userRequestWithoutPassword.getFirstName())
-                .lastName(userRequestWithoutPassword.getLastName())
-                .phone(userRequestWithoutPassword.getPhone())
-                .email(userRequestWithoutPassword.getEmail())
-                .build();
+    public void mapUserRequestWithoutPasswordToUser(UserRequestWithoutPassword userRequestWithoutPassword, User user) {
+        user.setFirstName(userRequestWithoutPassword.getFirstName());
+        user.setLastName(userRequestWithoutPassword.getLastName());
+        user.setPhone(userRequestWithoutPassword.getPhone());
+        user.setEmail(userRequestWithoutPassword.getEmail());
+
     }
 }

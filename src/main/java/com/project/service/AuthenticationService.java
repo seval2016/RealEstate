@@ -43,7 +43,6 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     //private final EmailService emailService;
 
-
     public ResponseEntity<AuthResponse> authenticateUser(LoginRequest loginRequest) {
         String username=loginRequest.getUsername();
 
@@ -78,7 +77,6 @@ public class AuthenticationService {
         role.ifPresent(authResponse::role);
 
         return ResponseEntity.ok(authResponse.build());
-
 }
 
     public UserResponse findByUsername(String username) {
@@ -118,4 +116,5 @@ public class AuthenticationService {
          //Email gönderimi
       // emailService.sendPasswordResetEmail(user.getEmail(), resetPasswordCode);
     }
+
 }

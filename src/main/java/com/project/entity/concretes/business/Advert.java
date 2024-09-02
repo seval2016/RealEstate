@@ -20,10 +20,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "adverts")
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder(toBuilder = true)
 
 public class Advert {
@@ -32,21 +31,32 @@ public class Advert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long advertId;
 
+    //**************************************
+
     @NotNull
     @Range(min = 5, max = 150)  // @Range anotasyonu ( min ve max degerleri belirlememizi saglar, valeur olarak
     private String title;
 
-    @NotNull
-    @Range(max = 300)
+   /* @Column(nullable = false, length = 150 )
+    private String title;*/
+//****************************************
+
+    @Column(length = 300)
     private String description;
 
+    //**************************************
     @NotNull
     @Range(min = 5, max = 200)
     private String slug;
 
-    @NotNull
-    private Float price;
+/*    @Column(nullable = false, length = 200)
+    private String slug;*/
 
+    //*******************************************
+
+    @Column(nullable = false)
+    private Float price;
+// ****************************
     @NotNull // (message = "Status cannot be null")
     @Enumerated(EnumType.STRING)
     @Range(min = 0, max =2)
@@ -54,22 +64,36 @@ public class Advert {
     //@Max(2)
     private Status status = Status.PENDING;
 
-    @NotNull
+     /* @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.PENDING;*/
+    //****************************************
+
+
+
+    @Column(nullable = false)
     private Boolean builtIn = false;
 
-    @NotNull
+    @Column(nullable = false)
     private Boolean isActive = true;
 
-    @NotNull
+    @Column(nullable = false)
     private int viewCount = 0;
 
+    @Column(nullable = false)
     private String location;
 
+    //****************************************
     @NotNull(message = " Create date must not be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate createdAt;
 
-    @Column(nullable = true)
+/*    @Column(name = "create_at", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate createdAt;*/
+
+    //********************************************
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate updatedAt;
 
@@ -79,6 +103,13 @@ public class Advert {
     private AdvertType advertType;
 
     @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    // *******************Buradan sonraki kisimlar diger class'larin olusturulmasina bagli oldugu icin simdilik hata veriyor   *******************
+
+   /* @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
@@ -107,12 +138,6 @@ public class Advert {
     private District district;
 
 
-    @ManyToOne
-    //@JsonIgnore
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-
     @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
     // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<Favorites> favorites;
@@ -124,6 +149,5 @@ public class Advert {
     @OneToMany(mappedBy = "advert" , cascade = CascadeType.ALL)
     // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<TourRequests> tourRequests;
-
-    // *******************Buradan sonraki kisimlar diger class'larin olusturulmasina bagli oldugu icin simdilik hata veriyor   *******************
+*/
 }
