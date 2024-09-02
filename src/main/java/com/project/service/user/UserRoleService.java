@@ -1,6 +1,5 @@
 package com.project.service.user;
 
-
 import com.project.entity.concretes.user.UserRole;
 import com.project.entity.enums.Role;
 import com.project.exception.ResourceNotFoundException;
@@ -22,9 +21,7 @@ public class UserRoleService {
                 new ResourceNotFoundException(ErrorMessages.ROLE_NOT_FOUND));
     }
 
-
     public List<UserRole> getAllUserRole(){
         return userRoleRepository.findAll();
     }
-
 }
