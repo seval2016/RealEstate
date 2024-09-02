@@ -43,7 +43,6 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
-
     public ResponseEntity<AuthResponse> authenticateUser(LoginRequest loginRequest) {
         String username=loginRequest.getUsername();
 
