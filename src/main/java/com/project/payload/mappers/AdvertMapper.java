@@ -31,7 +31,7 @@ public class AdvertMapper {
     public AdvertResponse mapAdvertToAdvertResponse(Advert advert){
 
         return AdvertResponse.builder()
-                .advertId(advert.getAdvertId())
+                .advertId(advert.getId())
                 .title(advert.getTitle())
                 .description(advert.getDescription())
                 .slug(advert.getSlug())
@@ -55,7 +55,7 @@ public class AdvertMapper {
     public Advert mapAdvertRequestToUpdatedAdvert(Long id, AdvertRequest advertRequest){
         return mapAdvertRequestToAdvert(advertRequest)
                 .toBuilder()
-                .advertId(id)
+                .id(id)
                 .build();
 
     }

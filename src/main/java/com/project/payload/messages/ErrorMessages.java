@@ -2,6 +2,9 @@ package com.project.payload.messages;
 
 public class ErrorMessages {
 
+
+    public static final Object UPLOADING_FAILED = " ";
+
     private ErrorMessages() {
     }
 

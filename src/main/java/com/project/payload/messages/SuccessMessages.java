@@ -8,7 +8,7 @@ public class SuccessMessages {
     public static final String PASSWORD_CHANGED_RESPONSE_MESSAGE = "Password Successfully Changed";
     public static final String PASSWORD_RESET_INSTRUCTIONS_SENT = "Password reset instructions have been sent to your e-mail address.";
     public static final String IMAGE_SAVED = "Image is Uploaded Successfully";
-
+    public static final String IMAGE_DELETED_SUCCESSFULLY = "Image is Deleted Successfully";
     // User Messages
     public static final String USER_CREATED = "User is Saved Successfully";
     public static final String USER_FOUND = "User is Found Successfully";

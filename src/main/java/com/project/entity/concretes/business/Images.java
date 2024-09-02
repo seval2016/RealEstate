@@ -18,9 +18,24 @@ public class Images {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private boolean featured;
+
+    @Column(nullable = true)
+    private String type;
+
+    @Lob
+    private byte[] data;
+
+    @Column(nullable = false)
+    private String name;
+
 
     @ManyToOne
     @JoinColumn(name = "advert_id")
     private Advert advert;
 
+
+    @Column(nullable = true)
+    private String path; // Resim yolunu saklamak için eklenen alan
 }

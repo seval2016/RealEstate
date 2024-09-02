@@ -28,7 +28,7 @@ public class Advert {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long advertId;
+    private Long id;
 
 
     @Column(nullable = false, length = 150 )
