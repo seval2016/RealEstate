@@ -1,13 +1,14 @@
 package com.project.entity.concretes.user;
 
-
 import com.project.entity.enums.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -24,11 +25,15 @@ public class UserRole {
 
     private String roleName;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
     private Role role;
 
-    @OneToMany(mappedBy = "roles")
-    private Set<User> users;
+/*
+ @OneToMany(mappedBy = "userRole")
+    private Set<User> user;
+    */
+
+
 
 }
