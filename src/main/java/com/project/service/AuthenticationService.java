@@ -118,4 +118,5 @@ public class AuthenticationService {
         // Email gönderimi
         emailService.sendPasswordResetEmail(user.getEmail(), resetPasswordCode);
     }
+
 }
