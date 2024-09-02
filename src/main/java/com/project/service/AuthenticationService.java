@@ -78,7 +78,6 @@ public class AuthenticationService {
         role.ifPresent(authResponse::role);
 
         return ResponseEntity.ok(authResponse.build());
-
 }
 
     public UserResponse findByUsername(String username) {
