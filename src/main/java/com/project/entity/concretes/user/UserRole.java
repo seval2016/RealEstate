@@ -1,6 +1,7 @@
 package com.project.entity.concretes.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.entity.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,7 +30,7 @@ public class UserRole {
     @Column(length = 20)
     private Role role;
 
-    //@OneToMany(mappedBy = "roles")
-    //private Set<User> users;
+    @ManyToMany(mappedBy = "userRole")
+    private Set<User> users;
 
 }
