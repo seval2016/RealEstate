@@ -66,7 +66,6 @@ public class UserMapper {
                 .build();
 
     }
-
     // Other mapping methods
 
     public void mapUserRequestWithoutPasswordToUser(UserRequestWithoutPassword userRequestWithoutPassword, User user) {
@@ -74,5 +73,6 @@ public class UserMapper {
         user.setLastName(userRequestWithoutPassword.getLastName());
         user.setPhone(userRequestWithoutPassword.getPhone());
         user.setEmail(userRequestWithoutPassword.getEmail());
+
     }
 }

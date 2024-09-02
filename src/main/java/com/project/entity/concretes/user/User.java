@@ -2,11 +2,15 @@ package com.project.entity.concretes.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project.entity.concretes.business.Advert;
+import com.project.entity.concretes.business.Favorites;
 import com.project.entity.enums.Role;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,9 +48,11 @@ public class User {
     private String passwordHash;
 
     private String resetPasswordCode;
+    private String password;
 
     private boolean builtIn = false;
 
+    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
     private LocalDateTime createAt;
 
@@ -60,9 +66,23 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<UserRole> userRole ;
+    private List<UserRole> userRole;
 
 
     // Diğer ilişkiler burada tanımlanacak (adverts, favorites, logs, tourRequests vs.)
 
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Advert> adverts;
+
+    // Constructor veya Builder metotlarında `createAt` alanı otomatik olarak atanmalıdır
+    @PrePersist
+    protected void onCreate() {
+        createAt = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updateAt = LocalDateTime.now();
+    }
 }
