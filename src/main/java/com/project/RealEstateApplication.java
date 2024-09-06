@@ -10,7 +10,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 import java.time.LocalDate;
+
 
 @SpringBootApplication
 public class RealEstateApplication implements CommandLineRunner {
@@ -19,19 +21,20 @@ public class RealEstateApplication implements CommandLineRunner {
 	private final UserRoleRepository userRoleRepository;
 	private final UserService userService;
 
-    public RealEstateApplication(UserRoleService userRoleService, UserRoleRepository userRoleRepository, UserService userService) {
-        this.userRoleService = userRoleService;
-        this.userRoleRepository = userRoleRepository;
-        this.userService = userService;
-    }
+	public RealEstateApplication(UserRoleService userRoleService, UserRoleRepository userRoleRepository, UserService userService) {
+		this.userRoleService = userRoleService;
+		this.userRoleRepository = userRoleRepository;
+		this.userService = userService;
+	}
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 		SpringApplication.run(RealEstateApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		//!!! Role tablomu doldurcam
+
+		//Role tablosu dolduruluyor
 		if(userRoleService.getAllUserRole().isEmpty()) {
 
 			UserRole admin = new UserRole();
@@ -41,31 +44,27 @@ public class RealEstateApplication implements CommandLineRunner {
 
 			UserRole manager = new UserRole();
 			manager.setRole(Role.MANAGER);
-			manager.setRoleName("Dean");
+			manager.setRoleName("Manager");
 			userRoleRepository.save(manager);
 
 			UserRole customer = new UserRole();
-			customer.setRoleName("Customer");
 			customer.setRole(Role.CUSTOMER);
-
+			customer.setRoleName("Customer");
+			userRoleRepository.save(customer);
 
 		}
 
-		//!!! Built_IN ADMIN olusturacagiz
+		//built_in admin oluşturulacak
 		if(userService.countAllAdmins() == 0) {
 			UserRequest adminRequest = new UserRequest();
-			adminRequest.setUsername("wolverine");
-			adminRequest.setFirstName("Hugh");
-			adminRequest.setLastName("Jackman");
-			adminRequest.setPhone("123-456-7890");
-			adminRequest.setEmail("123@gmail.com");
+			adminRequest.setUsername("Admin");
+			adminRequest.setEmail("projelermaili@gmail.com");
 			adminRequest.setPasswordHash("12345678");
-			adminRequest.setBuiltIn(true);
-
-
+			adminRequest.setFirstName("Ahmet");
+			adminRequest.setLastName("Şimşek");
+			adminRequest.setPhone("123-331-1111");
 			userService.saveUser(adminRequest, "Admin");
 		}
-
 
 
 	}

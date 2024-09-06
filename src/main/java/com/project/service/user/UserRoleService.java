@@ -16,7 +16,7 @@ import java.util.List;
 public class UserRoleService {
     private final UserRoleRepository userRoleRepository;
     public UserRole getUserRole(Role role){
-        return userRoleRepository.findByEnumRole(role).orElseThrow(()->
+        return userRoleRepository.findByEnumRoleEquals(role).orElseThrow(()->
                 new ResourceNotFoundException(ErrorMessages.ROLE_NOT_FOUND));
     }
 

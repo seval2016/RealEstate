@@ -10,7 +10,7 @@ import com.project.payload.request.authentication.LoginRequest;
 import com.project.payload.request.business.ForgotPasswordRequest;
 import com.project.payload.request.business.UpdatePasswordRequest;
 
-import com.project.payload.response.UserResponse;
+import com.project.payload.response.user.UserResponse;
 
 import com.project.payload.response.authentication.AuthResponse;
 import com.project.repository.user.UserRepository;
@@ -78,7 +78,6 @@ public class AuthenticationService {
         role.ifPresent(authResponse::role);
 
         return ResponseEntity.ok(authResponse.build());
-
 }
 
     public UserResponse findByUsername(String username) {
@@ -115,7 +114,13 @@ public class AuthenticationService {
         user.setResetPasswordCode(resetPasswordCode);
         userRepository.save(user);
 
+
         // Email gönderimi
         //emailService.sendPasswordResetEmail(user.getEmail(), resetPasswordCode);
+
+         //Email gönderimi
+      // emailService.sendPasswordResetEmail(user.getEmail(), resetPasswordCode);
+
     }
+
 }

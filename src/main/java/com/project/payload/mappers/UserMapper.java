@@ -5,11 +5,11 @@ import com.project.payload.request.abstracts.BaseUserRequest;
 import com.project.payload.request.user.UserRequest;
 import com.project.payload.request.user.UserRequestWithoutPassword;
 import com.project.payload.response.user.CustomerResponse;
-import com.project.payload.response.UserResponse;
+import com.project.payload.response.user.UserResponse;
 
+import com.project.payload.response.user.UserResponseForTourRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Component
@@ -66,15 +66,28 @@ public class UserMapper {
                 .build();
 
     }
+    // Other mapping methods
 
-   /* private User mapUserRequestToUpdatedUserWithoutPassword(UserRequestWithoutPassword userRequestWithoutPassword, Long userId) {
-        return User.builder()
-                .id(userId)
-                .username(userRequestWithoutPassword.getUsername())
-                .firstName(userRequestWithoutPassword.getFirstName())
-                .lastName(userRequestWithoutPassword.getLastName())
-                .phone(userRequestWithoutPassword.getPhone())
-                .email(userRequestWithoutPassword.getEmail())
+    public void mapUserRequestWithoutPasswordToUser(UserRequestWithoutPassword userRequestWithoutPassword, User user) {
+        user.setFirstName(userRequestWithoutPassword.getFirstName());
+        user.setLastName(userRequestWithoutPassword.getLastName());
+        user.setPhone(userRequestWithoutPassword.getPhone());
+        user.setEmail(userRequestWithoutPassword.getEmail());
+
+    }
+
+
+
+
+    //---------------------------------
+
+    public UserResponseForTourRequest mapUserToUserResponseForTourRequest(User user) {
+        return UserResponseForTourRequest.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .phone(user.getPhone())
                 .build();
-    }*/
+    }
 }

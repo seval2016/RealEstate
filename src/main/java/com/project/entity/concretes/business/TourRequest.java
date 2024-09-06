@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "tour_request")
+@Table(name = "tour_requests")
 
 @Getter
 @Setter
@@ -39,7 +39,7 @@ public class TourRequest {
     private LocalTime tourTime;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false,length = 20)
+    @Column(nullable = false)
     private StatusType status;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "US")
@@ -57,15 +57,17 @@ public class TourRequest {
     @JsonIgnore
     private Advert advert;*/
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "owner_user", nullable = false)
     @JsonIgnore
-    private User ownerUser;
+    private User ownerUser;*/
 
     @ManyToOne
     @JoinColumn(name = "guest_user", nullable = false)
     @JsonIgnore
     private User guestUser;
+
+
 
 
 

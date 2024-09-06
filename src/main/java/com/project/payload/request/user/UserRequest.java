@@ -12,4 +12,10 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class UserRequest extends BaseUserRequest {
 
+    public void setName(String name) {
+
+    }
+
+    public void setPassword(String number) {
+    }
 }

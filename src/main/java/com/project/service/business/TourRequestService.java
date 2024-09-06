@@ -1,6 +1,7 @@
 package com.project.service.business;
 
 
+import com.project.entity.concretes.business.Advert;
 import com.project.entity.concretes.business.TourRequest;
 import com.project.entity.concretes.user.User;
 import com.project.entity.concretes.user.UserRole;
@@ -12,6 +13,7 @@ import com.project.payload.mappers.TourRequestMapper;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.business.tourRequestRequests.TourRequestCreateAndUpdateRequest;
+import com.project.payload.response.business.AdvertResponse;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.TourRequestResponse;
 import com.project.repository.business.TourRequestRepository;
@@ -46,6 +48,7 @@ public class TourRequestService {
     private final TourRequestMapper tourRequestMapper;
     private final UserRoleService userRoleService;
     private final MethodHelper methodHelper;
+    private final AdvertService advertService;
 
 //    @Transactional anotasyonu, Java'da özellikle Spring Framework içerisinde kullanılan bir anotasyondur.
 //    Bu anotasyon, bir metodun veya sınıfın tamamının bir veritabanı işlemi (transaction) kapsamında yürütülmesini sağlar.
@@ -55,7 +58,7 @@ public class TourRequestService {
 
 
     // ----> S01
-    public ResponseEntity<Page<TourRequestResponse>> getUsersTourRequest(int page, int size, String sort, String type, HttpServletRequest servletRequest) {
+    public Page<TourRequestResponse> getUsersTourRequestWithPageForCustomer(int page, int size, String sort, String type, HttpServletRequest servletRequest) {
 
         User user = getUser(servletRequest);
 
@@ -64,17 +67,17 @@ public class TourRequestService {
         Pageable pageable =pageableHelper.getPageableWithProperties(page,size,sort,type);
         Page<TourRequest> usersTourRequests = tourRequestRepository.findAllByUserId(user.getId(),pageable);
 
-        return ResponseEntity.ok(usersTourRequests.map(tourRequestMapper::mapTourRequestToResponse));
+        return usersTourRequests.map(tourRequestMapper::tourRequestToTourRequestResponseForGuestUser);
     }
 
 
     // ----> S02
-    public  Page<TourRequestResponse> getAllTourRequestWithPage(int page, int size, String sort, String type, HttpServletRequest servletRequest) {
+    public  Page<TourRequestResponse> getAllTourRequestWithPageForAdminAndManager(int page, int size, String sort, String type, HttpServletRequest servletRequest) {
         User user = getUser(servletRequest);
         checkUserRole(user,Role.ADMIN,Role.MANAGER);
         Pageable pageable = pageableHelper.getPageableWithProperties(page,size,sort,type);
-        Page<TourRequest> requests = tourRequestRepository.findAll(pageable);
-        return requests.map(tourRequestMapper::mapTourRequestToResponse);
+        Page<TourRequest> TourRequests = tourRequestRepository.findAll(pageable);
+        return TourRequests.map(tourRequestMapper::tourRequestToTourRequestResponse);
     }
 
     // ----> S03
@@ -84,7 +87,7 @@ public class TourRequestService {
         checkUserRole(user,Role.CUSTOMER);
 
         TourRequest tourRequest = isTourRequestExistById(id);
-        return tourRequestMapper.mapTourRequestToResponse(tourRequest);
+        return tourRequestMapper.tourRequestToTourRequestResponse(tourRequest);
     }
 
     // ----> S04
@@ -96,7 +99,7 @@ public class TourRequestService {
 
         TourRequest request = isTourRequestExistById(id);
         return tourRequestMapper.
-                mapTourRequestToResponse(request);
+                tourRequestToTourRequestResponse(request);
     }
 
     // ----> S05
@@ -106,7 +109,7 @@ public class TourRequestService {
 
         checkUserRole(user,Role.CUSTOMER);
 
-        //Advert advert = advertService.findAdvertById(request.getAdvert());
+         //Advert advert = advertService.isAdvertExist(request.getAdvert());
 
         TourRequest createdTourRequest = tourRequestMapper.createTourRequestRequestToTourRequest(request);
         createdTourRequest.setCreateAt(LocalDateTime.now(ZoneId.of("UTC")));
@@ -116,8 +119,12 @@ public class TourRequestService {
         createdTourRequest.setStatus(StatusType.PENDING);
         //createdTourRequest.setAdvert(advert);
 
+        /*if (user.getId().equals(advert.getUser().getId())) {
+            throw new  BadRequestException("Can not look your own advert");
+        }*/
+
         TourRequest saved = tourRequestRepository.save(createdTourRequest);
-        TourRequestResponse tourRequestResponse = tourRequestMapper.mapTourRequestToResponse(saved);
+        TourRequestResponse tourRequestResponse = tourRequestMapper.tourRequestToTourRequestResponse(saved);
         return ResponseMessage.<TourRequestResponse>builder()
                 .object(tourRequestResponse)
                 .httpStatus(HttpStatus.CREATED)
@@ -136,7 +143,7 @@ public class TourRequestService {
 
         saved.setCreateAt(saved.getCreateAt());
         tourRequestRepository.save(saved);
-        TourRequestResponse response = tourRequestMapper.mapTourRequestToResponse(saved);
+        TourRequestResponse response = tourRequestMapper.tourRequestToTourRequestResponse(saved);
         return ResponseMessage.<TourRequestResponse>builder()
                 .object(response)
                 .httpStatus(HttpStatus.OK)
@@ -156,7 +163,7 @@ public class TourRequestService {
         tourRequest = tourRequestRepository.save(tourRequest);
 
         return ResponseMessage.<TourRequestResponse>builder()
-                .object(tourRequestMapper.mapTourRequestToResponse(tourRequest))
+                .object(tourRequestMapper.tourRequestToTourRequestResponseForGuestUser(tourRequest))
                 .httpStatus(HttpStatus.OK)
                 .message(SuccessMessages.TOUR_REQUEST_CANCELLED)
                 .build();
@@ -176,7 +183,7 @@ public class TourRequestService {
         tourRequest = tourRequestRepository.save(tourRequest);
 
         return ResponseMessage.<TourRequestResponse>builder()
-                .object(tourRequestMapper.mapTourRequestToResponse(tourRequest))
+                .object(tourRequestMapper.tourRequestToTourRequestResponseForGuestUser(tourRequest))
                 .httpStatus(HttpStatus.OK)
                 .message(SuccessMessages.TOUR_REQUEST_APPROVED)
                 .build();
@@ -196,7 +203,7 @@ public class TourRequestService {
         tourRequest = tourRequestRepository.save(tourRequest);
 
         return ResponseMessage.<TourRequestResponse>builder()
-                .object(tourRequestMapper.mapTourRequestToResponse(tourRequest))
+                .object(tourRequestMapper.tourRequestToTourRequestResponseForGuestUser(tourRequest))
                 .httpStatus(HttpStatus.OK)
                 .message(SuccessMessages.TOUR_REQUEST_DECLINE)
                 .build();

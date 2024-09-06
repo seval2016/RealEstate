@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface TourRequestRepository extends JpaRepository<TourRequest,Long> {
 
 
-    @Query("SELECT tr FROM TourRequest tr WHERE tr.ownerUser.id = ?1")
+    @Query("SELECT tr FROM TourRequest tr WHERE tr.guestUser.id = ?1")
     Page<TourRequest> findAllByUserId(Long id, Pageable pageable);
 }
