@@ -81,12 +81,13 @@ public class TourRequestService {
     }
 
     // ----> S03
-    public TourRequestResponse getUsersTourRequestDetails(Long id, HttpServletRequest servletRequest) {
+    public TourRequestResponse getUsersTourRequestDetails(Long tourRequestId, HttpServletRequest servletRequest) {
 
         User user = getUser(servletRequest);
         checkUserRole(user,Role.CUSTOMER);
 
-        TourRequest tourRequest = isTourRequestExistById(id);
+        //TourRequest tourRequest = tourRequestRepository.findByIdByGuestAndOwnerUser(user.getId(),tourRequestId); --->Advert olana kadar yorum
+        TourRequest tourRequest = isTourRequestExistById(tourRequestId);  //---> simdilik boyle
         return tourRequestMapper.tourRequestToTourRequestResponse(tourRequest);
     }
 
@@ -120,7 +121,7 @@ public class TourRequestService {
         //createdTourRequest.setAdvert(advert);
 
         /*if (user.getId().equals(advert.getUser().getId())) {
-            throw new  BadRequestException("Can not look your own advert");
+            throw new  BadRequestException();
         }*/
 
         TourRequest saved = tourRequestRepository.save(createdTourRequest);
@@ -133,12 +134,12 @@ public class TourRequestService {
     }
 
     // ----> S06
-    public ResponseMessage<TourRequestResponse> updateTourRequest(Long id, TourRequestCreateAndUpdateRequest request, HttpServletRequest servletRequest) {
+    public ResponseMessage<TourRequestResponse> updateTourRequest(Long tourRequestId, TourRequestCreateAndUpdateRequest request, HttpServletRequest servletRequest) {
 
         User user = getUser(servletRequest);
         checkUserRole(user,Role.CUSTOMER);
 
-        TourRequest tourRequestToUpdate = isTourRequestExistById(id);
+        TourRequest tourRequestToUpdate = tourRequestRepository.findByIdForGuestUser(user.getId(),tourRequestId);
         TourRequest saved = tourRequestMapper.TourRequestUpdateRequestToTourRequest(tourRequestToUpdate,request);
 
         saved.setCreateAt(saved.getCreateAt());
@@ -147,16 +148,16 @@ public class TourRequestService {
         return ResponseMessage.<TourRequestResponse>builder()
                 .object(response)
                 .httpStatus(HttpStatus.OK)
-                .message(String.format(SuccessMessages.TOUR_REQUEST_UPDATED,id))
+                .message(SuccessMessages.TOUR_REQUEST_UPDATED)
                 .build();
     }
 
     // ----> S07
-    public ResponseMessage<TourRequestResponse> updateTourRequestCancel(Long id, HttpServletRequest servletRequest) {
+    public ResponseMessage<TourRequestResponse> updateTourRequestCancel(Long tourRequestId, HttpServletRequest servletRequest) {
         User user = getUser(servletRequest);
         checkUserRole(user,Role.CUSTOMER);
 
-        TourRequest tourRequest = isTourRequestExistById(id);
+        TourRequest tourRequest = tourRequestRepository.findByIdForGuestUser(user.getId(),tourRequestId);
 
         tourRequest.setStatus(StatusType.Canceled);
 
@@ -171,12 +172,15 @@ public class TourRequestService {
     }
 
     // ----> S08
-    public ResponseMessage<TourRequestResponse> updateTourRequestApprove(Long id, HttpServletRequest servletRequest) {
+    public ResponseMessage<TourRequestResponse> updateTourRequestApprove(Long tourRequestId, HttpServletRequest servletRequest) {
 
         User user = getUser(servletRequest);
         checkUserRole(user,Role.CUSTOMER);
 
-        TourRequest tourRequest = isTourRequestExistById(id);
+
+        //TourRequest tourRequest =tourRequestRepository.findByIdForOwnerUser(user.getId(),tourRequestId); -->Advert olana kadar boyle
+        TourRequest tourRequest = isTourRequestExistById(tourRequestId);  //---> simdilik boyle
+
 
         tourRequest.setStatus(StatusType.Approved);
 
@@ -191,12 +195,13 @@ public class TourRequestService {
     }
 
     // ----> S09
-    public ResponseMessage<TourRequestResponse> updateTourRequestDecline(Long id, HttpServletRequest servletRequest) {
+    public ResponseMessage<TourRequestResponse> updateTourRequestDecline(Long tourRequestId, HttpServletRequest servletRequest) {
 
         User user = getUser(servletRequest);
         checkUserRole(user,Role.CUSTOMER);
 
-        TourRequest tourRequest = isTourRequestExistById(id);
+        //TourRequest tourRequest = tourRequestRepository.findByIdForOwnerUser(user.getId(),tourRequestId);  -->Advert olana kadar boyle
+        TourRequest tourRequest = isTourRequestExistById(tourRequestId);  //---> simdilik boyle
 
         tourRequest.setStatus(StatusType.Declined);
 

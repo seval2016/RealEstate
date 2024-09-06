@@ -64,9 +64,7 @@ public class UserService {
             user.setUserRole(List.of(userRoleService.getUserRole(Role.ADMIN)));
         } else if (userRole.equalsIgnoreCase("Manager")) {
             user.setUserRole(List.of(userRoleService.getUserRole(Role.MANAGER)));
-        } else if (userRole.equalsIgnoreCase("Customer")) {
-            user.setUserRole(List.of(userRoleService.getUserRole(Role.CUSTOMER)));
-        } else {
+        }else {
             throw new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER_USER_ROLE_MESSAGE,userRole));
         }
         //!!! password encode
