@@ -7,14 +7,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 @Entity
-@Table(name="images")
-
 @Getter
 @Setter
-@NoArgsConstructor
+@Table(name = "images")
 @AllArgsConstructor
-@Builder(toBuilder = true)
-public class Image {
+@NoArgsConstructor
+public class Images {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
