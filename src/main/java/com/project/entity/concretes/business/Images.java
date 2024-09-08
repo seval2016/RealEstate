@@ -7,35 +7,36 @@ import lombok.Setter;
 
 import javax.persistence.*;
 @Entity
+@Table(name="images")
+
 @Getter
 @Setter
-@Table(name = "images")
-@AllArgsConstructor
 @NoArgsConstructor
-public class Images {
-
+@AllArgsConstructor
+@Builder(toBuilder = true)
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private boolean featured;
+    private Boolean featured = false;
 
-    @Column(nullable = true)
+     @Column(nullable = true)
     private String type;
 
-    @Lob
-    private byte[] data;
+    @Column(unique = true)
+    private  byte[] data;
+
 
     @Column(nullable = false)
     private String name;
 
-
-    @ManyToOne
+   @ManyToOne
     @JoinColumn(name = "advert_id")
     private Advert advert;
 
-
     @Column(nullable = true)
     private String path; // Resim yolunu saklamak için eklenen alan
+
 }
