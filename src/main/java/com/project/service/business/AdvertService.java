@@ -51,16 +51,16 @@ public class AdvertService {
 
     public List<AdvertResponse> getAllAdverts() {
 
-    return advertRepository.findAll()
-            .stream()
-            .map(advertMapper::mapAdvertToAdvertResponse)
-            .collect(Collectors.toList());
+        return advertRepository.findAll()
+                .stream()
+                .map(advertMapper::mapAdvertToAdvertResponse)
+                .collect(Collectors.toList());
     }
 
     public Page<AdvertResponse> getAllAdvertsByPage(int page, int size, String sort, String type) {
-    Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
-    return advertRepository.findAll(pageable)
-            .map(advertMapper::mapAdvertToAdvertResponse);
+        Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
+        return advertRepository.findAll(pageable)
+                .map(advertMapper::mapAdvertToAdvertResponse);
     }
 
 
@@ -77,11 +77,11 @@ public class AdvertService {
 
     public ResponseMessage<AdvertResponse> updateAdvertById(Long id, AdvertRequest advertRequest) {
         isAdvertExist(id);
-      Advert advertUpdated =  advertRepository.save(advertMapper.mapAdvertRequestToUpdatedAdvert(id, advertRequest));
-      return ResponseMessage.<AdvertResponse>builder()
-              .message(SuccessMessages.ADVERT_UPDATED)
-              .httpStatus(HttpStatus.OK)
-              .object(advertMapper.mapAdvertToAdvertResponse(advertUpdated))
-              .build();
+        Advert advertUpdated =  advertRepository.save(advertMapper.mapAdvertRequestToUpdatedAdvert(id, advertRequest));
+        return ResponseMessage.<AdvertResponse>builder()
+                .message(SuccessMessages.ADVERT_UPDATED)
+                .httpStatus(HttpStatus.OK)
+                .object(advertMapper.mapAdvertToAdvertResponse(advertUpdated))
+                .build();
     }
 }

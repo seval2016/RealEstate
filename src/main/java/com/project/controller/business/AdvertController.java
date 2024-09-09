@@ -26,7 +26,7 @@ public class AdvertController {
         return advertService.saveAdvert(advertRequest);
     }
 
-    @GetMapping("/id") // http://localhost:8080/adverts/1 + GET
+   @GetMapping("/id") // http://localhost:8080/adverts/1 + GET
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public AdvertResponse getAdvertById(@PathVariable Long id) {
         return advertService.getAdvertById(id);
