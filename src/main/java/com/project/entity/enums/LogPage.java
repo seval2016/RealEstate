@@ -1,6 +1,6 @@
 package com.project.entity.enums;
 
-public enum Log {
+public enum LogPage {
 
     CREATED ("Advert is created and wait for approve"),
     UPDATED ("Advert is updated"),
@@ -11,11 +11,11 @@ public enum Log {
     TOUR_REQUEST_DECLINED ("Tour request is declined"),
     TOUR_REQUEST_CANCELED ("Tour request is canceled");
 
-    public final String log;
+    public final String msg;
 
-    Log(String log) {this.log = log;}
+    LogPage(String msg) { this.msg = msg; }
 
-    public String getLog() {return log;}
+    public String getLogPage() { return msg; }
 
 
 

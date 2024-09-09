@@ -6,8 +6,8 @@ import com.project.payload.response.business.ResponseMessage;
 import com.project.service.business.AdvertService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -17,12 +17,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdvertController {
 
+
     private final AdvertService advertService;
 
 
     @PostMapping("/save")  // http://localhost:8080/adverts/save + POST + JSON
     @PreAuthorize("hasAnyAuthority('CUSTOMER')")
     public ResponseMessage<AdvertResponse> saveAdvert(@RequestBody @Valid AdvertRequest advertRequest) {
+
         return advertService.saveAdvert(advertRequest);
     }
 
@@ -54,6 +56,8 @@ public class AdvertController {
     @DeleteMapping("/delete/{id}") // http://localhost:8080/adverts/delete/1 + DELETE
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public ResponseMessage<?> deleteAdvertById(@PathVariable Long id) {  // Burada ? bulunmasina gerek yok
+
+
         return advertService.deleteAdvertById(id);
     }
 

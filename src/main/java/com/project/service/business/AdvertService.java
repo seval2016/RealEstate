@@ -1,7 +1,6 @@
 package com.project.service.business;
 
 import com.project.entity.concretes.business.Advert;
-import com.project.exception.BadRequestException;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.AdvertMapper;
 import com.project.payload.messages.ErrorMessages;
@@ -23,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AdvertService {
+
 
     private final AdvertRepository advertRepository;
     private final AdvertMapper advertMapper;

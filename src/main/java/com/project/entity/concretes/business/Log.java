@@ -1,39 +1,41 @@
 package com.project.entity.concretes.business;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.joda.time.DateTime;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Log")
+@Table(name = "log")
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class LogTable {
+public class Log {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String log;
 
     @ManyToOne
-    private int user_id;
+    @JoinColumn(name = "user_id", nullable = false)
+    private int userId;
 
     @ManyToOne
-    private int advert_id;
+    @JoinColumn(name = "advert_id", nullable = false)
+    private int advertId;
 
     @NotNull
+    @Column(name = "create_at", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private DateTime create_at;
+    private LocalDateTime createAt;
 
 
 }

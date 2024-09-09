@@ -9,6 +9,8 @@ import com.project.payload.response.abstracts.BaseUserResponse;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,9 @@ import java.util.List;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
+
+    //**Log**
+   private Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
     private final UserService userService;
@@ -63,6 +68,7 @@ public class UserController {
     @PutMapping("/update/{userId}")  // http://localhost:8080/users/update/1 + PUT + JSON
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
     public ResponseMessage<BaseUserResponse> updateAdminManagerForAdmin( @RequestBody @Valid UserRequest userRequest, @PathVariable Long userId){
+
         // Kullanıcıyı günceller ve güncellenmiş kullanıcı bilgilerini döndürür.
         return userService.updateUser(userRequest,userId);
     } //F11
