@@ -1,6 +1,6 @@
 package com.project.controller.business;
 
-import com.project.entity.enums.StatusType;
+
 import com.project.payload.request.business.tourRequestRequests.TourRequestCreateAndUpdateRequest;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.TourRequestResponse;

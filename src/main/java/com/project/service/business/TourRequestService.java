@@ -6,7 +6,7 @@ import com.project.entity.concretes.business.TourRequest;
 import com.project.entity.concretes.user.User;
 import com.project.entity.concretes.user.UserRole;
 import com.project.entity.enums.Role;
-import com.project.entity.enums.StatusType;
+import com.project.entity.enums.TourRequestStatus;
 import com.project.exception.BadRequestException;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.TourRequestMapper;
@@ -117,7 +117,7 @@ public class TourRequestService {
         createdTourRequest.setGuestUser(user);
         //createdTourRequest.setOwnerUser(advert.getUser());
 
-        createdTourRequest.setStatus(StatusType.PENDING);
+        createdTourRequest.setStatusStatus(TourRequestStatus.PENDING.getTourStatusValue());  //default'u setledim
         //createdTourRequest.setAdvert(advert);
 
         /*if (user.getId().equals(advert.getUser().getId())) {
@@ -159,7 +159,7 @@ public class TourRequestService {
 
         TourRequest tourRequest = tourRequestRepository.findByIdForGuestUser(user.getId(),tourRequestId);
 
-        tourRequest.setStatus(StatusType.Canceled);
+        tourRequest.setStatusStatus(TourRequestStatus.CANCELED.getTourStatusValue());
 
         tourRequest = tourRequestRepository.save(tourRequest);
 
@@ -182,7 +182,7 @@ public class TourRequestService {
         TourRequest tourRequest = isTourRequestExistById(tourRequestId);  //---> simdilik boyle
 
 
-        tourRequest.setStatus(StatusType.Approved);
+        tourRequest.setStatusStatus(TourRequestStatus.APPROVED.getTourStatusValue());
 
         tourRequest = tourRequestRepository.save(tourRequest);
 
@@ -203,7 +203,7 @@ public class TourRequestService {
         //TourRequest tourRequest = tourRequestRepository.findByIdForOwnerUser(user.getId(),tourRequestId);  -->Advert olana kadar boyle
         TourRequest tourRequest = isTourRequestExistById(tourRequestId);  //---> simdilik boyle
 
-        tourRequest.setStatus(StatusType.Declined);
+        tourRequest.setStatusStatus(TourRequestStatus.DECLINED.getTourStatusValue());
 
         tourRequest = tourRequestRepository.save(tourRequest);
 

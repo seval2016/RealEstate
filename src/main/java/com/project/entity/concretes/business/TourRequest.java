@@ -3,7 +3,9 @@ package com.project.entity.concretes.business;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.entity.concretes.user.User;
-import com.project.entity.enums.StatusType;
+
+import com.project.entity.enums.TourRequestStatus;
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,6 +18,7 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
@@ -38,9 +41,9 @@ public class TourRequest {
     @Column(name = "tour_time", nullable = false)
     private LocalTime tourTime;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private StatusType status;
+
+    @Column(nullable = false,name = "status")
+    private int statusStatus = TourRequestStatus.PENDING.getTourStatusValue();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "US")
     @Column(name = "create_at", nullable = false)
