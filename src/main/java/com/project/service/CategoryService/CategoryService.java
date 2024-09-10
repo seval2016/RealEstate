@@ -3,6 +3,8 @@ package com.project.service.CategoryService;
 import com.project.entity.Category.Category;
 import com.project.repository.CategoryRepository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,7 @@ public class CategoryService {
 
     public Category updateCategory(Long id, Category category) {
         if (categoryRepository.existsById(id)) {
-            category.setId(id);
+             category.setId(id);
             return categoryRepository.save(category);
         }
         return null;
@@ -53,5 +55,15 @@ public class CategoryService {
     public boolean hasRelatedAdverts(Long id) {
         return false;   // 4.09.24 ' de eklendi
     }
+
+    // Kategori başlığına göre arama yapan metot
+    public Page<Category> searchCategoriesByTitle(String title, Pageable pageable) {  //10,09,24 eklendi
+        return categoryRepository.findByTitleContainingIgnoreCase(title, pageable);
+    }
+    public Optional<Category> getCategoryBySlug(String slug) {
+        return categoryRepository.findBySlug(slug);               //10,09 , 24 eklendi
+    }
+
+
 }
 

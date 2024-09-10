@@ -6,6 +6,9 @@ import com.project.entity.Category.Category;
 import com.project.service.CategoryService.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +18,65 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
-    @PostMapping("/add")  // kategori ekler
+    @GetMapping()  // *C01*   //rastgele getirir
+    public ResponseEntity<List<CategoryResponse>> getActiveCategories() {
+        List<Category> categories = categoryService.getActiveCategories();
+        List<CategoryResponse> response = categories.stream().map(CategoryResponse::new).toList();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/admin")  // *C02* //kategorileri başlıklarına ve sayfa numarasına ve sayfadaki kayıt sırasına göre getirir.
+    //10,09,24 de eklendi . Postmanda denendi çalışır durumda
+    public ResponseEntity<Page<CategoryResponse>> getAllCategories(
+            @RequestParam(defaultValue = "id,asc") String[] sort,
+            @RequestParam(required = false) String q,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+
+        // Sıralama işlemi
+        Sort sortOrder = Sort.by(Sort.Order.by(sort[0]));
+        if (sort.length > 1 && sort[1].equalsIgnoreCase("desc")) {
+            sortOrder = sortOrder.descending();
+        }
+
+        // Sayfalama işlemi
+        Pageable pageable = PageRequest.of(page, size, sortOrder);
+
+        // Kategorileri alırken arama sorgusu varsa kullan
+        Page<Category> categories;
+        if (q != null && !q.isBlank()) {
+            categories = categoryService.searchCategoriesByTitle(q, pageable); // Arama işlemi
+        } else {
+            categories = (Page<Category>) categoryService.getAllCategories((Sort) pageable); // Tüm kategorileri getir
+        }
+
+        // CategoryResponse nesnesine dönüştür
+        Page<CategoryResponse> response = categories.map(CategoryResponse::new);
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/{id}")  // id ye göre getirir  *C03*
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
+        Optional<Category> category = categoryService.getCategoryById(id);
+        if (category.isPresent()) {
+            CategoryResponse response = new CategoryResponse(category.get());
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
+    @PostMapping()  // kategori ekler  *C04*
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody  @Valid CategoryRequest request) {
         Category category = new Category();
         category.setTitle(request.getTitle());
@@ -38,7 +92,7 @@ public class CategoryController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/categories/{id}")  // id ye opsiyonel değer gelir örn  :2  //Günceller
+    @PutMapping("/{id}")  // id ye opsiyonel değer gelir örn  :2  //Günceller *C05*
     public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest request) {
         Optional<Category> categoryOpt = categoryService.getCategoryById(id);
         if (categoryOpt.isPresent()) {
@@ -61,6 +115,7 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
 
     /*
@@ -86,13 +141,8 @@ public class CategoryController {
         }
     }
 
-
-
-
-
        */
-     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")  // *C06*
     public ResponseEntity<CategoryResponse> deleteCategory(@PathVariable Long id) {
         Optional<Category> categoryOpt = categoryService.getCategoryById(id);
         if (categoryOpt.isPresent()) {
@@ -115,7 +165,16 @@ public class CategoryController {
     }
 
 
-
+    @GetMapping("/slug/{slug}")  // *C11* Slug ile kategori getirir  // 10,09,24 eklendi
+    public ResponseEntity<CategoryResponse> getCategoryBySlug(@PathVariable String slug) {
+        Optional<Category> categoryOpt = categoryService.getCategoryBySlug(slug);
+        if (categoryOpt.isPresent()) {
+            CategoryResponse response = new CategoryResponse(categoryOpt.get());
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 
@@ -128,33 +187,29 @@ public class CategoryController {
     } */
 
 
-
-
-    @GetMapping("/{id}")  // id ye göre getirir
-    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
-        Optional<Category> category = categoryService.getCategoryById(id);
-        if (category.isPresent()) {
-            CategoryResponse response = new CategoryResponse(category.get());
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping ("/sort") //kategorileri sıralı getirir
+   /* @GetMapping ("/sort") //kategorileri sıralı getirir  10,09,24 yorume düşüldü
     public ResponseEntity<List<CategoryResponse>> getAllCategories(@RequestParam(defaultValue = "id,asc") String[] sort) {
         Sort sortOrder = Sort.by(Sort.Order.asc(sort[0]));
         List<Category> categories = categoryService.getAllCategories(sortOrder);
         List<CategoryResponse> response = categories.stream().map(CategoryResponse::new).toList();
         return ResponseEntity.ok(response);
-    }
+    }*/
 
-    @GetMapping("/active")     //rastgele getirir
-    public ResponseEntity<List<CategoryResponse>> getActiveCategories() {
-        List<Category> categories = categoryService.getActiveCategories();
-        List<CategoryResponse> response = categories.stream().map(CategoryResponse::new).toList();
-        return ResponseEntity.ok(response);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
 
 

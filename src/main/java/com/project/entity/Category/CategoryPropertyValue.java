@@ -1,5 +1,6 @@
 package com.project.entity.Category;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,8 @@ public class CategoryPropertyValue {
     @JoinColumn(name = "advert_id")
     private Advert advert;  // ManyToOne ilişki tanımı, Advert sınıfına referans verir
 
+
+    @JsonIgnore // sonsuz döngüye girilmesin diye @JsonIgnore eklendi
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_property_key_id", nullable = false)
     private CategoryPropertyKey categoryPropertyKey; // Kendi varlık adını yaz

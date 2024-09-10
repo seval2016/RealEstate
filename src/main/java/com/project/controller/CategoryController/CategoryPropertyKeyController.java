@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/category-property-keys")
+@RequestMapping("/categories")
 public class CategoryPropertyKeyController {
 
     @Autowired
@@ -23,7 +23,13 @@ public class CategoryPropertyKeyController {
     @Autowired
     private CategoryService categoryService;
 
-    @PostMapping("/add/property/key")
+    @GetMapping("/{id}/properties")   // id : yerine categoryId bilgisi girilecek  *C07*
+    public ResponseEntity<List<CategoryPropertyKeyResponse>> getKeysByCategoryId(@PathVariable Long id) {
+        List<CategoryPropertyKey> keys = categoryPropertyKeyService.getKeysByCategoryId(id);
+        List<CategoryPropertyKeyResponse> response = keys.stream().map(CategoryPropertyKeyResponse::new).toList();
+        return ResponseEntity.ok(response);
+    }
+    @PostMapping("/{id}/properties")  // *C08*
     public ResponseEntity<CategoryPropertyKeyResponse> createCategoryPropertyKey(@RequestBody CategoryPropertyKeyRequest request) {
         CategoryPropertyKey key = new CategoryPropertyKey();
         key.setName(request.getName());
@@ -43,7 +49,7 @@ public class CategoryPropertyKeyController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/properties/{id}")  //  *C09*
     public ResponseEntity<CategoryPropertyKeyResponse> updateCategoryPropertyKey(@PathVariable Long id, @RequestBody CategoryPropertyKeyRequest request) {
         CategoryPropertyKey key = new CategoryPropertyKey();
         key.setName(request.getName());
@@ -67,10 +73,11 @@ public class CategoryPropertyKeyController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/properties/{id}")   //  *C10*   // Silmeye izin verilmiyor arızalı
     public ResponseEntity<Void> deleteCategoryPropertyKey(@PathVariable Long id) {
         categoryPropertyKeyService.deleteCategoryPropertyKey(id);
         return ResponseEntity.noContent().build();
+
     }
 
 
@@ -82,24 +89,10 @@ public class CategoryPropertyKeyController {
             CategoryPropertyKeyResponse response = new CategoryPropertyKeyResponse(key.get());
             return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.notFound().build();
-        }
+           return ResponseEntity.notFound().build();
+      }
     }
-
-
     */
-    @GetMapping("/{id}/properties")   // id : yerine categoryId bilgisi girilecek
-    public ResponseEntity<List<CategoryPropertyKeyResponse>> getKeysByCategoryId(@PathVariable Long id) {
-        List<CategoryPropertyKey> keys = categoryPropertyKeyService.getKeysByCategoryId(id);
-        List<CategoryPropertyKeyResponse> response = keys.stream().map(CategoryPropertyKeyResponse::new).toList();
-        return ResponseEntity.ok(response);
-    }
-
-
-
-
-
-
 
     /*  @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<CategoryPropertyKeyResponse>> getKeysByCategoryId(@PathVariable Long categoryId) {
