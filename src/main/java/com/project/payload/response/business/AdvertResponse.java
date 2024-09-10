@@ -1,15 +1,15 @@
 package com.project.payload.response.business;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.entity.concretes.business.*;
-import com.project.entity.enums.Status;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+
 
 @Data
 @AllArgsConstructor
@@ -18,21 +18,22 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AdvertResponse {
 
-    private Long advertId;
+    private Long id;
     private String title;
     private String description;
-    private String slug;
-    private Float price;
-    private Status status; // primitive ou non-primitive ?
-    private Boolean isActive;
+    private Double price;
+    private String advertTypeTitle;
+    private String countryName;
+    private String districtName;
+    private String categoryTitle;
+    private String userName;
     private String location;
-    private LocalDate createdAt;
-    private LocalDate updatedAt;
-    private int viewCount; // primitive ou non-primitive ?
-    private AdvertType advertType;
-    private Country country;
-    private City city;
-    private District district;
-    private Category category;
+    private String image;
+    private boolean isActive;
+    private String cityName;
 
+    public AdvertResponse(Long id, String title) {
+        this.id = id;
+        this.title = title;
+    }
 }

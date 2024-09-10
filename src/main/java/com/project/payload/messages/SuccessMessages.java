@@ -13,7 +13,7 @@ public class SuccessMessages {
     public static final String USER_CREATED = "User is Saved Successfully";
     public static final String USER_FOUND = "User is Found Successfully";
     public static final String USER_DELETED = "User is Deleted Successfully";
-    public static final String USER_UPDATED = " User is Updated Successfully";  // bu satir ve alttaki satirin description kismini yer degistirdim, gozden gecirelim
+    public static final String USER_UPDATED = " User is Updated Successfully";
     public static final String USER_UPDATE_MESSAGE = "Your information has been updated successfully";
 
     // Customer Messages
@@ -27,11 +27,12 @@ public class SuccessMessages {
     public static final String MANAGER_DELETED = "Manager is Deleted Successfully";
 
     // Advert Messages
-    public static final String ADVERT_SAVED = "Advert is Created and Wait for Approve";  // ADVERT_CREATE de yazilabilir, gozden gecirelim , mesaj olarak da "created" yerine "saved" yazilabilir
+    public static final String ADVERT_SAVED = "Advert is Created and Wait for Approve";
     public static final String ADVERT_UPDATED = "Advert is Updated Successfully";
     public static final String ADVERT_DELETED = "Advert is Deleted Successfully";
     public static final String ADVERT_FOUND = "Advert is Found Successfully";
     public static final String ADVERT_DECLINED = "Advert is Declined by Manager";
+    public static final String RETURNED_POPULAR_ADVERTS= "Popular adverts returned for value";
 
     // Category Messages
     public static final String CATEGORY_SAVED= "Category is Saved Successfully";
@@ -41,10 +42,22 @@ public class SuccessMessages {
     // Tour Request Messages
     public static final String TOUR_REQUEST_SAVED = "Tour Request is Created Successfully";
     public static final String TOUR_REQUEST_UPDATED = "Tour Request is Updated Successfully";
-    public static final String TOUR_REQUEST_ACCEPTED = "Tour Request is Accepted Successfully";
+    public static final String TOUR_REQUEST_APPROVED = "Tour Request is Accepted Successfully";
     public static final String TOUR_REQUEST_FOUND = "Tour Request is Found Successfully";
     public static final String TOUR_REQUEST_DECLINE = "Tour Request is Declined Successfully";
     public static final String TOUR_REQUEST_CANCELLED = "Tour Request is Canceled Successfully";
+    public static final String TOUR_REQUEST_DELETED="Tour Request is Deleted Successfully";
 
+    // Contact Messages
+    public static final String CONTACT_MESSAGE_CREATED = "Contact Message is Created Successfully";
+    public static final String CONTACT_MESSAGE_UPDATED = "Contact Message is Created Successfully";
+    public static final String CONTACT_MESSAGE_DELETED = "Contact Message is Created Successfully";
+    public static final String CONTACT_MESSAGE_CANCELLED = "Contact Message is Created Successfully";
+
+
+    //Favorites
+    public static final String ALL_FAVORITES_DELETED = "All Favorites Deleted Successfully";
+    public static final String ALL_FAVORITES_DELETED_BY_ID = "All Favorites Deleted Succesfully with id %s";
+    public static final String FAVORITE_DELETED_BY_ID = "Favorite Deleted Successfully with id %s";
 
 }

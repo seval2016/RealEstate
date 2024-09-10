@@ -3,17 +3,13 @@ package com.project.entity.concretes.user;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.entity.concretes.business.Advert;
-import com.project.entity.concretes.business.Favorites;
-import com.project.entity.enums.Role;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -63,8 +59,8 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            joinColumns=@JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id")
     )
     private List<UserRole> userRole;
 

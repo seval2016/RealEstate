@@ -1,4 +1,4 @@
-package com.project.payload.response;
+package com.project.payload.response.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.payload.response.abstracts.BaseUserResponse;
@@ -12,4 +12,5 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserResponse extends BaseUserResponse {
+
 }
