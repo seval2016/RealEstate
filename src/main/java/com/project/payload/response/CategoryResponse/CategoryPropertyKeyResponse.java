@@ -31,9 +31,4 @@ public class CategoryPropertyKeyResponse {
         this.builtIn = key.getBuiltIn();
         this.categoryId = key.getCategory() != null ? key.getCategory().getId() : null;
     }
-
-
-
-
-
 }
