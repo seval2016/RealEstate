@@ -80,25 +80,4 @@ public class CategoryPropertyKeyController {
         return ResponseEntity.ok(message);
     }
 
-
-
-    /*      eski getMapping
-     @GetMapping("/{id}")
-    public ResponseEntity<CategoryPropertyKeyResponse> getCategoryPropertyKeyById(@PathVariable Long id) {
-        Optional<CategoryPropertyKey> key = categoryPropertyKeyService.getCategoryPropertyKeyById(id);
-        if (key.isPresent()) {
-            CategoryPropertyKeyResponse response = new CategoryPropertyKeyResponse(key.get());
-            return ResponseEntity.ok(response);
-        } else {
-           return ResponseEntity.notFound().build();
-      }
-    }
-    */
-
-    /*  @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<CategoryPropertyKeyResponse>> getKeysByCategoryId(@PathVariable Long categoryId) {
-        List<CategoryPropertyKey> keys = categoryPropertyKeyService.getKeysByCategoryId(categoryId);
-        List<CategoryPropertyKeyResponse> response = keys.stream().map(CategoryPropertyKeyResponse::new).toList();
-        return ResponseEntity.ok(response);
-    } */
 }
