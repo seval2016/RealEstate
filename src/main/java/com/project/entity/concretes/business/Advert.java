@@ -2,19 +2,27 @@ package com.project.entity.concretes.business;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.entity.concretes.user.User;
-//import com.project.entity.enums.Status;
+import com.project.entity.enums.AdvertStatus;
 import lombok.*;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import java.awt.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.entity.enums.AdvertStatus;
+import com.project.entity.concretes.user.User;
+import com.project.payload.response.business.ImageResponse;
+import lombok.*;
+
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+
+import java.util.List;
 
 @Entity
 @Table(name = "adverts")
@@ -25,108 +33,86 @@ import java.util.Set;
 public class Advert {
 
     @Id
-    //@Column(name = "advert_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @NotNull
+    @Column(nullable = false)
     @Size(min = 5, max = 150)
     private String title;
 
     @Column(length = 300)
     private String description;
 
-//    @Column(nullable = false, unique = true)
-//    @Size(min = 5, max = 200)
-//    private String slug;
+    @Column(nullable = false, length = 200)
+    @Size(min = 5, max = 200)
+    private String slug;
 
     @Column(nullable = false)
-    private Float price;
+    private Double price= 0.0;
 
-    @NotNull
-  //  @Enumerated(EnumType.STRING)
-    @Min(0)
-    @Max(2)
-    //private Status status = Status.values()[0];
-    private int status = 0;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(nullable = false)
+    private AdvertStatus status = AdvertStatus.PENDING;
 
-    @NotNull
-    private Boolean builtIn = false;
+    @Column(nullable = false)
+    private boolean builtIn=false;
 
-    @NotNull
-    private Boolean isActive = true;
+    @Column(nullable = false)
+    private boolean isActive=true;
 
-    @NotNull
-    private int viewCount = 0;
+    @Column(nullable = false)
+    private int viewCount=0;
 
-    @NotNull
+    @Column(nullable = false)
     private String location;
 
-    //@Column(nullable = false)
-    @NotNull(message = " Create date must not be empty")
-    @PastOrPresent
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Turkey")
+    @Column(nullable = false)
+    private LocalDateTime createAt;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate updatedAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Turkey")
+    private LocalDateTime updateAt;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "advert_type_id", nullable = false)
     private AdvertType advertType;
-//************************************************************************************************
-//    @ManyToOne
-//    @JsonIgnore
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user;
-
-    //************************************************************************************************
-
-    // *******************Buradan sonraki kisimlar diger class'larin olusturulmasina bagli oldugu icin simdilik hata veriyor   *******************
-/*
 
     @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
-
-    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
-    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<Images> images;
-
-    @OneToMany(mappedBy = "advert")
-    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<CategoryPropertyValues> categoryPropertyValues;
-
-    @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "district_id", nullable = false)
     private District district;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
-    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Set<Favorites> favorites;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
-    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
-    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<Logs> logs;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "featured_image_id")
+    private Image featuredImage;
 
-    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
-    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<TourRequests> tourRequests;
-*/
+    @OneToMany(mappedBy = "advert",cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<TourRequest> tourRequestList;
 
+    @PrePersist
+    protected void onCreate() {
+        createAt = LocalDateTime.now();
+        updateAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updateAt = LocalDateTime.now();
+    }
 }

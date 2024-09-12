@@ -4,7 +4,7 @@ import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.business.UpdatePasswordRequest;
 import com.project.payload.request.user.UserRequest;
 import com.project.payload.request.user.UserRequestWithoutPassword;
-import com.project.payload.response.UserResponse;
+import com.project.payload.response.user.UserResponse;
 import com.project.payload.response.abstracts.BaseUserResponse;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.service.user.UserService;

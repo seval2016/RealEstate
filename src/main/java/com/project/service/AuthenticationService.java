@@ -10,7 +10,7 @@ import com.project.payload.request.authentication.LoginRequest;
 import com.project.payload.request.business.ForgotPasswordRequest;
 import com.project.payload.request.business.UpdatePasswordRequest;
 
-import com.project.payload.response.UserResponse;
+import com.project.payload.response.user.UserResponse;
 
 import com.project.payload.response.authentication.AuthResponse;
 import com.project.repository.user.UserRepository;
@@ -42,6 +42,7 @@ public class AuthenticationService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     //private final EmailService emailService;
+
 
     public ResponseEntity<AuthResponse> authenticateUser(LoginRequest loginRequest) {
         String username=loginRequest.getUsername();
@@ -113,8 +114,13 @@ public class AuthenticationService {
         user.setResetPasswordCode(resetPasswordCode);
         userRepository.save(user);
 
+
+        // Email gönderimi
+        //emailService.sendPasswordResetEmail(user.getEmail(), resetPasswordCode);
+
          //Email gönderimi
       // emailService.sendPasswordResetEmail(user.getEmail(), resetPasswordCode);
+
     }
 
 }

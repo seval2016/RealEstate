@@ -1,7 +1,7 @@
 package com.project.service.helper;
 
 import com.project.entity.concretes.user.User;
-import com.project.entity.enums.Role;
+import com.project.entity.enums.RoleType;
 import com.project.exception.BadRequestException;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.messages.ErrorMessages;
@@ -29,7 +29,7 @@ public class MethodHelper {
     }
 
     //!!! Rol kontrolu yapan metod
-    public void checkRole(User user, Role role){
+    public void checkRole(User user, RoleType role){
        if(!user.getUserRole()
                .stream()
                .anyMatch(userRole -> userRole.getRole().equals(role))){

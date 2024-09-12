@@ -1,7 +1,7 @@
 package com.project;
 
 import com.project.entity.concretes.user.UserRole;
-import com.project.entity.enums.Role;
+import com.project.entity.enums.RoleType;
 import com.project.payload.request.user.UserRequest;
 import com.project.repository.user.UserRoleRepository;
 import com.project.service.user.UserRoleService;
@@ -36,16 +36,16 @@ public class RealEstateApplication implements CommandLineRunner {
 
 			UserRole admin = new UserRole();
 			admin.setRoleName("Admin");
-			admin.setRole(Role.ADMIN);
+			admin.setRole(RoleType.ADMIN);
 			userRoleRepository.save(admin);
 
 			UserRole manager = new UserRole();
-			manager.setRole(Role.MANAGER);
+			manager.setRole(RoleType.MANAGER);
 			manager.setRoleName("Manager");
 			userRoleRepository.save(manager);
 
 			UserRole customer = new UserRole();
-			customer.setRole(Role.CUSTOMER);
+			customer.setRole(RoleType.CUSTOMER);
 			customer.setRoleName("Customer");
 			userRoleRepository.save(customer);
 
@@ -62,6 +62,7 @@ public class RealEstateApplication implements CommandLineRunner {
 			adminRequest.setPhone("123-331-1111");
 			userService.saveUser(adminRequest, "Admin");
 		}
+
 
 	}
 }

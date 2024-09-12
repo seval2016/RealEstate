@@ -5,8 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
@@ -14,11 +15,8 @@ import javax.validation.constraints.NotNull;
 @Builder(toBuilder = true)
 public class AdvertTypeRequest {
 
-
-    @Column(nullable = false, length = 30)
+    @NotNull(message = "Please enter title")
+    @Size(min = 2 , max = 30 , message = "Title must have min 2 chars and max 30 chars")
+    @Pattern(regexp = "\\A(?!\\s*\\Z).+" ,message="Title must consist of the characters .")
     private String title;
-
-    @NotNull
-    private Boolean builtIn = false;
-
 }
