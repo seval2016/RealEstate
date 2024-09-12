@@ -1,3 +1,4 @@
+/*
 package com.project.entity.enums;
 
 public enum Status {
@@ -26,3 +27,4 @@ public enum Status {
         throw new IllegalArgumentException("Invalid status value: " + value);
     }
 }
+*/

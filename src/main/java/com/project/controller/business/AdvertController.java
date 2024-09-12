@@ -19,15 +19,14 @@ public class AdvertController {
 
     private final AdvertService advertService;
 
-
     @PostMapping("/save")  // http://localhost:8080/adverts/save + POST + JSON
     @PreAuthorize("hasAnyAuthority('CUSTOMER')")
     public ResponseMessage<AdvertResponse> saveAdvert(@RequestBody @Valid AdvertRequest advertRequest) {
         return advertService.saveAdvert(advertRequest);
     }
-
-    @GetMapping("/id") // http://localhost:8080/adverts/1 + GET
-    @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
+    //******************************A01************************************************
+    @GetMapping("/{id}") // http://localhost:8080/adverts/1 + GET
+    @PreAuthorize("hasAnyAuthority('CUSTOMER','ADMIN','MANAGER')")
     public AdvertResponse getAdvertById(@PathVariable Long id) {
         return advertService.getAdvertById(id);
     }
@@ -43,7 +42,7 @@ public class AdvertController {
     public Page<AdvertResponse> getAllAdvertsByPage(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sort", defaultValue = "startDate") String sort,
+            @RequestParam(value = "sort", defaultValue = "createdAt") String sort,
             @RequestParam(value = "type", defaultValue = "desc") String type
     ) {
 

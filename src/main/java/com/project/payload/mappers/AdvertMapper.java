@@ -18,6 +18,8 @@ public class AdvertMapper {
                 .description(advertRequest.getDescription())
                 .price(advertRequest.getPrice())
                 .status(advertRequest.getStatus())
+                .builtIn(advertRequest.getBuiltIn())
+                .isActive(advertRequest.getIsActive())
                 .viewCount(advertRequest.getViewCount())
                 .location(advertRequest.getLocation())
                 .createdAt(advertRequest.getCreatedAt())
@@ -31,10 +33,10 @@ public class AdvertMapper {
     public AdvertResponse mapAdvertToAdvertResponse(Advert advert){
 
         return AdvertResponse.builder()
-                .advertId(advert.getAdvertId())
+                .id(advert.getId())
                 .title(advert.getTitle())
                 .description(advert.getDescription())
-                .slug(advert.getSlug())
+               // .slug(advert.getSlug())
                 .price(advert.getPrice())
                 .status(advert.getStatus())
                 .isActive(advert.getIsActive())
@@ -42,11 +44,12 @@ public class AdvertMapper {
                 .createdAt(advert.getCreatedAt())
                 .updatedAt(advert.getUpdatedAt())
                 .viewCount(advert.getViewCount())
-/*                .advertType(advert.getAdvertType())
-                .country(advert.getCountry())
-                .city(advert.getCity())
-                .district(advert.getDistrict())
-                .category(advert.getCategory())*/
+               .advertType(advert.getAdvertType())
+//                .country(advert.getCountry())
+//                .city(advert.getCity())
+//                .district(advert.getDistrict())
+//                .category(advert.getCategory())
+               // .id(advert.getUser().getId()) //??????????
                 .build();
 
     }
@@ -55,7 +58,7 @@ public class AdvertMapper {
     public Advert mapAdvertRequestToUpdatedAdvert(Long id, AdvertRequest advertRequest){
         return mapAdvertRequestToAdvert(advertRequest)
                 .toBuilder()
-                .advertId(id)
+                .id(id)
                 .build();
 
     }

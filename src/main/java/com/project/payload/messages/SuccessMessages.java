@@ -27,11 +27,17 @@ public class SuccessMessages {
     public static final String MANAGER_DELETED = "Manager is Deleted Successfully";
 
     // Advert Messages
-    public static final String ADVERT_SAVED = "Advert is Created and Wait for Approve";  // ADVERT_CREATE de yazilabilir, gozden gecirelim , mesaj olarak da "created" yerine "saved" yazilabilir
+    public static final String ADVERT_SAVED = "Advert with id %s is Created and Wait for Approve";  // ADVERT_CREATE de yazilabilir, gozden gecirelim , mesaj olarak da "created" yerine "saved" yazilabilir
     public static final String ADVERT_UPDATED = "Advert is Updated Successfully";
-    public static final String ADVERT_DELETED = "Advert is Deleted Successfully";
+    public static final String ADVERT_DELETED = "Advert with id %s is Deleted Successfully";
     public static final String ADVERT_FOUND = "Advert is Found Successfully";
     public static final String ADVERT_DECLINED = "Advert is Declined by Manager";
+
+    public static final String ADVERT_TYPE_SAVED = "Advert Type with id %s is Created and Wait for Approve";  // ADVERT_CREATE de yazilabilir, gozden gecirelim , mesaj olarak da "created" yerine "saved" yazilabilir
+    public static final String ADVERT_TYPE_UPDATED = "Advert Type is Updated Successfully";
+    public static final String ADVERT_TYPE_DELETED = "Advert Type with id %s is Deleted Successfully";
+    public static final String ADVERT_TYPE_FOUND = "Advert Type is Found Successfully";
+    public static final String ADVERT_TYPE_DECLINED = "Advert Type is Declined by Manager";
 
     // Category Messages
     public static final String CATEGORY_SAVED= "Category is Saved Successfully";

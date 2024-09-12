@@ -11,6 +11,7 @@ import com.project.payload.response.business.AdvertResponse;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.repository.business.AdvertRepository;
 import com.project.service.helper.PageableHelper;
+import com.project.service.helper.Slugify;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.project.service.helper.Slugify.slugify;
+
 @Service
 @RequiredArgsConstructor
 public class AdvertService {
@@ -27,6 +30,7 @@ public class AdvertService {
     private final AdvertRepository advertRepository;
     private final AdvertMapper advertMapper;
     private final PageableHelper pageableHelper;
+   // private final Slugify slugify;
 
     public ResponseMessage<AdvertResponse> saveAdvert(AdvertRequest advertRequest) {
 
@@ -38,6 +42,18 @@ public class AdvertService {
                 .httpStatus(HttpStatus.CREATED)
                 .build();
     }
+
+
+    //************************************************************************************************
+//    public AdvertResponse createAdvertSlug(AdvertRequest advertRequest) {
+//        String slug = slugify(advert.getTitle());
+//        advert.setSlug(slug);
+//        return advertRepository.save(advert);
+//    }
+
+
+
+//************************************************************************************************
 
     public AdvertResponse getAdvertById(Long id) {
         Advert advert = isAdvertExist(id);

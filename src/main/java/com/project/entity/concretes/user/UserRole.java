@@ -29,10 +29,8 @@ public class UserRole {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-/*
- @OneToMany(mappedBy = "userRole")
-    private Set<User> user;
-    */
+// @OneToMany(mappedBy = "userRole")
+//    private Set<User> user;
 
 
 

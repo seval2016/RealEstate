@@ -1,8 +1,11 @@
 package com.project.service.helper;
 
+import org.springframework.stereotype.Component;
+
 import java.text.Normalizer;
 
 // ******************************SLUGYFY START*************Bu islemi frontend tarafinda yapabiliyoruz aslinda, gerekli olup olmadigini bir dusunelim***********************//
+@Component
 public class Slugify {
 
     public static String slugify(String input) {

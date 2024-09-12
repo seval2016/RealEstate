@@ -72,8 +72,8 @@ public class User {
     // Diğer ilişkiler burada tanımlanacak (adverts, favorites, logs, tourRequests vs.)
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Advert> adverts;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+//    private List<Advert> adverts;
 
     // Constructor veya Builder metotlarında `createAt` alanı otomatik olarak atanmalıdır
     @PrePersist
