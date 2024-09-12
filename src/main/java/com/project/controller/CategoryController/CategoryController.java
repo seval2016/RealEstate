@@ -118,30 +118,7 @@ public class CategoryController {
 
 
 
-    /*
-      eski PutMapping
-    @PutMapping("/{id}")   //kategori günceller
-    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest request) {
-        Category category = new Category();
-        category.setTitle(request.getTitle());
-        category.setIcon(request.getIcon());
-        category.setBuiltIn(request.getBuiltIn());
-        category.setSeq(request.getSeq());
-        category.setSlug(request.getSlug());
-        category.setIsActive(request.getIsActive());
-        category.setCreateAt(request.getCreateAt());
-        category.setUpdateAt(request.getUpdateAt());
-
-        Category updatedCategory = categoryService.updateCategory(id, category);
-        if (updatedCategory != null) {
-            CategoryResponse response = new CategoryResponse(updatedCategory);
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-       */
+   
     @DeleteMapping("/{id}")  // *C06*
     public ResponseEntity<CategoryResponse> deleteCategory(@PathVariable Long id) {
         Optional<Category> categoryOpt = categoryService.getCategoryById(id);
@@ -164,7 +141,6 @@ public class CategoryController {
         }
     }
 
-
     @GetMapping("/slug/{slug}")  // *C11* Slug ile kategori getirir  // 10,09,24 eklendi
     public ResponseEntity<CategoryResponse> getCategoryBySlug(@PathVariable String slug) {
         Optional<Category> categoryOpt = categoryService.getCategoryBySlug(slug);
@@ -175,36 +151,6 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
     }
-
-
-
-    /*     eski deletemapping
-
-     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-        categoryService.deleteCategory(id);
-        return ResponseEntity.noContent().build();
-    } */
-
-
-   /* @GetMapping ("/sort") //kategorileri sıralı getirir  10,09,24 yorume düşüldü
-    public ResponseEntity<List<CategoryResponse>> getAllCategories(@RequestParam(defaultValue = "id,asc") String[] sort) {
-        Sort sortOrder = Sort.by(Sort.Order.asc(sort[0]));
-        List<Category> categories = categoryService.getAllCategories(sortOrder);
-        List<CategoryResponse> response = categories.stream().map(CategoryResponse::new).toList();
-        return ResponseEntity.ok(response);
-    }*/
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
