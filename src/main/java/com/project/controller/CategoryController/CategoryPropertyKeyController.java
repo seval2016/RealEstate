@@ -72,13 +72,14 @@ public class CategoryPropertyKeyController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @DeleteMapping("/properties/{id}")   //  *C10*   // Silmeye izin verilmiyor arızalı
-    public ResponseEntity<Void> deleteCategoryPropertyKey(@PathVariable Long id) {
+    
+    @DeleteMapping("/properties/{id}")   //  *C10*  id değeri girilmeli //!!categoryId değeri hata fırlatır
+    public ResponseEntity<String> deleteCategoryPropertyKey(@PathVariable Long id) {
         categoryPropertyKeyService.deleteCategoryPropertyKey(id);
-        return ResponseEntity.noContent().build();
-
+        String message = "Category property with ID " + id + " has been successfully deleted.";
+        return ResponseEntity.ok(message);
     }
+
 
 
     /*      eski getMapping
