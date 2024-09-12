@@ -1,23 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 package com.project.repository.CategoryRepository;
 
 import com.project.entity.Category.Category;
