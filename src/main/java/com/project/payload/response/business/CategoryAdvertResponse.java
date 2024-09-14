@@ -1,6 +1,5 @@
 package com.project.payload.response.business;
 
-import com.project.entity.concretes.business.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

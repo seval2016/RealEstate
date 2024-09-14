@@ -1,6 +1,10 @@
 package com.project.payload.response.business;
 
-import lombok.*;
+import com.project.entity.concretes.business.City;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -10,5 +14,5 @@ public class DistrictResponse {
 
     private Long id;
     private String name;
-    private Long cityId;
+    private City city;
 }

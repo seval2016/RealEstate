@@ -27,5 +27,4 @@ public abstract class BaseUserResponse {
 
     private List<TourRequestResponse> tourRequestsResponse;
     private List<Long> favoritesList;
-
 }
