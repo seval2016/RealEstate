@@ -4,9 +4,10 @@ import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.business.UpdatePasswordRequest;
 import com.project.payload.request.user.UserRequest;
 import com.project.payload.request.user.UserRequestWithoutPassword;
+import com.project.payload.response.ResponseMessage;
 import com.project.payload.response.user.UserResponse;
 import com.project.payload.response.abstracts.BaseUserResponse;
-import com.project.payload.response.business.ResponseMessage;
+
 import com.project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,10 +29,10 @@ public class UserController {
 
     //!!! Yeni bir kullanıcı kaydetmek için kullanılır.
     @PostMapping("/register/{userRole}") // http://localhost:8080/users/register/Admin + POST + JSON
-    public ResponseEntity<ResponseMessage<UserResponse>> saveUser(@Valid @RequestBody UserRequest userRequest,
-                                                                  @PathVariable String userRole){
+    public ResponseMessage<UserResponse> saveUser(@Valid @RequestBody UserRequest userRequest,
+                                                  @PathVariable String userRole){
         // Kullanıcıyı rolüne göre kaydeder.
-        return ResponseEntity.ok(userService.saveUser(userRequest,userRole));
+        return userService.saveUser(userRequest,userRole);
     } //F02
 
     //!!! Belirli bir rol için sayfalanmış kullanıcıları getirmek için kullanılır.

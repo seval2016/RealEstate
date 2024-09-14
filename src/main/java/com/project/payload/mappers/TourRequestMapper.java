@@ -1,16 +1,12 @@
 package com.project.payload.mappers;
 
 import com.project.entity.concretes.business.TourRequest;
-import com.project.payload.mappers.UserMapper;
-import com.project.payload.request.business.tourRequestRequests.TourRequestCreateAndUpdateRequest;
+import com.project.payload.request.business.TourRequestCreateAndUpdateRequest;
 import com.project.payload.response.business.TourRequestResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -18,6 +14,7 @@ public class TourRequestMapper {
 
     private final UserMapper userMapper;
     private final AdvertMapper advertMapper;
+    private final ImageMapper imageMapper;
 
     public TourRequestResponse tourRequestToTourRequestResponseForGuestUser(TourRequest request) {
         return TourRequestResponse.builder()
@@ -26,8 +23,8 @@ public class TourRequestMapper {
                 .tourTime(request.getTourTime())
                 .status(request.getStatusStatus())
                 .updateAt(request.getUpdateAt())
-                //.advert(advertMapper.advertToAdvertResponseForTourRequest(tourRequest.getAdvert()))
-                //.ownerUser(userMapper.userToUserResponseForTourRequest(tourRequest.getOwnerUser()))
+                .advert(advertMapper.mapAdvertToAdvertResponse(request.getAdvert()))
+                .ownerUser(userMapper.mapUserToUserResponseForTourRequest(request.getOwnerUser()))
 
                 .build();
     }
@@ -39,12 +36,16 @@ public class TourRequestMapper {
                 .tourTime(request.getTourTime())
                 .status(request.getStatusStatus())
                 .updateAt(request.getUpdateAt())
-                //.advert(advertMapper.mapAdvertToAdvertResponseForTourRequest(tourRequest.getAdvert()))
+                // Map the guest user correctly
                 .guestUser(userMapper.mapUserToUserResponseForTourRequest(request.getGuestUser()))
-                //.ownerUser(userMapper.toUserResponse(tourRequest.getOwnerUser()))
+                // Map the owner user correctly
+                .ownerUser(userMapper.mapUserToUserResponseForTourRequest(request.getOwnerUser()))
+                //---Advert dahil ettim
+                .advert(advertMapper.mapAdvertToAdvertResponse(request.getAdvert()))
+                //---Image dahil ettim
+                .image(imageMapper.mapToImageResponse(request.getAdvert().getFeaturedImage()))
                 .build();
     }
-
 
 
 
@@ -57,11 +58,11 @@ public class TourRequestMapper {
     }
 
     public TourRequest TourRequestUpdateRequestToTourRequest(TourRequest tourRequest, TourRequestCreateAndUpdateRequest request) {
-    return tourRequest.toBuilder()
-            .tourDate(request.getTourDate())
-            .tourTime(request.getTourTime())
-            .updateAt(LocalDateTime.now())
-            .build();
+        return tourRequest.toBuilder()
+                .tourDate(request.getTourDate())
+                .tourTime(request.getTourTime())
+                .updateAt(LocalDateTime.now())
+                .build();
     }
 
 

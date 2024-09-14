@@ -1,4 +1,4 @@
-package com.project.payload.request.business.tourRequestRequests;
+package com.project.payload.request.business;
 
 import lombok.*;
 
@@ -19,6 +19,6 @@ public class TourRequestCreateAndUpdateRequest {
     @NotNull(message = "Tour Time must not be empty")
     private LocalTime tourTime;
 
-    /*@NotNull
-    private Long advert;*/
+    @NotNull
+    private Long advertId;
 }

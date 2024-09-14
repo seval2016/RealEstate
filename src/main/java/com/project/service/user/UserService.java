@@ -2,23 +2,25 @@ package com.project.service.user;
 
 import com.project.entity.concretes.user.User;
 
-import com.project.entity.enums.Role;
+import com.project.entity.enums.RoleType;
 import com.project.exception.BadRequestException;
 import com.project.exception.ResourceNotFoundException;
+
 import com.project.payload.mappers.UserMapper;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.business.UpdatePasswordRequest;
 import com.project.payload.request.user.UserRequest;
 import com.project.payload.request.user.UserRequestWithoutPassword;
+import com.project.payload.response.ResponseMessage;
 import com.project.payload.response.user.UserResponse;
 import com.project.payload.response.abstracts.BaseUserResponse;
-import com.project.payload.response.business.ResponseMessage;
 import com.project.repository.user.UserRepository;
 import com.project.service.helper.MethodHelper;
 import com.project.service.helper.PageableHelper;
 import com.project.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -55,15 +57,15 @@ public class UserService {
         User user = userMapper.mapUserRequestToUser(userRequest);
 
         //!!! Rol bilgisini setliyoruz
-        if(userRole.equalsIgnoreCase(Role.ADMIN.name())){
+        if(userRole.equalsIgnoreCase(RoleType.ADMIN.name())){
             //!!! Rol bilgisi admin ise builtin true yapılıyor
             if(Objects.equals(userRequest.getUsername(),"Admin")){
                 user.setBuiltIn(true);
             }
             //!!! admin rolu veriliyor
-            user.setUserRole(List.of(userRoleService.getUserRole(Role.ADMIN)));
+            user.setUserRole(List.of(userRoleService.getUserRole(RoleType.ADMIN)));
         } else if (userRole.equalsIgnoreCase("Manager")) {
-            user.setUserRole(List.of(userRoleService.getUserRole(Role.MANAGER)));
+            user.setUserRole(List.of(userRoleService.getUserRole(RoleType.MANAGER)));
     }else {
             throw new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER_USER_ROLE_MESSAGE,userRole));
         }
@@ -93,7 +95,7 @@ public class UserService {
                 new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER_MESSAGE, userId)));
 
         if(user.getUserRole().stream()
-                .anyMatch(role -> role.getRole() == Role.CUSTOMER)){
+                .anyMatch(role -> role.getRole() == RoleType.CUSTOMER)){
             baseUserResponse = userMapper.mapUserToCustomerResponse(user);
         } else {
             baseUserResponse = userMapper.mapUserToUserResponse(user);
@@ -101,7 +103,7 @@ public class UserService {
 
         return ResponseMessage.<BaseUserResponse>builder()
                 .message(SuccessMessages.USER_FOUND)
-                .httpStatus(HttpStatus.OK)
+                .status(HttpStatus.OK)
                 .object(baseUserResponse)
                 .build();
     }
@@ -120,9 +122,9 @@ public class UserService {
             throw  new BadRequestException(ErrorMessages.NOT_PERMITTED_METHOD_MESSAGE);
 
         } else if (user2.getUserRole().stream()
-                .anyMatch(role -> role.getRole() == Role.MANAGER)) {
+                .anyMatch(role -> role.getRole() == RoleType.MANAGER)) {
             if(!(user.getUserRole().stream()
-                    .anyMatch(role -> role.getRole() == Role.CUSTOMER))){
+                    .anyMatch(role -> role.getRole() == RoleType.CUSTOMER))){
                 throw new BadRequestException(ErrorMessages.NOT_PERMITTED_METHOD_MESSAGE);
             }
         }
@@ -151,7 +153,7 @@ public class UserService {
 
         return ResponseMessage.<BaseUserResponse>builder()
                 .message(SuccessMessages.USER_UPDATE_MESSAGE)
-                .httpStatus(HttpStatus.OK)
+                .status(HttpStatus.OK)
                 .object(userMapper.mapUserToUserResponse(savedUser))
                 .build();
 
@@ -191,7 +193,7 @@ public class UserService {
 
     //!!! Runner tarafi icin yazildi
     public long countAllAdmins(){
-        return userRepository.countAdmin(Role.ADMIN);
+        return userRepository.countAdmin(RoleType.ADMIN);
     }
 
     public User getCustomerByUsername(String customerUsername){
@@ -221,29 +223,4 @@ public class UserService {
         user.setPasswordHash(passwordEncoder.encode(passwordUpdateRequest.getNewPassword()));
         userRepository.save(user);
     }
-
-   /* public void deleteAuthenticatedUser(HttpServletRequest request) {
-        //!!! Kullanıcı kimliğini alıyoruz.
-        String username = (String) request.getAttribute("username");
-        User user = userRepository.findByUsernameEquals(username);
-
-        //!!! builtIn kullanıcılar silinemez.
-        methodHelper.checkBuiltIn(user);
-
-        //!!! İlgili kayıtlar varsa (adverts, tour requests) kullanıcı silinemez.
-        boolean hasAdverts = advertsRepository.existsByUserId(user.getId());
-        boolean hasTourRequests = tourRequestRepository.existsByUserId(user.getId());
-
-        if (hasAdverts || hasTourRequests) {
-            throw new BadRequestException(ErrorMessages.USER_CANNOT_BE_DELETED);
-        }
-
-        //!!! İlgili kayıtları (favorites, logs) siliyoruz.
-        favoritesRepository.deleteByUserId(user.getId());
-        logsRepository.deleteByUserId(user.getId());
-
-        //!!! Kullanıcıyı sil.
-        userRepository.delete(user);
-    }*/
-
 }

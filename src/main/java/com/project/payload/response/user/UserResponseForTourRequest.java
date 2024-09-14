@@ -1,14 +1,17 @@
 package com.project.payload.response.user;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@SuperBuilder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserResponseForTourRequest {
-
     private Long id;
     private String firstName;
     private String lastName;

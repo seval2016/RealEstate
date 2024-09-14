@@ -1,6 +1,6 @@
 package com.project.payload.request.abstracts;
 
-import com.project.payload.request.abstracts.AbstractUserRequest;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

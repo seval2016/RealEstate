@@ -1,17 +1,15 @@
 package com.project.payload.request.business;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.project.entity.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.util.List;
 
 
 @Data
@@ -21,40 +19,42 @@ import java.time.LocalDateTime;
 public class AdvertRequest {
 
 
-    @NotNull(message = " Title must not be empty")
+    @NotBlank
     @Size(min = 5, max = 150)
     private String title;
 
-    @NotNull(message = " Description must not be empty")
+    @NotBlank
     @Size(max = 300)
     private String description;
 
-    @NotNull ( message = " Slug must not be empty")
-    @Size(min = 5, max = 200)
-    private String slug;
+    @NotNull
+    private Double price;
 
-    @NotNull(message = " Price  must not be empty")
-    private Float price;
+    @NotNull
+    private Long advertTypeId;
 
-    @NotNull(message = " Status must not be empty")
-    private Status status = Status.PENDING;
+    @NotNull
+    private Integer countryId;
 
-   // @NotNull
-   // private Boolean builtIn =false;
+    @NotNull
+    private Long cityId;
 
-    @NotNull(message = " View Count must not be empty")
-    private int viewCount = 0;
+    @NotNull
+    private Long districtId;
 
-   // @NotNull
-   // private Boolean isActive = true;
+    @NotNull
+    private Long categoryId;
 
+    @NotNull
+    private Long userId;
+
+    @NotBlank
     private String location;
 
-    @NotNull(message = " Create date must not be empty")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate createdAt;
+    @NotNull
+    private List<PropertyRequest> properties;
 
-    @Column(nullable = true)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate updatedAt;
+    @NotNull
+    private boolean isActive;
+
 }

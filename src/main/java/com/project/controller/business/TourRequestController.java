@@ -1,7 +1,7 @@
 package com.project.controller.business;
 
 
-import com.project.payload.request.business.tourRequestRequests.TourRequestCreateAndUpdateRequest;
+import com.project.payload.request.business.TourRequestCreateAndUpdateRequest;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.TourRequestResponse;
 import com.project.service.business.TourRequestService;

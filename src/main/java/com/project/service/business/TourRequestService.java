@@ -5,15 +5,14 @@ import com.project.entity.concretes.business.Advert;
 import com.project.entity.concretes.business.TourRequest;
 import com.project.entity.concretes.user.User;
 import com.project.entity.concretes.user.UserRole;
-import com.project.entity.enums.Role;
+import com.project.entity.enums.RoleType;
 import com.project.entity.enums.TourRequestStatus;
 import com.project.exception.BadRequestException;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.TourRequestMapper;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
-import com.project.payload.request.business.tourRequestRequests.TourRequestCreateAndUpdateRequest;
-import com.project.payload.response.business.AdvertResponse;
+import com.project.payload.request.business.TourRequestCreateAndUpdateRequest;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.TourRequestResponse;
 import com.project.repository.business.TourRequestRepository;
@@ -25,16 +24,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -62,7 +59,7 @@ public class TourRequestService {
 
         User user = getUser(servletRequest);
 
-        checkUserRole(user,Role.CUSTOMER);
+        checkUserRole(user, RoleType.CUSTOMER);
 
         Pageable pageable =pageableHelper.getPageableWithProperties(page,size,sort,type);
         Page<TourRequest> usersTourRequests = tourRequestRepository.findAllByUserId(user.getId(),pageable);
@@ -74,7 +71,7 @@ public class TourRequestService {
     // ----> S02
     public  Page<TourRequestResponse> getAllTourRequestWithPageForAdminAndManager(int page, int size, String sort, String type, HttpServletRequest servletRequest) {
         User user = getUser(servletRequest);
-        checkUserRole(user,Role.ADMIN,Role.MANAGER);
+        checkUserRole(user, RoleType.ADMIN, RoleType.MANAGER);
         Pageable pageable = pageableHelper.getPageableWithProperties(page,size,sort,type);
         Page<TourRequest> TourRequests = tourRequestRepository.findAll(pageable);
         return TourRequests.map(tourRequestMapper::tourRequestToTourRequestResponse);
@@ -84,10 +81,9 @@ public class TourRequestService {
     public TourRequestResponse getUsersTourRequestDetails(Long tourRequestId, HttpServletRequest servletRequest) {
 
         User user = getUser(servletRequest);
-        checkUserRole(user,Role.CUSTOMER);
+        checkUserRole(user, RoleType.CUSTOMER);
 
-        //TourRequest tourRequest = tourRequestRepository.findByIdByGuestAndOwnerUser(user.getId(),tourRequestId); --->Advert olana kadar yorum
-        TourRequest tourRequest = isTourRequestExistById(tourRequestId);  //---> simdilik boyle
+        TourRequest tourRequest = tourRequestRepository.findByIdForGuestAndOwnerUser(user.getId(),tourRequestId);
         return tourRequestMapper.tourRequestToTourRequestResponse(tourRequest);
     }
 
@@ -96,7 +92,7 @@ public class TourRequestService {
 
         User user = getUser(servletRequest);
 
-        checkUserRole(user,Role.ADMIN,Role.MANAGER);
+        checkUserRole(user, RoleType.ADMIN, RoleType.MANAGER);
 
         TourRequest request = isTourRequestExistById(id);
         return tourRequestMapper.
@@ -108,36 +104,36 @@ public class TourRequestService {
 
         User user = getUser(servletRequest);
 
-        checkUserRole(user,Role.CUSTOMER);
+        checkUserRole(user, RoleType.CUSTOMER);
 
-         //Advert advert = advertService.isAdvertExist(request.getAdvert());
+         Advert advert = advertService.getAdvertById(request.getAdvertId());
 
         TourRequest createdTourRequest = tourRequestMapper.createTourRequestRequestToTourRequest(request);
         createdTourRequest.setCreateAt(LocalDateTime.now(ZoneId.of("UTC")));
         createdTourRequest.setGuestUser(user);
-        //createdTourRequest.setOwnerUser(advert.getUser());
+        createdTourRequest.setOwnerUser(advert.getUser());
 
         createdTourRequest.setStatusStatus(TourRequestStatus.PENDING.getTourStatusValue());  //default'u setledim
-        //createdTourRequest.setAdvert(advert);
+        createdTourRequest.setAdvert(advert);
 
-        /*if (user.getId().equals(advert.getUser().getId())) {
-            throw new  BadRequestException();
-        }*/
+        if (user.getId().equals(advert.getUser().getId())) {
+            throw new  BadRequestException(ErrorMessages.NOT_PERMITTED_METHOD_MESSAGE);
+        }
 
         TourRequest saved = tourRequestRepository.save(createdTourRequest);
         TourRequestResponse tourRequestResponse = tourRequestMapper.tourRequestToTourRequestResponse(saved);
         return ResponseMessage.<TourRequestResponse>builder()
                 .object(tourRequestResponse)
-                .httpStatus(HttpStatus.CREATED)
+                .status(HttpStatus.CREATED)
                 .message(SuccessMessages.TOUR_REQUEST_SAVED)
                 .build();
     }
 
     // ----> S06
-    public ResponseMessage<TourRequestResponse> updateTourRequest(Long tourRequestId, TourRequestCreateAndUpdateRequest request, HttpServletRequest servletRequest) {
+    public ResponseMessage<TourRequestResponse> updateTourRequest(Long tourRequestId, @Valid TourRequestCreateAndUpdateRequest request, HttpServletRequest servletRequest) {
 
         User user = getUser(servletRequest);
-        checkUserRole(user,Role.CUSTOMER);
+        checkUserRole(user, RoleType.CUSTOMER);
 
         TourRequest tourRequestToUpdate = tourRequestRepository.findByIdForGuestUser(user.getId(),tourRequestId);
         TourRequest saved = tourRequestMapper.TourRequestUpdateRequestToTourRequest(tourRequestToUpdate,request);
@@ -147,7 +143,7 @@ public class TourRequestService {
         TourRequestResponse response = tourRequestMapper.tourRequestToTourRequestResponse(saved);
         return ResponseMessage.<TourRequestResponse>builder()
                 .object(response)
-                .httpStatus(HttpStatus.OK)
+                .status(HttpStatus.OK)
                 .message(SuccessMessages.TOUR_REQUEST_UPDATED)
                 .build();
     }
@@ -155,7 +151,7 @@ public class TourRequestService {
     // ----> S07
     public ResponseMessage<TourRequestResponse> updateTourRequestCancel(Long tourRequestId, HttpServletRequest servletRequest) {
         User user = getUser(servletRequest);
-        checkUserRole(user,Role.CUSTOMER);
+        checkUserRole(user, RoleType.CUSTOMER);
 
         TourRequest tourRequest = tourRequestRepository.findByIdForGuestUser(user.getId(),tourRequestId);
 
@@ -165,7 +161,7 @@ public class TourRequestService {
 
         return ResponseMessage.<TourRequestResponse>builder()
                 .object(tourRequestMapper.tourRequestToTourRequestResponseForGuestUser(tourRequest))
-                .httpStatus(HttpStatus.OK)
+                .status(HttpStatus.OK)
                 .message(SuccessMessages.TOUR_REQUEST_CANCELLED)
                 .build();
 
@@ -175,12 +171,10 @@ public class TourRequestService {
     public ResponseMessage<TourRequestResponse> updateTourRequestApprove(Long tourRequestId, HttpServletRequest servletRequest) {
 
         User user = getUser(servletRequest);
-        checkUserRole(user,Role.CUSTOMER);
+        checkUserRole(user, RoleType.CUSTOMER);
 
 
-        //TourRequest tourRequest =tourRequestRepository.findByIdForOwnerUser(user.getId(),tourRequestId); -->Advert olana kadar boyle
-        TourRequest tourRequest = isTourRequestExistById(tourRequestId);  //---> simdilik boyle
-
+        TourRequest tourRequest = tourRequestRepository.findByIdForOwnerUser(user.getId(),tourRequestId);
 
         tourRequest.setStatusStatus(TourRequestStatus.APPROVED.getTourStatusValue());
 
@@ -188,7 +182,7 @@ public class TourRequestService {
 
         return ResponseMessage.<TourRequestResponse>builder()
                 .object(tourRequestMapper.tourRequestToTourRequestResponseForGuestUser(tourRequest))
-                .httpStatus(HttpStatus.OK)
+                .status(HttpStatus.OK)
                 .message(SuccessMessages.TOUR_REQUEST_APPROVED)
                 .build();
 
@@ -198,10 +192,9 @@ public class TourRequestService {
     public ResponseMessage<TourRequestResponse> updateTourRequestDecline(Long tourRequestId, HttpServletRequest servletRequest) {
 
         User user = getUser(servletRequest);
-        checkUserRole(user,Role.CUSTOMER);
+        checkUserRole(user, RoleType.CUSTOMER);
 
-        //TourRequest tourRequest = tourRequestRepository.findByIdForOwnerUser(user.getId(),tourRequestId);  -->Advert olana kadar boyle
-        TourRequest tourRequest = isTourRequestExistById(tourRequestId);  //---> simdilik boyle
+        TourRequest tourRequest = tourRequestRepository.findByIdForOwnerUser(user.getId(),tourRequestId);
 
         tourRequest.setStatusStatus(TourRequestStatus.DECLINED.getTourStatusValue());
 
@@ -209,7 +202,7 @@ public class TourRequestService {
 
         return ResponseMessage.<TourRequestResponse>builder()
                 .object(tourRequestMapper.tourRequestToTourRequestResponseForGuestUser(tourRequest))
-                .httpStatus(HttpStatus.OK)
+                .status(HttpStatus.OK)
                 .message(SuccessMessages.TOUR_REQUEST_DECLINE)
                 .build();
     }
@@ -219,7 +212,7 @@ public class TourRequestService {
 
 
         User user = getUser(servletRequest);
-        checkUserRole(user,Role.ADMIN,Role.MANAGER);
+        checkUserRole(user, RoleType.ADMIN, RoleType.MANAGER);
 
 
         TourRequest tourRequest = isTourRequestExistById(id);
@@ -227,7 +220,7 @@ public class TourRequestService {
         tourRequestRepository.delete(tourRequest);
 
          return ResponseMessage.<TourRequestResponse>builder()
-                .httpStatus(HttpStatus.OK)
+                .status(HttpStatus.OK)
                 .message(SuccessMessages.TOUR_REQUEST_DELETED)
                 .build();
     }
@@ -253,9 +246,9 @@ public class TourRequestService {
         return user;
     }
 
-    public void checkUserRole(User user, Role... roleTypes){
+    public void checkUserRole(User user, RoleType... roleTypes){
 
-        Set<Role> roles = new HashSet<>();
+        Set<RoleType> roles = new HashSet<>();
         Collections.addAll(roles, roleTypes);
         Set<UserRole> rolesUserRole = roles.stream().map(userRoleService::getUserRole).collect(Collectors.toSet());
 

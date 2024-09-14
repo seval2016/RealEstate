@@ -3,7 +3,7 @@ package com.project.entity.concretes.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import com.project.entity.enums.Role;
+import com.project.entity.enums.RoleType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +11,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import java.util.HashSet;
 
 import javax.validation.constraints.NotNull;
 
@@ -34,7 +32,7 @@ public class UserRole {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private RoleType role;
 
 
     @ManyToMany(mappedBy = "userRole")

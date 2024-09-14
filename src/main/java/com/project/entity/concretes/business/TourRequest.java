@@ -1,7 +1,6 @@
 package com.project.entity.concretes.business;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.entity.concretes.user.User;
 
 import com.project.entity.enums.TourRequestStatus;
@@ -46,32 +45,23 @@ public class TourRequest {
     private int statusStatus = TourRequestStatus.PENDING.getTourStatusValue();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "US")
-    @Column(name = "create_at", nullable = false)
-    private LocalDateTime createAt;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "US")
     @Column(name = "update_at")
     private LocalDateTime updateAt;
 
-    //---------------------------------------------------------
-
-    /*@ManyToOne
-    @JoinColumn(name = "advert_id", nullable = false)
-    @JsonIgnore
-    private Advert advert;*/
-
-    /*@ManyToOne
-    @JoinColumn(name = "owner_user", nullable = false)
-    @JsonIgnore
-    private User ownerUser;*/
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "US")
+    @Column(name = "create_at", nullable = false)
+    private LocalDateTime createAt;
 
     @ManyToOne
-    @JoinColumn(name = "guest_user", nullable = false)
-    @JsonIgnore
+    @JoinColumn(name = "owner_user_id", nullable = false)
+    private User ownerUser;
+
+    @ManyToOne
+    @JoinColumn(name = "guest_user_id", nullable = false)
     private User guestUser;
 
-
-
-
+    @ManyToOne
+    @JoinColumn(name = "advert_id")
+    private Advert advert;
 
 }
