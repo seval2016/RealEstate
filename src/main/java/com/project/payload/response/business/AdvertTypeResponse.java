@@ -12,9 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AdvertTypeResponse {
+
     private Long id;
+
     private String title;
-    private Boolean builtIn = false;
-
-
 }

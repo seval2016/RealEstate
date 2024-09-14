@@ -1,65 +1,61 @@
 package com.project.payload.mappers;
 
+import com.project.entity.concretes.business.Advert;
+import com.project.entity.concretes.business.Images;
 import com.project.entity.concretes.business.TourRequest;
-import com.project.payload.request.business.TourRequestCreateAndUpdateRequest;
+import com.project.payload.request.business.TourRequestRequest;
 import com.project.payload.response.business.TourRequestResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class TourRequestMapper {
 
-    private final UserMapper userMapper;
-    private final AdvertMapper advertMapper;
+    private final ImagesMapper imagesMapper;
 
-    public TourRequestResponse tourRequestToTourRequestResponseForGuestUser(TourRequest request) {
+    private Images getFeaturedImage(List<Images> images) {
+        return images.stream()
+                .filter(Images::isFeatured)
+                .findFirst()
+                .orElse(images.get(0));
+    }
+
+    //POJO -> DTO
+    public TourRequestResponse mapTourRequestToTourRequestResponse(TourRequest tourRequest) {
+        Advert advert = tourRequest.getAdvert();
+
+        // İlanın resim listesinden öne çıkan resmi alıyoruz, null kontrolü eklenmiştir
+        Images featuredImage = advert != null && advert.getImagesList() != null
+                ? getFeaturedImage(advert.getImagesList())
+                : null;
+
         return TourRequestResponse.builder()
-                .id(request.getId())
-                .tourDate(request.getTourDate())
-                .tourTime(request.getTourTime())
-                .status(request.getStatusStatus())
-                .updateAt(request.getUpdateAt())
-                //.advert(advertMapper.advertToAdvertResponseForTourRequest(tourRequest.getAdvert()))
-                //.ownerUser(userMapper.userToUserResponseForTourRequest(tourRequest.getOwnerUser()))
-
+                .advertId(tourRequest.getAdvert())
+                .advertTitle(tourRequest.getAdvert().getTitle())
+                .advertCountry(tourRequest.getAdvert().getCountry())
+                .advertCity(tourRequest.getAdvert().getCity())
+                .advertDistrict(tourRequest.getAdvert().getDistrict())
+                .featuredImage(imagesMapper.mapToImageResponse(getFeaturedImage(tourRequest.getAdvert().getImagesList())))
+                .tourDate(tourRequest.getTourDate())
+                .tourTime(tourRequest.getTourTime())
+                .guestUserId(tourRequest.getGuestUser())
+                .ownerUserId(tourRequest.getOwnerUser())
+                .status(tourRequest.getStatus())
+                .id(tourRequest.getId())
+                .createAt(tourRequest.getCreateAt())
+                .updateAt(tourRequest.getUpdateAt())
                 .build();
     }
 
-    public TourRequestResponse tourRequestToTourRequestResponse(TourRequest request) {
-        return TourRequestResponse.builder()
-                .id(request.getId())
-                .tourDate(request.getTourDate())
-                .tourTime(request.getTourTime())
-                .status(request.getStatusStatus())
-                .updateAt(request.getUpdateAt())
-                // Map the guest user correctly
-                .guestUserId(userMapper.mapUserToUserResponseForTourRequest(request.getGuestUser()))
-                // Map the owner user correctly
-                .ownerUserId(userMapper.mapUserToUserResponseForTourRequest(request.getOwnerUser()))
-                //.advert(advertMapper.mapAdvertToAdvertResponseForTourRequest(request.getAdvert()))
-                .build();
-    }
-
-
-
-
-    public TourRequest createTourRequestRequestToTourRequest(TourRequestCreateAndUpdateRequest request){
+    public TourRequest mapTourRequestRequestToTourRequest(TourRequestRequest request, Advert advert){
         return TourRequest.builder()
                 .tourDate(request.getTourDate())
                 .tourTime(request.getTourTime())
+                .advert(advert)
                 .build();
     }
-
-    public TourRequest TourRequestUpdateRequestToTourRequest(TourRequest tourRequest, TourRequestCreateAndUpdateRequest request) {
-        return tourRequest.toBuilder()
-                .tourDate(request.getTourDate())
-                .tourTime(request.getTourTime())
-                .updateAt(LocalDateTime.now())
-                .build();
-    }
-
 
 }

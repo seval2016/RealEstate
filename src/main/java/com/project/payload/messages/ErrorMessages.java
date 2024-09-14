@@ -3,6 +3,12 @@ package com.project.payload.messages;
 public class ErrorMessages {
 
 
+    public static final String RESET_CODE_IS_NOT_FOUND = "Reset code is not found";
+    public static final String BEGIN_TIME_CAN_NOT_BE_AFTER_END_TIME = "Start time can not be later than end time";
+    public static final String EXCEL_COULD_NOT_BE_CREATED = "Excel file could not be created.";
+    public static final String EXCEL_COULD_NOT_BE_CREATED_TYPE_IS_NOT_ADVERT = "Excel file could not be created, type is not advert.";
+    public static final String ADVERT_STATUS_NOT_FOUND = "Advert status not found.";
+    public static final String THERE_IS_NO_USER_REGISTERED_WITH_THIS_EMAIL_ADDRESS = "There is no user registered with this email address";
 
     private ErrorMessages() {
     }
@@ -90,6 +96,11 @@ public class ErrorMessages {
     public static final String CATEGORY_CREATION_ERROR = "Error : Category is not created. Please try again.";
     public static final String CATEGORY_UPDATE_ERROR = "Error : Category is not updated.";
     public static final String CATEGORY_DELETE_ERROR = "Error : Category is not deleted.";
+    public static final String CATEGORY_CANNOT_UPDATE =  "Error : Cannot be updated because the category is built_in";;
+    public static final String CATEGORY_HAS_ADVERTS = "Category has related adverts, deletion is not allowed.";
+    public static final String CATEGORY_PROPERTY_KEY_ALREADY_EXIST = "A category property key with the same name already exists.";
+    public static final String CATEGORY_PROPERTY_KEY_CANNOT_UPDATE = "The category property key cannot be updated because it is marked as built-in.";
+    public static final String CATEGORY_PROPERTY_KEY_NOT_FOUND = "The property key with the specified ID was not found.";
 
 
     // Favorite Errors
@@ -106,19 +117,20 @@ public class ErrorMessages {
     public static final String TOUR_REQUEST_UPDATE_ERROR = "Error : Tour Request is not updated. Please check your input.";
     public static final String TOUR_REQUEST_DELETE_ERROR = "Error : Tour Request is not deleted. Please ensure it exists.";
 
+    public static final String CONFLICT_TOUR_REQUEST_TIME = "Error: There is an appointment for the tour you requested";
 
     // Image Errors
     public static final String IMAGE_NOT_FOUND = "Error : The requested image does not exist.";
     public static final String IMAGE_UPLOAD_ERROR = "Error uploading the image. Please try again.";
     public static final String IMAGE_DELETE_ERROR = "Error deleting the image. Please ensure it exists.";
-    public static final String IMAGE_FORMAT_ERROR = "Error : Invalid image format. Please upload a valid image file.";
-
-
+    public static final String IMAGE_FORMAT_FAILED= "Error : The image format is invalid or not supported";
     // AdvertType Errors
     public static final String ADVERT_TYPE_NOT_FOUND = "Error : Advert Type does not exist.";
     public static final String ADVERT_TYPE_CREATION_ERROR = "Error : Advert Type is not created. Please try again.";
     public static final String ADVERT_TYPE_UPDATE_ERROR = "Error : Advert Type is not updated. Please check your input.";
     public static final String ADVERT_TYPE_DELETE_ERROR = "Error : Advert Type is not deleted. It may be associated with adverts.";
+    public static final String ADVERT_TYPE_NOT_FOUND_BY_ID = "Error : Advert Type is not fount with id:%s";
+
     public static final String NOT_FOUND_ADVERT_WITH_ID_MESSAGE ="Error: Advert with id: %s not found";
     public static final String ADVERT_IS_NOT_FOUND_FOR_USER ="Error: Advert is not found with user id: %s";
     public static final String THIS_ADVERT_DOES_NOT_UPDATE ="Error: This advert is built in";

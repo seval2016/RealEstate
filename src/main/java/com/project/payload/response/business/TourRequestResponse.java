@@ -1,13 +1,13 @@
 package com.project.payload.response.business;
 
-import com.project.entity.concretes.business.*;
+import com.project.entity.concretes.business.Advert;
+import com.project.entity.concretes.business.City;
+import com.project.entity.concretes.business.Country;
+import com.project.entity.concretes.business.District;
 import com.project.entity.concretes.user.User;
-import com.project.entity.enums.TourRequestStatus;
-import com.project.payload.response.user.UserResponseForTourRequest;
+import com.project.entity.enums.StatusType;
 import lombok.*;
 
-import java.awt.*;
-import java.awt.Image;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -21,14 +21,14 @@ public class TourRequestResponse {
     private Long id;
     private LocalDate tourDate;
     private LocalTime tourTime;
-    private int status;
+    private StatusType status;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
-    private UserResponseForTourRequest ownerUserId;
-    private UserResponseForTourRequest guestUserId;
+    private User ownerUserId;
+    private User guestUserId;
     private Advert advertId;
     private String advertTitle;
-    private Image featuredImage;
+    private ImagesResponse featuredImage;
     private District advertDistrict;
     private City advertCity;
     private Country advertCountry;

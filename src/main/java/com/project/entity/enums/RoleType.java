@@ -2,19 +2,18 @@ package com.project.entity.enums;
 
 public enum RoleType {
 
-    ADMIN ("Admin"),
+    ADMIN("Admin"),
+    MANAGER("Manager"),
 
-    CUSTOMER ("Customer"),
+    CUSTOMER("Customer");
 
-    MANAGER("Manager");
+    public final String roleName;
 
-    public final String name;
-
-    RoleType(String name){
-        this.name=name;
+    RoleType(String roleName){
+        this.roleName=roleName;
     }
 
-    public String getName(){
-        return name;
+    public String getRoleName(){
+        return roleName;
     }
 }

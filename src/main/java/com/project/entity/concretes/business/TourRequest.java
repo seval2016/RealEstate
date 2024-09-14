@@ -1,11 +1,13 @@
 package com.project.entity.concretes.business;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.entity.concretes.user.User;
-
-import com.project.entity.enums.TourRequestStatus;
-
-import lombok.*;
+import com.project.entity.enums.StatusType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,54 +16,55 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "tour_requests")
-
-@Getter
-@Setter
-
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder(toBuilder = true)
-//@FieldDefaults(level = AccessLevel.PRIVATE)  Bu anotasyonu kullanarak, sınıf içindeki tüm alanları private olarak ayarlayabilirsiniz,
-// böylece her alan için tek tek private erişim belirlemenize gerek kalmaz. //ama kullanmicam
 public class TourRequest {
 
-
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "tour_date", nullable = false)
     private LocalDate tourDate;
 
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "US")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     @Column(name = "tour_time", nullable = false)
     private LocalTime tourTime;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusType status = StatusType.PENDING;
 
-    @Column(nullable = false,name = "status")
-    private int statusStatus = TourRequestStatus.PENDING.getTourStatusValue();
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "US")
-    @Column(name = "update_at")
-    private LocalDateTime updateAt;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "US")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "create_at", nullable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createAt= LocalDateTime.now();
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @Column(name = "update_at", nullable = false)
+    private LocalDateTime updateAt= LocalDateTime.now();
+
+
+    //------------İlişkili sütunlar -------------
+
+    //ManyToOne
+
+    @ManyToOne
+    @JoinColumn(name = "advert_id", nullable = false)
+    @JsonIgnore
+    private Advert advert;
 
     @ManyToOne
     @JoinColumn(name = "owner_user_id", nullable = false)
+    @JsonIgnore
     private User ownerUser;
 
     @ManyToOne
     @JoinColumn(name = "guest_user_id", nullable = false)
+    @JsonIgnore
     private User guestUser;
 
-    @ManyToOne
-    @JoinColumn(name = "advert_id")
-    private Advert advert;
 
 }

@@ -3,10 +3,10 @@ package com.project.contactmessage.service;
 import com.project.contactmessage.dto.ContactMessageRequest;
 import com.project.contactmessage.dto.ContactMessageResponse;
 import com.project.contactmessage.entity.ContactMessage;
+import com.project.contactmessage.entity.ContactStatus;
 import com.project.contactmessage.mapper.ContactMessageMapper;
 import com.project.contactmessage.messages.Messages;
 import com.project.contactmessage.repository.ContactMessageRepository;
-import com.project.exception.ConflictException;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.response.business.ResponseMessage;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Objects;
-
 @Service
 @RequiredArgsConstructor
 public class ContactMessageService {
@@ -29,95 +24,57 @@ public class ContactMessageService {
     private final ContactMessageRepository contactMessageRepository;
     private final ContactMessageMapper contactMessageMapper;
 
+    public ResponseMessage<ContactMessageResponse> createMessage(ContactMessageRequest contactMessageRequest) {
+        // DTO'yu POJO'ya dönüştür
+        ContactMessage contactMessage = contactMessageMapper.requestToContactMessage(contactMessageRequest);
 
-    public ResponseMessage<ContactMessageResponse> save(ContactMessageRequest contactMessageRequest) {
-
-        ContactMessage contactMessage= contactMessageMapper.requestToContactMessage(contactMessageRequest);
+        // Veritabanına kaydet
         ContactMessage savedData = contactMessageRepository.save(contactMessage);
 
+        // Başarı mesajını oluştur ve döndür
         return ResponseMessage.<ContactMessageResponse>builder()
                 .message("Contact Message Created Successfully")
-                .httpStatus(HttpStatus.CREATED) //201
-                .object(contactMessageMapper.contactMessageToResponse(savedData))
+                .httpStatus(HttpStatus.CREATED) // 201
+                .object(contactMessageMapper.contactMessageToResponse(savedData)) // POJO'dan DTO'ya dönüşüm
                 .build();
     }
 
-    public Page<ContactMessageResponse> getAll(int page, int size, String sort, String type) {
+    public Page<ContactMessageResponse> getAllContactMessages(String query, int status, int page, int size, String sortField, String sortType) {
+        // Sıralama yönünü belirlemek için sortType parametresini kullanıyoruz
+        Sort.Direction direction = Sort.Direction.fromString(sortType);
 
-       Pageable pageable = PageRequest.of(page,size, Sort.by(sort).ascending());
+        // Sayfa, boyut ve sıralama bilgileriyle pageable nesnesini oluşturuyoruz
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortField));
 
-        if(Objects.equals(type, "desc")){
-            pageable = PageRequest.of(page,size, Sort.by(sort).descending());
+        // Hem query hem de status ile filtreleme yapıyoruz
+        if (query == null || query.isEmpty()) {
+            // Eğer query boşsa sadece status'a göre filtreleme yap
+            return contactMessageRepository.findByStatus(status, pageable).map(contactMessageMapper::contactMessageToResponse);
         }
 
-        return contactMessageRepository.findAll(pageable).map(contactMessageMapper::contactMessageToResponse);
-
+        // Query ve status'a göre filtreleme yap
+        return contactMessageRepository.findByStatusAndMessageContaining(status, query, pageable).map(contactMessageMapper::contactMessageToResponse);
     }
 
-    public Page<ContactMessageResponse> searchByContactEmail(String email, int page, int size, String sort, String type) {
-
-        Pageable pageable = PageRequest.of(page,size, Sort.by(sort).ascending());
-
-        if(Objects.equals(type, "desc")){
-            pageable = PageRequest.of(page,size, Sort.by(sort).descending());
-        }
-
-        return contactMessageRepository.findByContactEmailEquals(email, pageable).
-                map(contactMessageMapper::contactMessageToResponse);
-
-    }
-
-    public Page<ContactMessageResponse> searchByContactSubject(String subject, int page, int size, String sort, String type) {
-
-        Pageable pageable = PageRequest.of(page,size, Sort.by(sort).ascending());
-
-        if(Objects.equals(type, "desc")){
-            pageable = PageRequest.of(page,size, Sort.by(sort).descending());
-        }
-
-        return contactMessageRepository.findByContactSubjectEquals(subject, pageable).
-                map(contactMessageMapper::contactMessageToResponse);
-
-    }
-
-    public String deleteById(Long id) {
+    public String deleteContactMessageById(Long id) {
         getContactMessageById(id);
         contactMessageRepository.deleteById(id);
         return Messages.CONTACT_MESSAGE_DELETED_SUCCESSFULLY;
     }
 
-    public ContactMessage getContactMessageById(Long id){
-        return contactMessageRepository.findById(id).orElseThrow(()->
+    public ContactMessage getContactMessageById(Long id) {
+        // İd ile mesajı bul, bulunamazsa hata fırlat
+        return contactMessageRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException(Messages.NOT_FOUND_MESSAGE));
-
     }
 
+    public ContactMessage findContactByIdAndUpdateStatus(Long id) {
+        //verilen id'nin var olup olmadığını kontrol eder
+        ContactMessage contact = contactMessageRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Contact not found with id: " + id));
 
-    public List<ContactMessage> searchBetweenDates(String beginDateString, String endDateString) {
-
-        try {
-            LocalDate beginDate = LocalDate.parse(beginDateString);
-            LocalDate endDate = LocalDate.parse(endDateString);
-            return contactMessageRepository.findMessagesBetweenDates(beginDate, endDate);
-        } catch (DateTimeParseException e) {
-            throw new ConflictException(Messages.WRONG_DATE_MESSAGE);
-        }
-
-    }
-
-
-    public List<ContactMessage> searchBetweenTimes(String startHourString, String startMinuteString, String endHourString, String endMinuteString) {
-
-        try {
-            int startHour = Integer.parseInt(startHourString);
-            int startMinute = Integer.parseInt(startMinuteString);
-            int endHour = Integer.parseInt(endHourString);
-            int endMinute = Integer.parseInt(endMinuteString);
-
-            return contactMessageRepository.findMessagesBetweenTimes(startHour,startMinute, endHour, endMinute);
-        } catch (NumberFormatException e) {
-            throw new ConflictException(Messages.WRONG_TIME_MESSAGE);
-        }
-
+        //Eğer id var ise status durumunu 1 olarak günceller
+        contact.setStatus(ContactStatus.OPENED.getStatusValue());
+        return contactMessageRepository.save(contact);
     }
 }

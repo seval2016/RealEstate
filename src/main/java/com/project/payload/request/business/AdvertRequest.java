@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -34,7 +33,7 @@ public class AdvertRequest {
     private Long advertTypeId;
 
     @NotNull
-    private Integer countryId;
+    private Long countryId;
 
     @NotNull
     private Long cityId;
@@ -56,5 +55,8 @@ public class AdvertRequest {
 
     @NotNull
     private boolean isActive;
+
+    @NotNull
+    private List<Long> imageIds;
 
 }

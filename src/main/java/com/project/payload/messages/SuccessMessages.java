@@ -2,6 +2,8 @@ package com.project.payload.messages;
 
 public class SuccessMessages {
 
+    public static final String PASSWORD_RESET_SUCCESSFULLY = "Password reset code has been sent to your email address successfully.";
+
     private SuccessMessages() {
     }
 
@@ -34,17 +36,24 @@ public class SuccessMessages {
     public static final String ADVERT_DECLINED = "Advert is Declined by Manager";
     public static final String RETURNED_POPULAR_ADVERTS= "Popular adverts returned for value";
 
-    // Advert Messages
-    public static final String ADVERT_TYPE_SAVED = "Advert Type is Created and Wait for Approve";
-    public static final String ADVERT_TYPE_UPDATED = "Advert Type is Updated Successfully";
-    public static final String ADVERT_TYPE_DELETED = "Advert Type is Deleted Successfully";
-    public static final String ADVERT_TYPE_FOUND = "Advert Type is Found Successfully";
-    public static final String ADVERT_TYPE_DECLINED = "Advert Type is Declined by Manager";
+    //Advert_type
+
+    public static final String ADVERT_TYPE_SAVED = "Advert type saved";
+    public static final String ADVERT_TYPE_DELETED = "Advert type deleted";
+    public static final String ADVERT_TYPE_UPDATED = "Advert type updated";
 
     // Category Messages
     public static final String CATEGORY_SAVED= "Category is Saved Successfully";
     public static final String CATEGORY_UPDATED = "Category is updated successfully ";
     public static final String CATEGORY_DELETED = "Category is Deleted Successfully";
+    public static final String CATEGORY_FOUNDED = "Category successfully found.";
+    public static final String CATEGORY_PROPERTY_KEYS_FETCHED = "Category property keys have been successfully retrieved.";
+    public static final String CATEGORY_PROPERTY_KEY_CREATED_SUCCESS = "Category property key has been successfully created.";
+    public static final String CATEGORY_PROPERTY_KEYS_RETRIEVED = "Category property keys have been successfully retrieved.";
+    public static final String CATEGORY_PROPERTY_KEY_UPDATED_SUCCESS = "The property key was successfully updated.";
+    public static final String CATEGORY_PROPERTY_KEY_DELETED_SUCCESS = "Property key deleted successfully.";
+
+
 
     // Tour Request Messages
     public static final String TOUR_REQUEST_SAVED = "Tour Request is Created Successfully";

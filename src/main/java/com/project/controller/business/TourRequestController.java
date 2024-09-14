@@ -1,7 +1,6 @@
 package com.project.controller.business;
 
-
-import com.project.payload.request.business.TourRequestCreateAndUpdateRequest;
+import com.project.entity.concretes.business.TourRequest;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.TourRequestResponse;
 import com.project.service.business.TourRequestService;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/tour-requests")
@@ -70,14 +68,14 @@ public class TourRequestController {
     // ----> S05
     @PostMapping
     @PreAuthorize("hasAnyAuthority('CUSTOMER')") //http://localhost:8080/tour-requests + POST + JSON
-    public ResponseMessage<TourRequestResponse> createTourRequest(@RequestBody @Valid TourRequestCreateAndUpdateRequest request, HttpServletRequest servletRequest){
+    public ResponseMessage<TourRequestResponse> createTourRequest(@RequestBody @Valid TourRequest request, HttpServletRequest servletRequest){
         return  tourRequestService.createTourRequest(request,servletRequest);
     }
 
     // ----> S06
     @PutMapping("/{id}/auth")
     @PreAuthorize("hasAnyAuthority('CUSTOMER')") // http://localhost:8080/tour-requests/1/auth + PUT + JSON
-    public ResponseMessage<TourRequestResponse> updateTourRequest(@PathVariable Long id, @RequestBody @Valid TourRequestCreateAndUpdateRequest request, HttpServletRequest servletRequest){
+    public ResponseMessage<TourRequestResponse> updateTourRequest(@PathVariable Long id, @RequestBody @Valid TourRequest request, HttpServletRequest servletRequest){
         return tourRequestService.updateTourRequest(id, request, servletRequest);
     }
 
