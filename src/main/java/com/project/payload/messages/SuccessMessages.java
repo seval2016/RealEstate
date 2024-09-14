@@ -2,6 +2,9 @@ package com.project.payload.messages;
 
 public class SuccessMessages {
 
+    public static final String CONTACT_MESSAGE_SAVED = "Contact Message Saved";
+    public static final String CONTACT_MESSAGE_DELETED_SUCCESSFULLY = "Contact Message Deleted Successfully";
+
     private SuccessMessages() {
     }
 
