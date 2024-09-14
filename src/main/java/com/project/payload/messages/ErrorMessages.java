@@ -4,6 +4,8 @@ public class ErrorMessages {
 
 
 
+
+
     private ErrorMessages() {
     }
 
@@ -105,7 +107,7 @@ public class ErrorMessages {
     public static final String TOUR_REQUEST_CREATION_ERROR = "Error : Tour Request is not created. Please try again.";
     public static final String TOUR_REQUEST_UPDATE_ERROR = "Error : Tour Request is not updated. Please check your input.";
     public static final String TOUR_REQUEST_DELETE_ERROR = "Error : Tour Request is not deleted. Please ensure it exists.";
-
+    public static final String CONFLICT_TOUR_DATE ="Required tour time is already exists." ;
 
     // Image Errors
     public static final String IMAGE_NOT_FOUND = "Error : The requested image does not exist.";

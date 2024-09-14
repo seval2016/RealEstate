@@ -2,6 +2,7 @@ package com.project.controller.business;
 
 
 import com.project.payload.request.business.TourRequestCreateAndUpdateRequest;
+import com.project.payload.request.business.TourRequestRequest;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.TourRequestResponse;
 import com.project.service.business.TourRequestService;
@@ -70,14 +71,14 @@ public class TourRequestController {
     // ----> S05
     @PostMapping
     @PreAuthorize("hasAnyAuthority('CUSTOMER')") //http://localhost:8080/tour-requests + POST + JSON
-    public ResponseMessage<TourRequestResponse> createTourRequest(@RequestBody @Valid TourRequestCreateAndUpdateRequest request, HttpServletRequest servletRequest){
+    public ResponseMessage<TourRequestResponse> createTourRequest(@RequestBody @Valid TourRequestRequest request, HttpServletRequest servletRequest){
         return  tourRequestService.createTourRequest(request,servletRequest);
     }
 
     // ----> S06
     @PutMapping("/{id}/auth")
     @PreAuthorize("hasAnyAuthority('CUSTOMER')") // http://localhost:8080/tour-requests/1/auth + PUT + JSON
-    public ResponseMessage<TourRequestResponse> updateTourRequest(@PathVariable Long id, @RequestBody @Valid TourRequestCreateAndUpdateRequest request, HttpServletRequest servletRequest){
+    public ResponseMessage<TourRequestResponse> updateTourRequest(@PathVariable Long id, @RequestBody @Valid TourRequestRequest request, HttpServletRequest servletRequest){
         return tourRequestService.updateTourRequest(id, request, servletRequest);
     }
 

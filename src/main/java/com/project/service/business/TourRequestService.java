@@ -8,11 +8,13 @@ import com.project.entity.concretes.user.UserRole;
 import com.project.entity.enums.RoleType;
 import com.project.entity.enums.TourRequestStatus;
 import com.project.exception.BadRequestException;
+import com.project.exception.ConflictException;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.TourRequestMapper;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.business.TourRequestCreateAndUpdateRequest;
+import com.project.payload.request.business.TourRequestRequest;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.TourRequestResponse;
 import com.project.repository.business.TourRequestRepository;
@@ -100,13 +102,17 @@ public class TourRequestService {
     }
 
     // ----> S05
-    public ResponseMessage<TourRequestResponse> createTourRequest(TourRequestCreateAndUpdateRequest request, HttpServletRequest servletRequest) {
+    public ResponseMessage<TourRequestResponse> createTourRequest(TourRequestRequest request, HttpServletRequest servletRequest) {
 
         User user = getUser(servletRequest);
 
         checkUserRole(user, RoleType.CUSTOMER);
 
+
          Advert advert = advertService.getAdvertById(request.getAdvertId());
+
+         checkConflictTourRequestByGuestUser(user,request);
+         checkConflictTourRequestByOwnerUser(advert.getUser(),request);
 
         TourRequest createdTourRequest = tourRequestMapper.createTourRequestRequestToTourRequest(request);
         createdTourRequest.setCreateAt(LocalDateTime.now(ZoneId.of("UTC")));
@@ -116,9 +122,6 @@ public class TourRequestService {
         createdTourRequest.setStatusStatus(TourRequestStatus.PENDING.getTourStatusValue());  //default'u setledim
         createdTourRequest.setAdvert(advert);
 
-        if (user.getId().equals(advert.getUser().getId())) {
-            throw new  BadRequestException(ErrorMessages.NOT_PERMITTED_METHOD_MESSAGE);
-        }
 
         TourRequest saved = tourRequestRepository.save(createdTourRequest);
         TourRequestResponse tourRequestResponse = tourRequestMapper.tourRequestToTourRequestResponse(saved);
@@ -130,13 +133,20 @@ public class TourRequestService {
     }
 
     // ----> S06
-    public ResponseMessage<TourRequestResponse> updateTourRequest(Long tourRequestId, @Valid TourRequestCreateAndUpdateRequest request, HttpServletRequest servletRequest) {
+    public ResponseMessage<TourRequestResponse> updateTourRequest(Long tourRequestId, @Valid TourRequestRequest request, HttpServletRequest servletRequest) {
 
         User user = getUser(servletRequest);
         checkUserRole(user, RoleType.CUSTOMER);
 
+
+
         TourRequest tourRequestToUpdate = tourRequestRepository.findByIdForGuestUser(user.getId(),tourRequestId);
-        TourRequest saved = tourRequestMapper.TourRequestUpdateRequestToTourRequest(tourRequestToUpdate,request);
+
+        checkConflictTourRequestByGuestUser(user,request);
+        checkConflictTourRequestByOwnerUser(tourRequestToUpdate.getOwnerUser(),request);
+
+        TourRequest saved = tourRequestMapper.updateTourRequestRequestToTourRequest(tourRequestToUpdate,request);
+
 
         saved.setCreateAt(saved.getCreateAt());
         tourRequestRepository.save(saved);
@@ -259,4 +269,24 @@ public class TourRequestService {
         }
     }
 
-}
+    public void checkConflictTourRequestByGuestUser(User guestUser, TourRequestRequest tourRequestRequest) {
+        for(TourRequest tourRequest : guestUser.getTourRequests()){
+            if(tourRequest.getTourDate().equals(tourRequestRequest.getTourDate())){
+                throw new ConflictException(ErrorMessages.CONFLICT_TOUR_DATE);
+            }
+        }
+
+    }
+
+    public void checkConflictTourRequestByOwnerUser(User ownerUser, TourRequestRequest tourRequestRequest) {
+        for (TourRequest tourRequest : ownerUser.getTourRequests()){
+            if(tourRequest.getTourDate().equals(tourRequestRequest.getTourDate())){
+                throw new ConflictException(ErrorMessages.CONFLICT_TOUR_DATE);
+            }
+        }
+    }
+
+    }
+
+
+

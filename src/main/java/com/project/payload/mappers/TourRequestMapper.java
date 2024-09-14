@@ -2,6 +2,7 @@ package com.project.payload.mappers;
 
 import com.project.entity.concretes.business.TourRequest;
 import com.project.payload.request.business.TourRequestCreateAndUpdateRequest;
+import com.project.payload.request.business.TourRequestRequest;
 import com.project.payload.response.business.TourRequestResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -50,14 +51,14 @@ public class TourRequestMapper {
 
 
 
-    public TourRequest createTourRequestRequestToTourRequest(TourRequestCreateAndUpdateRequest request){
+    public TourRequest createTourRequestRequestToTourRequest(TourRequestRequest request){
         return TourRequest.builder()
                 .tourDate(request.getTourDate())
                 .tourTime(request.getTourTime())
                 .build();
     }
 
-    public TourRequest TourRequestUpdateRequestToTourRequest(TourRequest tourRequest, TourRequestCreateAndUpdateRequest request) {
+    public TourRequest updateTourRequestRequestToTourRequest(TourRequest tourRequest, TourRequestRequest request) {
         return tourRequest.toBuilder()
                 .tourDate(request.getTourDate())
                 .tourTime(request.getTourTime())
