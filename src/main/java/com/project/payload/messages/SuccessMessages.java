@@ -34,6 +34,13 @@ public class SuccessMessages {
     public static final String ADVERT_DECLINED = "Advert is Declined by Manager";
     public static final String RETURNED_POPULAR_ADVERTS= "Popular adverts returned for value";
 
+    // Advert Messages
+    public static final String ADVERT_TYPE_SAVED = "Advert Type is Created and Wait for Approve";
+    public static final String ADVERT_TYPE_UPDATED = "Advert Type is Updated Successfully";
+    public static final String ADVERT_TYPE_DELETED = "Advert Type is Deleted Successfully";
+    public static final String ADVERT_TYPE_FOUND = "Advert Type is Found Successfully";
+    public static final String ADVERT_TYPE_DECLINED = "Advert Type is Declined by Manager";
+
     // Category Messages
     public static final String CATEGORY_SAVED= "Category is Saved Successfully";
     public static final String CATEGORY_UPDATED = "Category is updated successfully ";

@@ -20,7 +20,7 @@ public class AdvertController {
     private final AdvertService advertService;
 
     @PostMapping("/save")  // http://localhost:8080/adverts/save + POST + JSON
-    @PreAuthorize("hasAnyAuthority('CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'MANAGER')")
     public ResponseMessage<AdvertResponse> saveAdvert(@RequestBody @Valid AdvertRequest advertRequest) {
         return advertService.saveAdvert(advertRequest);
     }

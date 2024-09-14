@@ -15,7 +15,7 @@ public class AdvertTypeMapper {
     public AdvertType mapAdvertTypeRequestToAdvertType(AdvertTypeRequest advertTypeRequest) {
         return AdvertType.builder()
                 .title(advertTypeRequest.getTitle())
-                .builtIn(advertTypeRequest.getBuiltIn())
+                .builtIn(false)
                 .build();
 
     }
