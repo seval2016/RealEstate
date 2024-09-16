@@ -22,7 +22,7 @@ public class ResetService {
     private final AdvertRepository advertRepository;
     private final ImagesRepository imageRepository;
     private final CategoryRepository categoryRepository;
-    private final AdvertTypesRepository advertTypesRepository;
+    private final AdvertTypeRepository advertTypeRepository;
     private final CategoryPropertyKeyRepository categoryPropertyKeyRepository;
     private final CategoryPropertyValueRepository categoryPropertyValueRepository;
     private final FavoriteRepository favoritesRepository;
@@ -51,13 +51,13 @@ public class ResetService {
             }
         }
 
-        List<AdvertType> allAdvertTypes = advertTypesRepository.findAll();
+        List<AdvertType> allAdvertTypes = advertTypeRepository.findAll();
             // Silinmesi gereken AdvertType'leri filtreleyin
              List<AdvertType> toBeDeleted = allAdvertTypes.stream()
                 .filter(advertType -> !advertType.isBuiltIn()) // Sadece false olanları seç
                 .collect(Collectors.toList());
             // Toplu olarak silme işlemi
-             advertTypesRepository.deleteAll(toBeDeleted);
+             advertTypeRepository.deleteAll(toBeDeleted);
 
         List<CategoryPropertyKey> allCategoryPropertyKey =categoryPropertyKeyRepository.findAll();
         for (CategoryPropertyKey categoryPropertyKey:allCategoryPropertyKey){

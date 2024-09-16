@@ -1,11 +1,9 @@
 package com.project.service.validator;
 
-import com.project.entity.concretes.business.TourRequest;
 import com.project.entity.concretes.user.User;
 import com.project.exception.BadRequestException;
 import com.project.exception.ConflictException;
 import com.project.payload.messages.ErrorMessages;
-import com.project.payload.request.business.TourRequestRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;

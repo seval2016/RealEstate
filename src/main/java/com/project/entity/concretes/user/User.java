@@ -3,17 +3,21 @@ package com.project.entity.concretes.user;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.entity.concretes.business.Advert;
-import com.project.entity.concretes.business.Favorite;
+
 import com.project.entity.concretes.business.TourRequest;
 import lombok.*;
 
 import javax.persistence.*;
+import com.project.entity.concretes.business.Favorite;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -57,7 +61,7 @@ public class User {
     @Column(name = "reset_password_code")
     private String resetPasswordCode;
 
-    private boolean builtIn = false;
+    private Boolean builtIn = false;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH-mm", timezone = "Turkey")
     private LocalDateTime createAt;
@@ -85,23 +89,14 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<UserRole> userRole=new ArrayList<>();
-
-    //------------------
+    private Set<UserRole> userRole=new HashSet<>();
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Advert> advert=new ArrayList<>();
+    private Set<Advert> advert=new HashSet<>();
 
+    @OneToMany(mappedBy = "ownerUser",cascade = CascadeType.ALL,orphanRemoval = true) //iliski ismine bak yaz
+    private Set<TourRequest>tourRequests=new HashSet<>();
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<Favorite>favoritesList=new ArrayList<>();
-
-    @OneToMany(mappedBy = "ownerUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<TourRequest> ownerTourRequests = new ArrayList<>();
-
-    @OneToMany(mappedBy = "guestUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<TourRequest> guestTourRequests = new ArrayList<>();
-
-
-
 }

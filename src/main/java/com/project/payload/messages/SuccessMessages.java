@@ -4,6 +4,7 @@ public class SuccessMessages {
 
     public static final String PASSWORD_RESET_SUCCESSFULLY = "Password reset code has been sent to your email address successfully.";
 
+
     private SuccessMessages() {
     }
 
@@ -75,5 +76,9 @@ public class SuccessMessages {
     public static final String ALL_FAVORITES_DELETED = "All Favorites Deleted Successfully";
     public static final String ALL_FAVORITES_DELETED_BY_ID = "All Favorites Deleted Succesfully with id %s";
     public static final String FAVORITE_DELETED_BY_ID = "Favorite Deleted Successfully with id %s";
+
+
+    //Image
+    public static final String IMAGE_DELETED = "Image deleted successfully";
 
 }

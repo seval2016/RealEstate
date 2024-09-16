@@ -1,19 +1,17 @@
 package com.project.service.business;
 
+import com.project.service.user.UserService;
+import com.project.service.validator.DateTimeValidator;
 import com.project.entity.concretes.business.Advert;
-import com.project.entity.concretes.business.TourRequest;
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.AdvertStatus;
 import com.project.entity.enums.RoleType;
-import com.project.entity.enums.StatusType;
 import com.project.exception.BadRequestException;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.response.business.AdvertResponse;
 import com.project.repository.business.*;
 import com.project.repository.user.UserRepository;
 import com.project.service.helper.MethodHelper;
-import com.project.service.user.UserService;
-import com.project.service.validator.DateTimeValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +35,7 @@ public class ReportService {
     private final MethodHelper methodHelper;
     private final CategoryRepository categoryRepository;
     private final AdvertRepository advertRepository;
-    private final AdvertTypesRepository advertTypesRepository;
+    private final AdvertTypeRepository advertTypeRepository;
     private final TourRequestRepository tourRequestRepository;
     private final UserRepository userRepository;
     private final AdvertService advertService;
@@ -52,7 +50,7 @@ public class ReportService {
 
         Long categoryNo = categoryRepository.count();
         Long advertNo = advertRepository.count();
-        Long advertTypeNo = advertTypesRepository.count();
+        Long advertTypeNo = advertTypeRepository.count();
         Long tourRequestNo = tourRequestRepository.count();
         Long userNo = userRepository.count();
 
@@ -116,9 +114,9 @@ public class ReportService {
             dateTimeValidator.checkBeginTimeAndEndTime(begin, end);
         }
 
-        StatusType statusType;
+        Status statusType;
         try {
-            statusType = StatusType.valueOf(status);
+            statusType = Status.valueOf(status);
 
 
         } catch (BadRequestException e) {

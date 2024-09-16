@@ -1,37 +1,40 @@
 package com.project.entity.concretes.business;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+
 @Entity
+@Getter
+@Setter
 @Table(name = "images")
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
+@NoArgsConstructor
 public class Images {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
     @Column(nullable = false)
+    private boolean featured;
+
+    @Column(nullable = true)
+    private String type;
+
+    @Lob
     private byte[] data;
 
     @Column(nullable = false)
     private String name;
 
-    private String type;
-
-    @Column(nullable = false)
-    private boolean featured;
 
     @ManyToOne
-    @JoinColumn(name = "advert_id", nullable = false)
+    @JoinColumn(name = "advert_id")
     private Advert advert;
+
+
+    @Column(nullable = true)
+    private String path; // Resim yolunu saklamak için eklenen alan
 }

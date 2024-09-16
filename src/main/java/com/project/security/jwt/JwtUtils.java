@@ -1,7 +1,7 @@
 package com.project.security.jwt;
 
 import com.project.entity.concretes.user.User;
-import com.project.security.service.UserDetailsImpl;
+import com.project.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

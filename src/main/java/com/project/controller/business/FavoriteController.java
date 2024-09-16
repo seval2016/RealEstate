@@ -1,5 +1,3 @@
-package com.project.controller.business;
-
 import com.project.entity.concretes.business.Advert;
 import com.project.payload.response.business.AdvertResponse;
 import com.project.service.business.FavoriteService;

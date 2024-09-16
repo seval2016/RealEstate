@@ -6,8 +6,6 @@ import com.project.payload.request.business.CategoryRequest;
 import com.project.payload.response.business.CategoryPropertyKeyResponse;
 import com.project.payload.response.business.CategoryResponse;
 import com.project.payload.response.business.ResponseMessage;
-import com.project.service.business.CategoryPropertyKeyService;
-import com.project.service.business.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

@@ -2,7 +2,7 @@ package com.project.security.config;
 
 import com.project.security.jwt.AuthEntryPointJwt;
 import com.project.security.jwt.AuthTokenFilter;
-import com.project.security.service.UserDetailsServiceImpl;
+import com.project.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
