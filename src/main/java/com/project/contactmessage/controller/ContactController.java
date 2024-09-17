@@ -5,7 +5,7 @@ import com.project.contactmessage.dto.ContactResponse;
 import com.project.contactmessage.entity.Contact;
 import com.project.contactmessage.service.ContactService;
 import com.project.exception.ResourceNotFoundException;
-import com.project.payload.response.ResponseMessage;
+import com.project.payload.response.business.ResponseMessage;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

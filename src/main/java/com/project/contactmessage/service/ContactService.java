@@ -5,9 +5,10 @@ import com.project.contactmessage.dto.ContactRequest;
 import com.project.contactmessage.dto.ContactResponse;
 import com.project.contactmessage.entity.Contact;
 import com.project.contactmessage.mapper.ContactMapper;
+import com.project.contactmessage.messages.Messages;
 import com.project.contactmessage.repository.ContactRepository;
 import com.project.exception.ResourceNotFoundException;
-import com.project.payload.messages.SuccessMessages;
+
 import com.project.payload.response.business.ResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,13 +34,11 @@ public class ContactService {
         Contact createdMessage=contactRepository.save(contactMessage);
 
         return ResponseMessage.<ContactResponse>builder()
-                .message(SuccessMessages.CONTACT_MESSAGE_CREATED)
+                .message(Messages.CONTACT_MESSAGE_CREATED)
                 .httpStatus(HttpStatus.CREATED)
                 .object(contactMapper.mapContactTOContactResponse(createdMessage))
                 .build();
     }
-
-
     public Page<ContactResponse>getAllContactMessages(String q, int page, int size, String sort, String type){
         Pageable pageable = PageRequest.of(Integer.parseInt(q),page, Sort.by(sort).ascending());
         return contactRepository.findAll(pageable).map(contactMapper::mapContactTOContactResponse);
@@ -55,7 +54,6 @@ public class ContactService {
     public Contact findContactByIdAndUpdateStatus(Long contactId){
         return contactRepository.findById(contactId)
                 .orElseThrow(() -> new ResourceNotFoundException("Contact not found with id " + contactId));
-
     }
 
     public String deleteById(Long contactId) {
@@ -66,6 +64,6 @@ public class ContactService {
 
         // Kayıt mevcutsa sil
         contactRepository.deleteById(contactId);
-        return SuccessMessages.CONTACT_MESSAGE_DELETED;
+        return Messages.CONTACT_MESSAGE_DELETED;
     }
 }

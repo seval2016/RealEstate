@@ -5,8 +5,7 @@ package com.project.contactmessage.entity;
 public enum ContactStatus {
 
     UNREAD(0),
-    READ(1),
-    ;
+    READ(1);
 
     private final int value;
 

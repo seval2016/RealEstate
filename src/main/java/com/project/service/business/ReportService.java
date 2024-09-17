@@ -1,5 +1,6 @@
 package com.project.service.business;
 
+import com.project.entity.concretes.business.TourRequest;
 import com.project.service.user.UserService;
 import com.project.service.validator.DateTimeValidator;
 import com.project.entity.concretes.business.Advert;
