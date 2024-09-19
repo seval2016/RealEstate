@@ -2,6 +2,8 @@ package com.project.payload.response.business;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.entity.concretes.business.CategoryPropertyKey;
+import com.project.entity.concretes.business.Favorite;
+import com.project.entity.concretes.business.TourRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

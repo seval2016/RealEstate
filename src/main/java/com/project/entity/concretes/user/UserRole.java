@@ -1,6 +1,6 @@
 package com.project.entity.concretes.user;
 
-import com.project.entity.enums.Role;
+import com.project.entity.enums.RoleType;
 
 import com.project.entity.enums.RoleType;
 import lombok.AllArgsConstructor;
