@@ -47,7 +47,7 @@ public class Advert {
     private int status = AdvertStatus.PENDING.getValue();
 
     @Column(nullable = false)
-    private boolean builtIn = false;
+    private boolean builtIn = false;  // normalde default deger false
 
     @Column(nullable = false)
     private boolean isActive = true;

@@ -23,6 +23,8 @@ import com.project.service.user.UserRoleService;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +37,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
+@Component  // Sonradan murat Ekledi
 @RequiredArgsConstructor
 public class MethodHelper {
 
@@ -43,6 +45,7 @@ public class MethodHelper {
     private final PasswordEncoder passwordEncoder;
     private final UserRoleService userRoleService;
     private final AdvertRepository advertRepository;
+    //@Lazy
     private final CategoryService categoryService;
 
 

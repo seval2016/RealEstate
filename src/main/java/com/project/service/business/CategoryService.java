@@ -17,6 +17,9 @@ import com.project.repository.business.CategoryRepository;
 import com.project.service.helper.MethodHelper;
 import com.project.service.helper.SlugUtils;
 import lombok.RequiredArgsConstructor;
+//import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +36,7 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+    @Lazy
     private final MethodHelper methodHelper;
     private final SlugUtils slugUtils;
     private final CategoryPropertyKeyRepository categoryPropertyKeyRepository;
@@ -51,7 +55,7 @@ public class CategoryService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(type), sort));
 
         Page<Category> categoryPage = categoryRepository.findByTitleContainingAndIsActiveTrue(query, pageable);
-        return  categoryPage.map(categoryMapper::mapCategoryToCategoryResponse);
+        return categoryPage.map(categoryMapper::mapCategoryToCategoryResponse);
     }
 
     public Page<CategoryResponse> getAllCategories(String query, int page, int size, String sort, String type) {
@@ -101,15 +105,15 @@ public class CategoryService {
                 categoryPropertyKeyRepository.save(propertyKey);
             }
         }
-            // Kaydedilen kategoriye ait bilgileri response'a mapliyoruz
-            CategoryResponse categoryResponse = categoryMapper.mapCategoryToCategoryResponse(savedCategory);
+        // Kaydedilen kategoriye ait bilgileri response'a mapliyoruz
+        CategoryResponse categoryResponse = categoryMapper.mapCategoryToCategoryResponse(savedCategory);
 
-            // ResponseMessage olarak geri döndürülüyor
-                return ResponseMessage.<CategoryResponse>builder()
-                        .message("Category created successfully")
-                        .object(categoryResponse)
-                        .build();
-            }
+        // ResponseMessage olarak geri döndürülüyor
+        return ResponseMessage.<CategoryResponse>builder()
+                .message("Category created successfully")
+                .object(categoryResponse)
+                .build();
+    }
 
     public ResponseMessage<CategoryResponse> updateCategoryById(Long id, CategoryRequest categoryRequest) {
         // Kategori'yi id ile bul

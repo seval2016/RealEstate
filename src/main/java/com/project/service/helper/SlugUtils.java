@@ -1,8 +1,11 @@
 package com.project.service.helper;
 
+import org.springframework.stereotype.Component;
+
 import java.text.Normalizer;
 import java.util.regex.Pattern;
 
+@Component  // Sonradan Murat Ekledi
 public class SlugUtils {
 
     public static String toSlug(String input) {
