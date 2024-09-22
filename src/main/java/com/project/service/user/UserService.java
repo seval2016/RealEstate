@@ -114,7 +114,7 @@ public class UserService {
         User user2 = userRepository.findByUsernameEquals(userName);
 
         //!!! builtIn ve Role kontrolu
-        if(Boolean.TRUE.equals(user.isBuiltIn())){
+        if(Boolean.TRUE.equals(user.getBuiltIn())){
             throw  new BadRequestException(ErrorMessages.NOT_PERMITTED_METHOD_MESSAGE);
 
         } else if (user2.getUserRole().stream()
@@ -218,5 +218,9 @@ public class UserService {
         User user = userRepository.findByUsernameEquals(username);
         user.setPasswordHash(passwordEncoder.encode(passwordUpdateRequest.getNewPassword()));
         userRepository.save(user);
+    }
+
+    public List<User> getUsersByRoleType(RoleType roleType) {
+        return userRepository.findByUserRole_Role(roleType);
     }
 }

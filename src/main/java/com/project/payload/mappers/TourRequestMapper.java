@@ -1,8 +1,9 @@
 package com.project.payload.mappers;
 
 import com.project.entity.concretes.business.TourRequest;
-import com.project.payload.request.business.TourRequestCreateAndUpdateRequest;
-import com.project.payload.response.business.TourRequestResponse;
+import com.project.payload.request.business.TourRequestRequest;
+
+import com.project.payload.response.business.tourRequest.TourRequestResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ public class TourRequestMapper {
                 .id(request.getId())
                 .tourDate(request.getTourDate())
                 .tourTime(request.getTourTime())
-                .status(request.getStatusStatus())
+                .status(request)
                 .updateAt(request.getUpdateAt())
                 .advert(advertMapper.mapAdvertToAdvertResponse(request.getAdvert()))
                 .ownerUser(userMapper.mapUserToUserResponseForTourRequest(request.getOwnerUser()))
@@ -43,7 +44,7 @@ public class TourRequestMapper {
                 //---Advert dahil ettim
                 .advert(advertMapper.mapAdvertToAdvertResponse(request.getAdvert()))
                 //---Image dahil ettim
-                .image(imageMapper.mapToImageResponse(request.getAdvert().getFeaturedImage()))
+                .image(imageMapper.mapToImageResponse(request.getAdvert().getFeatured()))
                 .build();
     }
 

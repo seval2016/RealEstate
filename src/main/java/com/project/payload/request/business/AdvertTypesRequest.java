@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class AdvertTypeRequest {
+public class AdvertTypesRequest {
 
     @NotNull(message = "Please enter title")
     @Size(min = 2 , max = 30 , message = "Title must have min 2 chars and max 30 chars")

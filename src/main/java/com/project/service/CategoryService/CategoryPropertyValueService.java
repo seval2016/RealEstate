@@ -19,10 +19,12 @@ public class CategoryPropertyValueService {
     private CategoryPropertyValueRepository categoryPropertyValueRepository;
 
     public CategoryPropertyValue createCategoryPropertyValue(CategoryPropertyValue value) {
+        // C07 için eksik: 'builtIn' true olan category property value yaratılmamalı.
         return categoryPropertyValueRepository.save(value);
     }
 
     public CategoryPropertyValue updateCategoryPropertyValue(Long id, CategoryPropertyValue value) {
+        // C09 için eksik: 'builtIn' true olan property value güncellenmemeli.
         if (categoryPropertyValueRepository.existsById(id)) {
             value.setId(id);
             return categoryPropertyValueRepository.save(value);
@@ -31,6 +33,8 @@ public class CategoryPropertyValueService {
     }
 
     public void deleteCategoryPropertyValue(Long id) {
+        // C10 için eksik: 'builtIn' true olan property value silinmemeli.
+        // Ayrıca bu property value ile ilişkili ilanlar ve anahtarlar (keys) varsa, silme işlemi yapılmalı.
         categoryPropertyValueRepository.deleteById(id);
     }
 
@@ -44,8 +48,5 @@ public class CategoryPropertyValueService {
 
     public List<CategoryPropertyValue> getValuesByCategoryPropertyKeyId(Long categoryPropertyKeyId) {
         return categoryPropertyValueRepository.findByCategoryPropertyKey_Id(categoryPropertyKeyId);
-
     }
-
-
 }

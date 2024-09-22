@@ -1,4 +1,4 @@
-package com.project.payload.response.image;
+package com.project.payload.response.business.advert;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -6,20 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+public class AdvertResponseForCustomer { //A05
 
-public class ImageResponse {
-
-        private byte[] image;
-
-    }
-
-
-
+    private Long id;
+    private String title;
+    private String image;
+}

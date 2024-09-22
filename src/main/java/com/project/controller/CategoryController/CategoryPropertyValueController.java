@@ -2,10 +2,9 @@ package com.project.controller.CategoryController;
 
 import com.project.entity.concretes.business.Advert;
 import com.project.payload.request.CategoryRequest.CategoryPropertyValueRequest;
-import com.project.payload.response.CategoryResponse.CategoryPropertyValueResponse;
+import com.project.payload.response.business.category.CategoryPropertyValueResponse;
 import com.project.entity.Category.CategoryPropertyKey;
 import com.project.entity.Category.CategoryPropertyValue;
-import com.project.payload.response.business.AdvertResponse;
 import com.project.service.CategoryService.CategoryPropertyKeyService;
 import com.project.service.CategoryService.CategoryPropertyValueService;
 import org.springframework.beans.factory.annotation.Autowired;

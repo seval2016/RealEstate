@@ -79,6 +79,20 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+		<!-- JSON Web Token (JWT): Kullanıcı kimlik doğrulaması için kullanılır -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version> <!-- Eski bir versiyon, daha güncel bir sürüm kullanılabilir -->
+		</dependency>
+
+		<!-- SpringDoc OpenAPI: API dökümantasyonu oluşturmak için Swagger/OpenAPI desteği -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.9</version>
+		</dependency>
+
 		<!-- Spring Boot Mail: Email gönderme işlemleri için gerekli bağımlılık -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -91,6 +105,7 @@
 			<artifactId>poi</artifactId>
 			<version>5.2.4</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
@@ -102,20 +117,6 @@
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.1</version>
-		</dependency>
-
-		<!-- SpringDoc OpenAPI: API dökümantasyonu oluşturmak için Swagger/OpenAPI desteği -->
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.1.0</version>
-		</dependency>
-
-		<!-- JSON Web Token (JWT): Kullanıcı kimlik doğrulaması için kullanılır -->
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version> <!-- Eski bir versiyon, daha güncel bir sürüm kullanılabilir -->
 		</dependency>
 	</dependencies>
 

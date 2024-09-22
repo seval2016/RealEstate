@@ -1,7 +1,6 @@
 package com.project.controller.CategoryController;
 
 import com.project.payload.request.CategoryRequest.CategoryPropertyKeyRequest;
-import com.project.payload.response.CategoryResponse.CategoryPropertyKeyResponse ;
 import com.project.entity.Category.Category;
 import com.project.entity.Category.CategoryPropertyKey;
 import com.project.service.CategoryService.CategoryPropertyKeyService;
@@ -36,6 +35,9 @@ public class CategoryPropertyKeyController {
         key.setType(request.getType());
         key.setBuiltIn(request.getBuiltIn());
 
+
+        // **HATA:** `request.getCategoryId()` ile `@PathVariable` ile gelen `id` çakışıyor.
+        // Burada `categoryService.getCategoryById(id)` kullanılmalı.
         // Set Category entity
         Optional<Category> category = categoryService.getCategoryById(request.getCategoryId());
         if (category.isPresent()) {
@@ -51,6 +53,9 @@ public class CategoryPropertyKeyController {
 
     @PutMapping("/properties/{id}")  //  *C09*
     public ResponseEntity<CategoryPropertyKeyResponse> updateCategoryPropertyKey(@PathVariable Long id, @RequestBody CategoryPropertyKeyRequest request) {
+        // **HATA:** Güncelleme işleminde mevcut `id`'ye göre bir `CategoryPropertyKey` nesnesi getirilmediği için, var olmayan bir key güncellenemez.
+        // `categoryPropertyKeyService.getCategoryPropertyKeyById(id)` ile var olup olmadığı kontrol edilmeli.
+
         CategoryPropertyKey key = new CategoryPropertyKey();
         key.setName(request.getName());
         key.setType(request.getType());
@@ -75,6 +80,8 @@ public class CategoryPropertyKeyController {
 
     @DeleteMapping("/properties/{id}")   //  *C10*  id değeri girilmeli //!!categoryId değeri hata fırlatır
     public ResponseEntity<String> deleteCategoryPropertyKey(@PathVariable Long id) {
+        // **NOT:** Silme işleminde `category_property_values` tablosundaki ilgili kayıtlar kontrol mekanizması
+        // ile silinmeli.
         categoryPropertyKeyService.deleteCategoryPropertyKey(id);
         String message = "Category property with ID " + id + " has been successfully deleted.";
         return ResponseEntity.ok(message);

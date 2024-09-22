@@ -1,16 +1,20 @@
 package com.project.entity.concretes.business;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.AdvertStatus;
-import lombok.*;
+import com.project.utils.SlugUtils;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.awt.*;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
 import java.util.List;
 
 @Entity
@@ -25,7 +29,7 @@ public class Advert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 150)
     @Size(min = 5, max = 150)
     private String title;
 
@@ -36,24 +40,23 @@ public class Advert {
     @Size(min = 5, max = 200)
     private String slug;
 
-    @Column(nullable = false)
-    private Double price= 0.0;
-
-    @Enumerated(EnumType.ORDINAL)
-    @Column(nullable = false)
-    private AdvertStatus status = AdvertStatus.PENDING;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
 
     @Column(nullable = false)
-    private boolean builtIn=false;
+    private int status = AdvertStatus.PENDING.getValue();
 
     @Column(nullable = false)
-    private boolean isActive=true;
+    private Boolean builtIn = false;
 
     @Column(nullable = false)
-    private int viewCount=0;
+    private Boolean isActive = true;
 
     @Column(nullable = false)
-    private String location;
+    private Integer viewCount = 0;
+
+    @Column(nullable = false, length = 255)
+    private String location; // Google embed kodu
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Turkey")
     @Column(nullable = false)
@@ -62,6 +65,26 @@ public class Advert {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Turkey")
     private LocalDateTime updateAt;
 
+    @PrePersist
+    protected void onCreate() {
+        createAt = LocalDateTime.now();
+        updateAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updateAt = LocalDateTime.now();
+    }
+
+    @PostPersist
+    @PostUpdate
+    public void generateSlug() {
+        if (this.slug == null || this.slug.isEmpty()) {
+            this.slug = SlugUtils.toSlug(this.title) + "-" + this.id;
+        }
+    }
+
+    // İlişkiler
     @ManyToOne
     @JoinColumn(name = "advert_type_id", nullable = false)
     private AdvertType advertType;
@@ -86,22 +109,20 @@ public class Advert {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "featured_image_id")
-    private Image featuredImage;
-
-    @OneToMany(mappedBy = "advert",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
+    private List<Image> images; // Image list associated with the advert
+
+    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
     private List<TourRequest> tourRequestList;
 
-    @PrePersist
-    protected void onCreate() {
-        createAt = LocalDateTime.now();
-        updateAt = LocalDateTime.now();
-    }
+    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
+    private List<CategoryPropertyValue> categoryPropertyValuesList;
 
-    @PreUpdate
-    protected void onUpdate() {
-        updateAt = LocalDateTime.now();
-    }
+    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
+    private List<Favorite> favoritesList;
+
+    @OneToMany(mappedBy = "advertId", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Log> logList;
 }

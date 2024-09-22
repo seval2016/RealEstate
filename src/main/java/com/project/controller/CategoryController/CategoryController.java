@@ -1,7 +1,6 @@
 package com.project.controller.CategoryController;
 
 import com.project.payload.request.CategoryRequest.CategoryRequest;
-import com.project.payload.response.CategoryResponse.CategoryResponse;
 import com.project.entity.Category.Category;
 import com.project.service.CategoryService.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -25,20 +24,24 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping()  // *C01*   //rastgele getirir
+    @GetMapping()  // *C01*  // Bu endpoint `q`, `page`, `size`, `sort` ve `type` parametrelerini bekliyor. Eksik olan parametreler eklenmeli.
     public ResponseEntity<List<CategoryResponse>> getActiveCategories() {
         List<Category> categories = categoryService.getActiveCategories();
         List<CategoryResponse> response = categories.stream().map(CategoryResponse::new).toList();
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/admin")  // *C02* //kategorileri başlıklarına ve sayfa numarasına ve sayfadaki kayıt sırasına göre getirir.
-    //10,09,24 de eklendi . Postmanda denendi çalışır durumda
+    @GetMapping("/admin")  // *C02* // Kategorileri başlıklarına ve sayfa numarasına ve sayfadaki kayıt sırasına göre getirir.
+    // 10,09,24'de eklendi. Postmanda denendi, çalışır durumda.
     public ResponseEntity<Page<CategoryResponse>> getAllCategories(
             @RequestParam(defaultValue = "id,asc") String[] sort,
             @RequestParam(required = false) String q,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
+
+        // **HATA:**
+        // `categoryService.getAllCategories((Sort) pageable);` kısmında hata var. `Pageable` `Sort`'a cast edilemez.
+        // `categoryService.getAllCategories(pageable)` olmalı.
 
         // Sıralama işlemi
         Sort sortOrder = Sort.by(Sort.Order.by(sort[0]));
@@ -54,13 +57,14 @@ public class CategoryController {
         if (q != null && !q.isBlank()) {
             categories = categoryService.searchCategoriesByTitle(q, pageable); // Arama işlemi
         } else {
-            categories = (Page<Category>) categoryService.getAllCategories((Sort) pageable); // Tüm kategorileri getir
+            categories = (Page<Category>) categoryService.getAllCategories((Sort) pageable);
         }
 
         // CategoryResponse nesnesine dönüştür
         Page<CategoryResponse> response = categories.map(CategoryResponse::new);
         return ResponseEntity.ok(response);
     }
+
 
 
     @GetMapping("/{id}")  // id ye göre getirir  *C03*

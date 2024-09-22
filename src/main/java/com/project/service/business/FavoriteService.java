@@ -8,7 +8,6 @@ import com.project.payload.mappers.AdvertMapper;
 import com.project.payload.mappers.UserMapper;
 import com.project.payload.messages.SuccessMessages;
 import com.project.payload.response.abstracts.BaseUserResponse;
-import com.project.payload.response.business.AdvertResponse;
 import com.project.repository.business.AdvertRepository;
 import com.project.repository.business.FavoriteRepository;
 import com.project.repository.user.UserRepository;
