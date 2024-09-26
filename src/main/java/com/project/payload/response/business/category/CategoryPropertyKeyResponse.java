@@ -1,5 +1,6 @@
-package com.project.payload.response.business;
+package com.project.payload.response.business.category;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,13 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class ImagesResponse {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class CategoryPropertyKeyResponse {
 
     private Long id;
+
     private String name;
-    private String type;
-    private boolean featured;
-    private Long advertId;
-    private String url;
-    private byte[] data;
+
+    private Boolean builtIn;
+
 }

@@ -1,14 +1,16 @@
-package com.project.payload.response.business;
+package com.project.payload.response.business.advert;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.entity.concretes.business.CategoryPropertyKey;
 import com.project.entity.concretes.business.Favorite;
 import com.project.entity.concretes.business.TourRequest;
+import com.project.payload.response.business.image.ImageResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +29,13 @@ public class AdvertResponse {
 
     private String title;
 
-    private String description;
-
     private String slug;
 
-    private Double price;
+    private BigDecimal price;
 
     private int status;
+
+    private String description;
 
     private Boolean builtIn;
 
@@ -59,11 +61,11 @@ public class AdvertResponse {
 
     private LocalDateTime updateAt;
 
-    private Map<String,String > properties;
+    private Map<String, String> properties;
 
-    private List<ImagesResponse> images;
+    private List<ImageResponse> images;
 
-    private ImagesResponse featuredImage;
+    private ImageResponse featuredImage;
 
     private List<Favorite> favoritesList;
 
@@ -74,11 +76,12 @@ public class AdvertResponse {
     private int tourRequestCount;
     private int favoritesCount;
 
-
-    // Ek Constructor (Sadece id ve title için)
-    public AdvertResponse(Long id, String title) {
+    public AdvertResponse(Long id, String title, String description, String image, BigDecimal price, int status) {
         this.id = id;
         this.title = title;
+        this.description = description;
+        this.price = price;
+        this.status = status;
     }
 
 }

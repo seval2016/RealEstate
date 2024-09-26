@@ -1,8 +1,6 @@
 package com.project.service.business;
 
 
-import com.project.service.user.UserRoleService;
-import com.project.service.user.UserService;
 import com.project.entity.concretes.business.Advert;
 import com.project.entity.concretes.business.TourRequest;
 import com.project.entity.concretes.user.User;
@@ -17,10 +15,12 @@ import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.business.TourRequestRequest;
 import com.project.payload.response.business.ResponseMessage;
-import com.project.payload.response.business.TourRequestResponse;
+import com.project.payload.response.business.tourRequest.TourRequestResponse;
 import com.project.repository.business.TourRequestRepository;
 import com.project.service.helper.MethodHelper;
 import com.project.service.helper.PageableHelper;
+import com.project.service.user.UserRoleService;
+import com.project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -108,10 +108,10 @@ public class TourRequestService {
         checkUserRole(user, RoleType.CUSTOMER);
 
 
-         Advert advert = advertService.getAdvertById(request.getAdvertId());
+        Advert advert = advertService.getAdvertById(request.getAdvertId());
 
-         checkConflictTourRequestByGuestUser(user,request);
-         checkConflictTourRequestByOwnerUser(advert.getUser(),request);
+        checkConflictTourRequestByGuestUser(user,request);
+        checkConflictTourRequestByOwnerUser(advert.getUser(),request);
 
         TourRequest createdTourRequest = tourRequestMapper.createTourRequestRequestToTourRequest(request);
         createdTourRequest.setCreateAt(LocalDateTime.now(ZoneId.of("UTC")));
@@ -126,7 +126,7 @@ public class TourRequestService {
         TourRequestResponse tourRequestResponse = tourRequestMapper.tourRequestToTourRequestResponse(saved);
         return ResponseMessage.<TourRequestResponse>builder()
                 .object(tourRequestResponse)
-                .httpStatus(HttpStatus.CREATED)
+                .httpStatus(HttpStatus.OK)
                 .message(SuccessMessages.TOUR_REQUEST_SAVED)
                 .build();
     }
@@ -228,8 +228,8 @@ public class TourRequestService {
 
         tourRequestRepository.delete(tourRequest);
 
-         return ResponseMessage.<TourRequestResponse>builder()
-                 .httpStatus(HttpStatus.OK)
+        return ResponseMessage.<TourRequestResponse>builder()
+                .httpStatus(HttpStatus.OK)
                 .message(SuccessMessages.TOUR_REQUEST_DELETED)
                 .build();
     }
@@ -285,7 +285,6 @@ public class TourRequestService {
         }
     }
 
-    }
-
+}
 
 

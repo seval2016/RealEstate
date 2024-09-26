@@ -22,7 +22,7 @@ public class ResetService {
     private final AdvertRepository advertRepository;
     private final ImagesRepository imageRepository;
     private final CategoryRepository categoryRepository;
-    private final AdvertTypeRepository advertTypeRepository;
+    private final AdvertTypesRepository advertTypesRepository;
     private final CategoryPropertyKeyRepository categoryPropertyKeyRepository;
     private final CategoryPropertyValueRepository categoryPropertyValueRepository;
     private final FavoriteRepository favoritesRepository;
@@ -39,7 +39,7 @@ public class ResetService {
 
         List<Advert> alladverts= advertRepository.findAll();
         for(Advert advert : alladverts){
-            if(!advert.isBuiltIn()){
+            if(!advert.getBuiltIn()){
                 advertRepository.delete(advert);
             }
         }
@@ -51,13 +51,13 @@ public class ResetService {
             }
         }
 
-        List<AdvertType> allAdvertTypes = advertTypeRepository.findAll();
+        List<AdvertType> allAdvertTypes = advertTypesRepository.findAll();
             // Silinmesi gereken AdvertType'leri filtreleyin
              List<AdvertType> toBeDeleted = allAdvertTypes.stream()
                 .filter(advertType -> !advertType.isBuiltIn()) // Sadece false olanları seç
                 .collect(Collectors.toList());
             // Toplu olarak silme işlemi
-             advertTypeRepository.deleteAll(toBeDeleted);
+             advertTypesRepository.deleteAll(toBeDeleted);
 
         List<CategoryPropertyKey> allCategoryPropertyKey =categoryPropertyKeyRepository.findAll();
         for (CategoryPropertyKey categoryPropertyKey:allCategoryPropertyKey){
@@ -68,7 +68,7 @@ public class ResetService {
 
         List<User> allUser=userRepository.findAll();
         for (User user:allUser){
-            if (!user.isBuiltIn()){
+            if (!user.getBuiltIn()){
                 userRepository.delete(user);
             }
         }

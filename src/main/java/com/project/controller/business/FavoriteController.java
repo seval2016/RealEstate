@@ -1,5 +1,4 @@
 import com.project.entity.concretes.business.Advert;
-import com.project.payload.response.business.AdvertResponse;
 import com.project.service.business.FavoriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

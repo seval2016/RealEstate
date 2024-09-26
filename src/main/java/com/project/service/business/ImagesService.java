@@ -3,7 +3,7 @@ package com.project.service.business;
 import java.io.IOException;
 
 
-import com.project.entity.concretes.business.Images;
+import com.project.entity.concretes.business.Image;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.response.business.ImagesResponse;
@@ -37,7 +37,7 @@ public class ImagesService {
 
     private final String imageDirectory="/path/to/image/directory";
 
-    public Optional<Images> getImageById(Long id) {
+    public Optional<Image> getImageById(Long id) {
         return imagesRepository.findById(id);
     }
 
@@ -53,7 +53,7 @@ public class ImagesService {
 
         for (MultipartFile file : files) {
             try {
-                Images image = new Images();
+                Image image = new Image();
 
                 image.setData(file.getBytes());
                 image.setName(file.getOriginalFilename());
@@ -67,7 +67,7 @@ public class ImagesService {
                     image.setFeatured(false);
                 }
 
-                Images savedImage = imagesRepository.save(image);
+                Image savedImage = imagesRepository.save(image);
 
                 // ImageResponse objesi yarat (Base64 dönüşümü frontend'de yapılabilir)
                 ImagesResponse response = ImagesResponse.builder()
@@ -92,9 +92,9 @@ public class ImagesService {
     public void deleteImages(List<Long> ids) {
 
 
-        List<Images> images = imagesRepository.findAllById(ids);
+        List<Image> images = imagesRepository.findAllById(ids);
 
-        for (Images image:images) {
+        for (Image image:images) {
             if(image==null){
                 throw new ResourceNotFoundException(ErrorMessages.IMAGE_NOT_FOUND);
             }
@@ -110,17 +110,17 @@ public class ImagesService {
         imagesRepository.deleteAllById(ids);
     }
 
-    public List<Images> getALlImages(){
+    public List<Image> getALlImages(){
 
         return imagesRepository.findAll();
     }
 
     public byte[] updateFeaturedOfImage(Long imageId) {
 
-        Images image = imagesRepository.findById(imageId).orElseThrow(()->
+        Image image = imagesRepository.findById(imageId).orElseThrow(()->
                 new ResourceNotFoundException(ErrorMessages.IMAGE_NOT_FOUND));
 
-        List<Images> images = imagesRepository.findByAdvertId(image.getAdvert().getId());
+        List<Image> images = imagesRepository.findByAdvertId(image.getAdvert().getId());
 
         images.forEach(item -> item.setFeatured(false));
 

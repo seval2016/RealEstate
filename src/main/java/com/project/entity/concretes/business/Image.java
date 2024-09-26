@@ -3,6 +3,7 @@ package com.project.entity.concretes.business;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Base64;
 
 
 @Entity
@@ -11,17 +12,11 @@ import javax.persistence.*;
 @Table(name = "images")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Images {
+public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private boolean featured;
-
-    @Column(nullable = true)
-    private String type;
 
     @Lob
     private byte[] data;
@@ -29,6 +24,11 @@ public class Images {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = true)
+    private String type;
+
+    @Column(nullable = false)
+    private Boolean featured=false;
 
     @ManyToOne
     @JoinColumn(name = "advert_id")
@@ -36,5 +36,11 @@ public class Images {
 
 
     @Column(nullable = true)
-    private String path; // Resim yolunu saklamak için eklenen alan
+    private String path;
+
+    public String getUrl() {
+        // Burada URL oluşturma mantığını ekleyin
+        // Örneğin, bir Base64 string ile dönebilir veya bir dosya yolunu verebilirsiniz
+        return "data:" + type + ";base64," + Base64.getEncoder().encodeToString(data);
+    }
 }

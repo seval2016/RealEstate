@@ -1,4 +1,4 @@
-package com.project.payload.response.CategoryResponse;
+package com.project.payload.response.business.category;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.entity.Category.CategoryPropertyValue;

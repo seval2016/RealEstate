@@ -1,8 +1,10 @@
 package com.project.controller.business;
 
 
+import com.project.payload.request.business.TourRequestRequest;
 import com.project.payload.response.business.ResponseMessage;
-import com.project.payload.response.business.TourRequestResponse;
+import com.project.payload.response.business.tourRequest.TourRequestResponse;
+import com.project.service.business.TourRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

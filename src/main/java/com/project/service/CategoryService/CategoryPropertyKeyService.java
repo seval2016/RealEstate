@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-
 public class CategoryPropertyKeyService {
 
     @Autowired
@@ -22,6 +21,7 @@ public class CategoryPropertyKeyService {
     }
 
     public CategoryPropertyKey updateCategoryPropertyKey(Long id, CategoryPropertyKey key) {
+        // C09 için eksik: 'builtIn' true olan property key güncellenmemeli.
         if (categoryPropertyKeyRepository.existsById(id)) {
             key.setId(id);
             return categoryPropertyKeyRepository.save(key);
@@ -30,6 +30,8 @@ public class CategoryPropertyKeyService {
     }
 
     public void deleteCategoryPropertyKey(Long id) {
+        // C10 için eksik: 'builtIn' true olan property key silinmemeli.
+        // Ayrıca category_property_values tablosundaki ilişkili kayıtlar da silinmeli.
         categoryPropertyKeyRepository.deleteById(id);
     }
 

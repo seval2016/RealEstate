@@ -1,7 +1,6 @@
 package com.project.payload.mappers;
 
 import com.project.entity.concretes.business.CategoryPropertyKey;
-import com.project.payload.response.business.CategoryPropertyKeyResponse;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 

@@ -3,7 +3,7 @@ package com.project.controller.image;
 
 
 import com.project.payload.response.business.ResponseMessage;
-import com.project.payload.response.image.ImageResponse;
+import com.project.payload.response.business.image.ImageResponse;
 
 import com.project.service.business.ImagesService;
 import lombok.RequiredArgsConstructor;
