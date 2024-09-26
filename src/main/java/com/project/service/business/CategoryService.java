@@ -32,14 +32,26 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+
 public class CategoryService {
 
+    @Lazy  // Murat Ekledi
+    @Autowired
     private final CategoryRepository categoryRepository;
+    @Lazy  // Murat Ekledi
+    @Autowired
     private final CategoryMapper categoryMapper;
-    @Lazy
+    @Lazy  // Murat Ekledi
+    @Autowired
     private final MethodHelper methodHelper;
+    @Lazy  // Murat Ekledi
+    @Autowired
     private final SlugUtils slugUtils;
+    @Lazy  // Murat Ekledi
+    @Autowired
     private final CategoryPropertyKeyRepository categoryPropertyKeyRepository;
+    @Lazy  // Murat Ekledi
+    @Autowired
     private final CategoryPropertyKeyRequest categoryPropertyKeyRequest;
 
 

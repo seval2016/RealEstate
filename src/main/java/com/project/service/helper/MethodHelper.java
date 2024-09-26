@@ -31,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,11 +42,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MethodHelper {
 
+    @Lazy  // Murat Ekledi
+    @Autowired
     private final UserRepository userRepository;
+    @Lazy  // Murat Ekledi
+    @Autowired
     private final PasswordEncoder passwordEncoder;
+    @Lazy  // Murat Ekledi
+    @Autowired
     private final UserRoleService userRoleService;
+    @Lazy  // Murat Ekledi
+    @Autowired
     private final AdvertRepository advertRepository;
-    //@Lazy
+    @Lazy
+    @Autowired
     private final CategoryService categoryService;
 
 

@@ -20,6 +20,7 @@ import com.project.service.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.nio.file.Files;
@@ -44,6 +45,7 @@ public class RealEstateApplication implements CommandLineRunner {
 	private final CategoryService categoryService;
 	private final CountryService countryService;
 	private final DistrictService districtService;
+	@Lazy
 	private final AdvertService advertService;
 	private final ImagesRepository imagesRepository;
 	private final MethodHelper methodHelper;

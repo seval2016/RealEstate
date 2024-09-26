@@ -21,6 +21,7 @@ import com.project.service.helper.MethodHelper;
 import com.project.service.helper.PageableHelper;
 import com.project.service.validator.DateTimeValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +47,7 @@ import java.util.stream.Collectors;
 public class AdvertService {
 
     private final AdvertRepository advertRepository;
+    @Lazy
     private final AdvertMapper advertMapper;
     private final PageableHelper pageableHelper;
     private final AdvertTypesRepository advertTypesRepository;
