@@ -16,4 +16,7 @@ public class CityAdvertResponse {  //A02 - /adverts/cities
 
     @JsonProperty("amount")
     private long advertCount; //advertCount alanını JSON yanıtında "amount" olarak serileştirir.
-}
+
+
+
+ }

@@ -1,7 +1,7 @@
-package com.project.service.CategoryService;
+package com.project.service.business;
 
 import com.project.entity.concretes.business.Category;
-import com.project.repository.CategoryRepository.CategoryRepository;
+import com.project.repository.business.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +56,10 @@ public class CategoryService {
         // İlanlarla ilişkili kontrol mekanizması eklenmeli.
         return false;
     }
+    public Optional<List<Category>> getCategoryByTitle (String category) {
+        return categoryRepository.findByTitle(category);
+
+    }
 
     // Kategori başlığına göre arama yapan metot
 
@@ -68,7 +72,6 @@ public class CategoryService {
     public Optional<Category> getCategoryBySlug(String slug) {
         return categoryRepository.findBySlug(slug);
     }
-
     public Page<Category> getActiveCategories(String q, Pageable pageable) {
         if (q != null && !q.isEmpty()) {
             // Eğer arama parametresi varsa, isme göre filtreleme yapıyoruz.
@@ -77,6 +80,8 @@ public class CategoryService {
         // Eğer arama yoksa, sadece aktif kategoriler getiriliyor
         return categoryRepository.findAllByVisibleTrue(pageable);
     }
+
+
 
 
 

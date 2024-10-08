@@ -39,4 +39,9 @@ public class Log {
     @Column(name = "create_at", nullable = false)
     @CreationTimestamp  // Otomatik olarak kayıt sırasında tarih atanır
     private LocalDateTime createAt;
+
+    @ManyToOne
+    @JoinColumn(name = "advert_id_id")
+    private Advert advertId;
+
 }

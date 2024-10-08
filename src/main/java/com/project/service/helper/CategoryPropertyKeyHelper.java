@@ -17,8 +17,8 @@ public class CategoryPropertyKeyHelper {
     private final CategoryPropertyKeyRepository categoryPropertyKeyRepository;
 
     // Yardımcı metod: ID ile CategoryPropertyKey bulur
-    public CategoryPropertyKey findPropertyKeyById(Long id) {
-        return categoryPropertyKeyRepository.findById(id)
+    public CategoryPropertyKey findPropertyKeyById(byte[] id) {
+        return (CategoryPropertyKey) categoryPropertyKeyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.CATEGORY_PROPERTY_KEY_NOT_FOUND));
     }
 

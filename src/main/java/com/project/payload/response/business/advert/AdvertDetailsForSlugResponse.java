@@ -3,7 +3,8 @@ package com.project.payload.response.business.advert;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.project.payload.response.business.category.PropertyValueResponse;
-import com.project.payload.response.business.image.ImageResponse;
+
+import com.project.payload.response.business.image.ImagesResponse;
 import com.project.payload.response.business.tourRequest.TourRequestResponseForSlug;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,6 @@ public class AdvertDetailsForSlugResponse {//A07
     private Long id;
     private String title;
     private List<PropertyValueResponse> properties; // property listesi için DTO kullanıyoruz
-    private List<ImageResponse> images;        // image'lar için ayrı bir DTO
+    private List<ImagesResponse> images;        // image'lar için ayrı bir DTO
     private List<TourRequestResponseForSlug> tourRequests;
 }

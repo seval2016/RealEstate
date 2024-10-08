@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class CategoryAdvertResponse {
 
     private String category; //İlanın bağlı olduğu kategori adını tutuyor.
-    private int amount; //Bu kategoriye ait ilanların sayısını tutuyor.
+    private long amount; //Bu kategoriye ait ilanların sayısını tutuyor.   //int den longa dönüştürüldü
+
+
 }

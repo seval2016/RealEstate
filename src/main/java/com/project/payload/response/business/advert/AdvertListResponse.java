@@ -1,7 +1,8 @@
 package com.project.payload.response.business.advert;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.payload.response.business.image.ImageResponse;
+
+import com.project.payload.response.business.image.ImagesResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,5 @@ import lombok.NoArgsConstructor;
 public class AdvertListResponse { // A01 - /Adverts
     private Long id;
     private String title;
-    private ImageResponse featuredImage;
+    private ImagesResponse featuredImage;
 }

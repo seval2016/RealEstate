@@ -1,10 +1,11 @@
 package com.project.entity.image;
 
 import com.project.entity.concretes.business.Advert;
+import com.project.payload.response.business.image.ImagesResponse;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Blob;
+import java.util.Base64;
 
 
 @Entity
@@ -14,8 +15,10 @@ import java.sql.Blob;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
-public class Image {
+
+public class Images extends ImagesResponse {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,5 +42,26 @@ public class Image {
 
     @Column(nullable = true)
     private String path; // Resim yolunu saklamak için eklenen alan
+
+
+
+
+    private String url;
+
+
+
+
+
+    public String getUrl() {
+        // Burada URL oluşturma mantığını ekleyin
+        // Örneğin, bir Base64 string ile dönebilir veya bir dosya yolunu verebilirsiniz
+        return "data:" + type + ";base64," + Base64.getEncoder().encodeToString(data);
+    }
+
+
+
+
+
+
 
 }

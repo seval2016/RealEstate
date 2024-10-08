@@ -1,6 +1,7 @@
 package com.project.service.business;
 
 import com.project.entity.concretes.business.Favorite;
+import com.project.payload.response.business.advert.AdvertResponse;
 import com.project.service.AuthenticationService;
 import com.project.entity.concretes.business.Advert;
 import com.project.entity.concretes.user.User;
@@ -41,7 +42,7 @@ public class FavoriteService {
 
         // Convert Favorite entities to AdvertResponse DTOs
         return favorites.stream()
-                .map(favorite -> advertMapper.mapAdvertToAdvertResponse(favorite.getAdvert()))
+                .map(favorite -> advertMapper.mapAdvertToAdvertResponseForAll(favorite.getAdvert()))
                 .collect(Collectors.toList());
     }
 
@@ -70,7 +71,7 @@ public class FavoriteService {
             favoriteRepository.save(favorite);
         }
 
-        return advertMapper.mapAdvertToAdvertResponse(advert);
+        return advertMapper.mapAdvertToAdvertResponseForAll(advert);
     }
 
     public String deleteAllFavorites(HttpServletRequest request) {

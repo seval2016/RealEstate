@@ -1,16 +1,16 @@
-package com.project.controller.CategoryController;
+package com.project.controller.business;
 
-import com.project.entity.Category.CategoryPropertyValue;
-import com.project.payload.request.CategoryRequest.CategoryPropertyKeyRequest;
-import com.project.entity.Category.Category;
-import com.project.entity.Category.CategoryPropertyKey;
+import com.project.entity.concretes.business.Category;
+import com.project.entity.concretes.business.CategoryPropertyKey;
+import com.project.entity.concretes.business.CategoryPropertyValue;
+import com.project.payload.request.business.CategoryPropertyKeyRequest;
 import com.project.payload.response.business.category.CategoryPropertyKeyResponse;
-import com.project.service.CategoryService.CategoryPropertyKeyService;
-import com.project.service.CategoryService.CategoryService;
+import com.project.service.business.CategoryPropertyKeyService;
+import com.project.service.business.CategoryPropertyValueService;
+import com.project.service.business.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.project.service.CategoryService.CategoryPropertyValueService;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +44,7 @@ public ResponseEntity<List<CategoryPropertyKeyResponse>> getKeysByCategoryId(@Pa
     return ResponseEntity.ok(response);
 }
      */
+
 
     @PostMapping("/{id}/properties")  // *C08*
     public ResponseEntity<CategoryPropertyKeyResponse> createCategoryPropertyKey(

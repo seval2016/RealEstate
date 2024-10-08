@@ -3,23 +3,19 @@ package com.project.entity.concretes.user;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.entity.concretes.business.Advert;
-
+import com.project.entity.concretes.business.Favorite;
 import com.project.entity.concretes.business.TourRequest;
 import lombok.*;
 
 import javax.persistence.*;
-import com.project.entity.concretes.business.Favorite;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-
 import java.util.List;
 
-
 @Entity
-@Table(name="users")
-
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -42,9 +38,10 @@ public class User {
     @Size(min = 2, max = 30)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false,unique = true)
     @Size(min = 10, max = 80)
     private String email;
+
 
     @Column(unique = true)
     private String phone;
@@ -76,9 +73,7 @@ public class User {
         updateAt = LocalDateTime.now();
     }
 
-    //------------İlişkili sütunlar -------------
-
-    //ManyToOne
+    //------------ İlişkili sütunlar -------------
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -88,12 +83,20 @@ public class User {
     )
     private List<UserRole> userRole;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Advert> advert;
 
-    @OneToMany(mappedBy = "ownerUser",cascade = CascadeType.ALL,orphanRemoval = true) //iliski ismine bak yaz
-    private List<TourRequest>tourRequests;
+    // 'tourRequests' alanını 'ownerUser' ilişkisine göre güncelledik
+    @OneToMany(mappedBy = "ownerUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TourRequest> ownerTourRequests; // Düzeltildi
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
-    private List<Favorite>favoritesList;
+    @OneToMany(mappedBy = "guestUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TourRequest> guestTourRequests; // Düzeltildi
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Favorite> favoritesList;
+
+    @Column(nullable = false)
+    private Boolean isBuiltIn = false;
+
 }

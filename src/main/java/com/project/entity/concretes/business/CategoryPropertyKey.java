@@ -1,10 +1,10 @@
-package com.project.entity.Category;
+package com.project.entity.concretes.business;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 
 @AllArgsConstructor
@@ -34,8 +34,6 @@ public class CategoryPropertyKey {
 
     private Long managerId ;
 
-    @Column(nullable = false)
-    private int category_id ;
 
 
 

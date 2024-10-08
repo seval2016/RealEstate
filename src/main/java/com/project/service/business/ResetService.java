@@ -46,7 +46,7 @@ public class ResetService {
 
         List<Category> allCategory=categoryRepository.findAll();
         for (Category category:allCategory){
-            if (!category.isBuiltIn()){
+            if (!category.getBuiltIn()){
                 categoryRepository.delete(category);
             }
         }
@@ -61,7 +61,7 @@ public class ResetService {
 
         List<CategoryPropertyKey> allCategoryPropertyKey =categoryPropertyKeyRepository.findAll();
         for (CategoryPropertyKey categoryPropertyKey:allCategoryPropertyKey){
-            if (!categoryPropertyKey.isBuiltIn()){
+            if (!categoryPropertyKey.getBuiltIn()){
                 categoryPropertyKeyRepository.delete(categoryPropertyKey);
             }
         }

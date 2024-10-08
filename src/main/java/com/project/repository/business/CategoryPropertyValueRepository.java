@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface CategoryPropertyValueRepository extends JpaRepository<CategoryPropertyValue, Long> {
 
     // Belirli bir advert'e ait tüm değerleri getir
-    List<CategoryPropertyValue> findByAdvertAdvertId(Long advertId);
+    List<CategoryPropertyValue> findByAdvert_Id(Long advertId);
 
     // Belirli bir kategori özelliği anahtarına ait tüm değerleri getir
     List<CategoryPropertyValue> findByCategoryPropertyKey_Id(Long categoryPropertyKeyId);
@@ -30,5 +30,10 @@ public interface CategoryPropertyValueRepository extends JpaRepository<CategoryP
     @Query("DELETE FROM CategoryPropertyValue")
     void deleteAllCategoryPropertyValuesExceptBuiltIn();
 */
-    void deleteByPropertyKeyId(Long id);
+    // Eğer propertyKeyId yoksa bu metodu kaldırın ya da güncelleyin
+    void deleteByPropertyKeyId(Long propertyKeyId); // Doğru alan adıyla değiştirin
+    List<CategoryPropertyValue> findByCategoryPropertyKeyId(Long keyId);
+
+
+
 }

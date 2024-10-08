@@ -1,7 +1,7 @@
 package com.project.service.helper;
 
 import com.project.entity.concretes.business.*;
-import com.project.entity.concretes.business.Image;
+import com.project.entity.image.Images;
 import com.project.entity.concretes.user.User;
 import com.project.entity.concretes.user.UserRole;
 import com.project.entity.enums.RoleType;
@@ -108,16 +108,24 @@ public class MethodHelper {
         checkRoles(user, RoleType.valueOf(name));
         return user;
     }
-    public List<Image> getImagesForAdvert(MultipartFile[] files, List<Image> currentImages) {
-        // images işlem lojiklerini buraya yazın
-        List<Image> imageList = new ArrayList<>();
-        for (MultipartFile file : files) {
-            Image image = new Image();
-            // image.setData(file.getBytes()); // Dosya verisini ayarla
-            imageList.add(image);
+
+
+    public List<Images> getImagesForAdvert(MultipartFile[] files, List<Images> existingImages) {
+        List<Images> imagesList = new ArrayList<>(existingImages);
+
+        if (files != null && files.length > 0) {
+            for (MultipartFile file : files) {
+                // Resim dosyasını işle ve Images nesnesi oluştur
+                Images image = new Images();
+                image.setUrl(file.getOriginalFilename()); // Örnek olarak filename kullanıyoruz, bunu değiştirebilirsiniz
+                imagesList.add(image);
+            }
         }
-        return imageList;
+
+        return imagesList;
     }
+
+
 
     public void controlRoles(User user, RoleType... roleTypes) {
 
@@ -247,6 +255,8 @@ public class MethodHelper {
         headers.setCacheControl(CacheControl.noCache().mustRevalidate());
         return headers;
     }
+
+
 
     /*-----------------------------------------------------------*/
 

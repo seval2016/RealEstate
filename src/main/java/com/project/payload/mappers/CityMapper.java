@@ -1,8 +1,8 @@
 package com.project.payload.mappers;
 
 import com.project.entity.concretes.business.City;
-import com.project.payload.response.business.CityAdvertTotalResponse;
-import com.project.payload.response.business.CityForAdvertsResponse;
+import com.project.payload.response.business.advert.CityAdvertTotalResponse;
+import com.project.payload.response.business.advert.CityForAdvertsResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,6 +18,7 @@ public class CityMapper {
                 .amount(city.getAdvertList().size())
                 .build();
     }
+
     public CityAdvertTotalResponse mapperCityAdvertTotalResponse(City city){
         return    CityAdvertTotalResponse.builder()
                 .city(city.getName())

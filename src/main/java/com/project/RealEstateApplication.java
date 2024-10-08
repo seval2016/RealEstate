@@ -55,7 +55,7 @@ public class RealEstateApplication implements CommandLineRunner {
 		if(userService.countAllAdmins() == 0) {
 			UserRequest adminRequest = new UserRequest();
 			adminRequest.setUsername("Admin");
-			adminRequest.setEmail("projelermaili@gmail.com");
+		    adminRequest.setEmail("projelermaili@gmail.com");
 			adminRequest.setPasswordHash("12345678");
 			adminRequest.setFirstName("Ahmet");
 			adminRequest.setLastName("Şimşek");

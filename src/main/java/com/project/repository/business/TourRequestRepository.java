@@ -39,6 +39,8 @@ public interface TourRequestRepository extends JpaRepository<TourRequest,Long> {
                                      @Param("date2") LocalDateTime date2,
                                      @Param("statusType") TourRequestStatus statusType);
 
+
+
     @Query("SELECT t FROM TourRequest t WHERE t.guestUser.id = :userId AND " +
             "(LOWER(t.advert.title) LIKE LOWER(CONCAT('%', :query, '%')))")
     Page<TourRequest> findAllByGuestUserId_IdAndQuery(@Param("userId") Long userId, @Param("query") String query, Pageable pageable);

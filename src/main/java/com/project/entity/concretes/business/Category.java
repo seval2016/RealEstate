@@ -1,11 +1,17 @@
-package com.project.entity.Category;
+package com.project.entity.concretes.business;
 
-import lombok.*;
+import io.swagger.v3.oas.annotations.info.Info;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -47,17 +53,14 @@ public class Category  implements Serializable {
 
     private LocalDateTime updateAt;
 
-    public Set<CategoryPropertyKey> getCategoryPropertyKeys() {
-        return null;
-    }
 
-    public Boolean getisActive() {
-        return getisActive();
+    private String name;
 
-    }
+    private Boolean visible;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Advert> adverts = new ArrayList<>();
 
 
-    public Boolean getbuiltIn() {
-        return getbuiltIn();
-    }
+
 }

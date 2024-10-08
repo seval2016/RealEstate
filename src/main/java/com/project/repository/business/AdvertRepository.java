@@ -3,10 +3,10 @@ package com.project.repository.business;
 import com.project.entity.concretes.business.Advert;
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.AdvertStatus;
-import com.project.payload.response.business.advert.CategoryAdvertResponse;
 import com.project.payload.response.business.advert.CityAdvertResponse;
 import com.project.payload.response.business.advert.PopularAdvertResponse;
 
+import com.project.payload.response.business.category.CategoryAdvertResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,7 +24,7 @@ public interface AdvertRepository extends JpaRepository<Advert, Long> {
 
     // --> A01 - Belirli filtreleme kriterlerine göre ilanları getirir.
     @Query("SELECT a FROM Advert a " +
-            "WHERE (:q IS NULL OR (a.title LIKE %:q% OR a.desc LIKE %:q%)) " + // q parametresi title veya desc içinde aranır
+            "WHERE (:q IS NULL OR (a.title LIKE %:q% OR a.description LIKE %:q%)) " + // q parametresi title veya desc içinde aranır
             "AND (:categoryId IS NULL OR a.category.id = :categoryId) " + // categoryId filtrelemesi
             "AND (:advertTypeId IS NULL OR a.advertType.id = :advertTypeId) " + // advertTypeId filtrelemesi
             "AND (:priceStart IS NULL OR a.price >= :priceStart) " + // priceStart (minimum fiyat) filtrelemesi
@@ -54,11 +54,23 @@ public interface AdvertRepository extends JpaRepository<Advert, Long> {
      *
      * @return List of CategoryAdvertResponse
      */
-    @Query("SELECT c.name AS categoryName, COUNT(a) AS amount" +
+
+
+    @Query("SELECT new com.project.payload.response.business.category.CategoryAdvertResponse(c.title, COUNT(a)) " +
+            "FROM Advert a " +
+            "JOIN a.category c " +
+            "GROUP BY c.title")
+    List<CategoryAdvertResponse> findAdvertsGroupedByCategories();
+
+
+
+  /*  @Query("SELECT c.name AS categoryName, COUNT(a) AS amount " +
             "FROM Category c " +
             "LEFT JOIN Advert a ON a.category.id = c.id " +
             "GROUP BY c.id, c.name")
-    List<CategoryAdvertResponse> findAdvertsGroupedByCategories();
+    List<CategoryAdvertResponse> findAdvertsGroupedByCategories();*/
+
+
 
     /**
      * A04 - Popüler ilanları döner.

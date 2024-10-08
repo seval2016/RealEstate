@@ -1,7 +1,7 @@
-package com.project.service.CategoryService;
+package com.project.service.business;
 
 import com.project.entity.concretes.business.CategoryPropertyKey;
-import com.project.repository.CategoryRepository.CategoryPropertyKeyRepository;
+import com.project.repository.business.CategoryPropertyKeyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

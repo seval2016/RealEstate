@@ -1,13 +1,9 @@
-package com.project.service.CategoryService;
+package com.project.service.business;
 
-import com.project.entity.concretes.business.CategoryPropertyKey;
 import com.project.entity.concretes.business.CategoryPropertyValue;
-import com.project.exception.ResourceNotFoundException;
-import com.project.repository.CategoryRepository.CategoryPropertyKeyRepository;
-import com.project.repository.CategoryRepository.CategoryPropertyValueRepository ;
+import com.project.repository.business.CategoryPropertyValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +39,7 @@ public class CategoryPropertyValueService {
     }
 
     public List<CategoryPropertyValue> getValuesByAdvertId(Long advertId) {
-        return categoryPropertyValueRepository.findByAdvertAdvertId(advertId);
+        return categoryPropertyValueRepository.findByAdvert_Id(advertId);
     }
 
     public List<CategoryPropertyValue> getValuesByCategoryPropertyKeyId(Long categoryPropertyKeyId) {
@@ -58,4 +54,13 @@ public class CategoryPropertyValueService {
     public static void deleteAll(List<CategoryPropertyValue> values) {
         categoryPropertyValueRepository.deleteAll(values);
     }
+    public CategoryPropertyValue saveCategoryPropertyValue(CategoryPropertyValue categoryPropertyValue) {
+        return categoryPropertyValueRepository.save(categoryPropertyValue);
+    }
+
+
+    public List<CategoryPropertyValue> categoryFindAllByValue(String value) {
+        return categoryPropertyValueRepository.findAllByValue(value);
+    }
+
 }

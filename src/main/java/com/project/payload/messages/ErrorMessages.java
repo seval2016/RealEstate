@@ -10,6 +10,7 @@ public class ErrorMessages {
     public static final String ADVERT_STATUS_NOT_FOUND = "Advert status not found.";
     public static final String THERE_IS_NO_USER_REGISTERED_WITH_THIS_EMAIL_ADDRESS = "There is no user registered with this email address";
     public static final String CONFLICT_TOUR_DATE = "Conflict tour date";
+    public static final String THERE_IS_NO_TOUR_REQUEST_OF_ADVERT = "No tour requests found for this advert";
 
     private ErrorMessages() {
     }

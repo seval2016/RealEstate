@@ -1,12 +1,14 @@
 package com.project.payload.response.business.image;
 
+import com.project.entity.image.Images;
+
 import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder(toBuilder = true)
-public class ImageResponse {
+@Builder
+public class ImagesResponse {
 
     private Long id;
     private String name;
@@ -16,7 +18,7 @@ public class ImageResponse {
     private String url;
     private byte[] data;
 
-    public ImageResponse(Long id,String name,String type,Boolean featured,Long advertId,
+    public ImagesResponse(Long id,String name,String type,Boolean featured,Long advertId,
                          byte[] data){
         this.id=id;
         this.name=name;
@@ -26,20 +28,21 @@ public class ImageResponse {
         this.data=data;
 
     }
-    public ImageResponse(Long id,String name,String type,Boolean featured){
+
+    public ImagesResponse(Long id,String name,String type,Boolean featured){
         this.id=id;
         this.name=name;
         this.type=type;
         this.featured=featured;
 
     }
-    public ImageResponse(Long id,byte[] data){
+    public ImagesResponse(Long id,byte[] data){
         this.id=id;
         this.data=data;
 
     }
 
-    public ImageResponse(byte[] data) {
+    public ImagesResponse(byte[] data) {
 
        this.data=data;
 

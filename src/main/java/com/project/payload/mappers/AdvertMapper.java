@@ -4,34 +4,81 @@ package com.project.payload.mappers;
 import com.project.entity.concretes.business.*;
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.AdvertStatus;
+import com.project.entity.image.Images;
 import com.project.payload.request.business.AdvertRequest;
-import com.project.payload.response.business.advert.AdvertDetailsForSlugResponse;
-import com.project.payload.response.business.advert.AdvertListResponse;
-import com.project.payload.response.business.advert.AdvertResponse;
-import com.project.payload.response.business.advert.AdvertResponseForUser;
+
+import com.project.payload.response.business.advert.*;
 import com.project.payload.response.business.category.CategoryAdvertResponse;
 import com.project.payload.response.business.category.PropertyValueResponse;
 
+import com.project.payload.response.business.image.ImagesResponse;
 import com.project.payload.response.business.tourRequest.TourRequestResponseForSlug;
+import com.project.service.MapperService;
 import com.project.service.helper.AdvertHelper;
 import com.project.service.helper.MethodHelper;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
-@Component
-public class AdvertMapper {
+@Component("AdvertMapperPayload")
+public  class AdvertMapper  {
 
-    private final TourRequestMapper tourRequestMapper;
-    private final MethodHelper methodHelper;
-    private final ImageMapper imageMapper;
-    private final CategoryPropertyValueMapper categoryPropertyValueMapper;
-    private final AdvertHelper advertHelper;
+    //  private TourRequestMapper tourRequestMapper;
+    private MethodHelper methodHelper;
+    private  ImageMapper imagesMapper;
+    private  CategoryPropertyValueMapper categoryPropertyValueMapper;
+    private AdvertHelper advertHelper;
+
+    private  AdvertMapper advertMapper;
+
+
+
+public void setAdvertMapper (AdvertMapper advertMapper) {
+    this.advertMapper = advertMapper;
+}
+
+
+
+    public void setCategoryPropertyValueMapper (CategoryPropertyValueMapper categoryPropertyValueMapper) {
+        this.categoryPropertyValueMapper = categoryPropertyValueMapper;
+    }
+
+
+
+    public void serImageMapper (ImageMapper imageMapper) {
+        this.imagesMapper = imageMapper;
+    }
+
+
+    @Autowired
+    public void setMethodHelper (MethodHelper methodHelper) {
+        this.methodHelper= methodHelper;
+    }
+
+
+  /*  @Autowired
+    public void setTourRequestMapper(TourRequestMapper tourRequestMapper) {
+        this.tourRequestMapper = tourRequestMapper;
+    }*/
+
+
+    @Autowired
+    public void setAdvertHelper(AdvertHelper advertHelper) {
+        this.advertHelper = advertHelper;
+    }
+
+
+
+
+
+
+
+
 
     public Advert mapAdvertRequestToAdvert(AdvertRequest advertRequest, Category category, City city, User user, Country country, AdvertType advertType, District district) {
         return Advert.builder()
@@ -47,7 +94,9 @@ public class AdvertMapper {
                 .user(user)
                 .advertType(advertType)
                 .district(district)
+
                 .build();
+
     }
 
     private String generateSlug(String title) {
@@ -56,7 +105,7 @@ public class AdvertMapper {
 
 
     public AdvertDetailsForSlugResponse mapAdvertToAdvertResponseForSlug(Advert advert) {
-        return AdvertDetailsForSlugResponse.builder()
+        AdvertDetailsForSlugResponse build = AdvertDetailsForSlugResponse.builder()
                 .id(advert.getId())
                 .title(advert.getTitle())
                 .properties(advert.getCategoryPropertyValuesList().stream()
@@ -66,7 +115,7 @@ public class AdvertMapper {
                         ))
                         .collect(Collectors.toList()))
                 .images(advert.getImages().stream()
-                        .map(image -> new ImageResponse(
+                        .map(image -> new ImagesResponse(
                                 image.getId(),
                                 image.getName(),
                                 image.getType(),
@@ -82,33 +131,46 @@ public class AdvertMapper {
                         .collect(Collectors.toList())
                 )
                 .build();
+        return build;
     }
 
     public AdvertResponse mapAdvertToAdvertResponseForAll(Advert advert) {
+        if (advert == null) {
+            throw new IllegalArgumentException("Advert cannot be null");
+        }
+
+        List<ImagesResponse> imagesResponseList = advert.getImages().stream()
+                .map(imagesMapper::mapToImagesResponse)
+                .collect(Collectors.toList());
+
+        Long cityId = Optional.ofNullable(advert.getCity()).map(City::getId).orElse(null);
+        Long districtId = Optional.ofNullable(advert.getDistrict()).map(District::getId).orElse(null);
+        Long advertTypeId = Optional.ofNullable(advert.getAdvertType()).map(AdvertType::getId).orElse(null);
+        Long categoryId = Optional.ofNullable(advert.getCategory()).map(Category::getId).orElse(null);
+
+        int favoritesCount = Optional.ofNullable(advert.getFavoritesList()).map(List::size).orElse(0);
+        int tourRequestCount = Optional.ofNullable(advert.getTourRequestList()).map(List::size).orElse(0);
+
         return AdvertResponse.builder()
                 .id(advert.getId())
-                .userId(advert.getUser().getId())
                 .price(advert.getPrice())
-                .slug(advert.getSlug())
-                .builtIn(advert.getIsActive())
+                .builtIn(advert.getBuiltIn())
+                .isActive(advert.getIsActive())
                 .description(advert.getDescription())
                 .title(advert.getTitle())
                 .status(advertHelper.updateAdvertStatus(advert.getStatus(), advert))
-                .countryId(advert.getCountry().getId())
-                .cityId(advert.getCity().getId())
-                .districtId(advert.getDistrict().getId())
+                .cityId(cityId)
+                .districtId(districtId)
                 .createAt(advert.getCreateAt())
-                .advertTypeId(advert.getAdvertType().getId())
-                .categoryId(advert.getCategory().getId())
-                .categoryPropertyKeys(advert.getCategory().getCategoryPropertyKeys())
-                .featuredImage(advertHelper.getFeaturedImage(advert.getImages()))
-                .images(advert.getImages().stream()
-                        .map(imageMapper::mapToImageResponse)
-                        .collect(Collectors.toList()))
-                .favoritesCount(advert.getFavoritesList().size())
-                .tourRequestCount(advert.getTourRequestList().size())
+                .advertTypeId(advertTypeId)
+                .categoryId(categoryId)
+                .featuredImages(advertHelper.getFeaturedImages(advert.getImages()))
+                .images(imagesResponseList)
+                .favoritesCount(favoritesCount)
+                .tourRequestCount(tourRequestCount)
                 .build();
     }
+
 
     public Advert mapAdvertRequestToUpdateAdvert(Long id, AdvertRequest advertRequest, Category category, City city, Country country, AdvertType advertType, District district, User user) {
         return Advert.builder()
@@ -131,6 +193,8 @@ public class AdvertMapper {
     }
 
     //For Category POJO==>DTO
+
+
     public CategoryAdvertResponse mapCategoryToCategoryForAdvertResponse(Category category) {
         return CategoryAdvertResponse.builder()
                 .category(category.getTitle())
@@ -149,28 +213,6 @@ public class AdvertMapper {
                 .build();
     }
 
-    public AdvertResponse mapAdvertToAdvertResponse(Advert advert) {
-        return AdvertResponse.builder()
-                .id(advert.getId())
-                .title(advert.getTitle())
-                .userId(advert.getUser().getId())
-                .description(advert.getDescription())
-                .price(advert.getPrice())
-                .advertTypeId(advert.getAdvertType().getId())
-                .countryId(advert.getCountry().getId())
-                .cityId(advert.getCity().getId())
-                .districtId(advert.getDistrict().getId())
-                .categoryId(advert.getCategory().getId())
-                .categoryPropertyKeys(advert.getCategory().getCategoryPropertyKeys())
-                .featuredImage(advertHelper.getFeaturedImage(advert.getImages()))
-                .images(advert.getImages().stream()
-                        .map(imageMapper::mapToImageResponse)
-                        .collect(Collectors.toList()))
-                .favoritesCount(advert.getFavoritesList().size())
-                .tourRequestCount(advert.getTourRequestList().size())
-                .isActive(advert.getIsActive())
-                .build();
-    }
 
     public AdvertResponseForUser mapAdvertToAdvertResponseForUser(Advert advert){ //A08
 
@@ -184,12 +226,12 @@ public class AdvertMapper {
 
         // Resim ve tur taleplerini hazırlama
         List<String> imageUrls = advert.getImages().stream()
-                .map(Image::getUrl) // Resim URL'lerini al
+                .map(Images::getUrl) // Resim URL'lerini al
                 .collect(Collectors.toList());
 
         List<String> tourRequests = advert.getTourRequestList().stream()
                 .map(tourRequest -> String.format("Date: %s, Time: %s, Status: %s",
-                        tourRequest.getTourDate(), tourRequest.getTourTime(), tourRequest.getStatusStatus()))
+                        tourRequest.getTourDate(), tourRequest.getTourTime(), tourRequest.getStatus()))
                 .collect(Collectors.toList());
 
         return AdvertResponseForUser.builder()
@@ -211,6 +253,41 @@ public class AdvertMapper {
                 .tourRequests(tourRequests) // Tur taleplerini ekle
                 .build();
     }
+
+
+
+    public Advert mapAdvertToAdvertResponseForTourRequest(Advert advert) {
+        if (advert == null) {
+            throw new IllegalArgumentException("Advert cannot be null");
+        }
+
+        // Resim URL'lerini al
+        List<String> imageUrls = advert.getImages().stream()
+                .map(Images::getUrl) // Resim URL'lerini al
+                .collect(Collectors.toList());
+
+        // Tour taleplerini hazırlama
+        List<String> tourRequests = advert.getTourRequestList().stream()
+                .map(tourRequest -> String.format("Date: %s, Time: %s, Status: %s",
+                        tourRequest.getTourDate(), tourRequest.getTourTime(), tourRequest.getStatus()))
+                .collect(Collectors.toList());
+
+        // Advert yanıt nesnesini oluştur
+        return AdvertResponseForTourRequest.builder()
+                .id(advert.getId())
+                .title(advert.getTitle())
+                .description(advert.getDescription())
+                .location(advert.getLocation())
+                .updateAt(advert.getUpdateAt())
+                .price(advert.getPrice())
+                .build();
+    }
+
+
+
+
+
+
 
 }
 

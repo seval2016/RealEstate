@@ -4,6 +4,8 @@ import com.project.entity.concretes.user.User;
 import com.project.entity.concretes.user.UserRole;
 import com.project.entity.enums.RoleType;
 import com.project.payload.request.abstracts.BaseUserRequest;
+import com.project.payload.request.business.UserResponseForTourRequest;
+import com.project.payload.request.user.RegisterRequest;
 import com.project.payload.request.user.UserRequest;
 import com.project.payload.request.user.UserRequestWithoutPassword;
 import com.project.payload.request.user.UserSaveRequest;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
+
     public UserResponse mapUserToUserResponse(User user) {
         // Kullanıcı nesnesinden UserResponse nesnesi oluşturuluyor
         return UserResponse.builder()
@@ -120,4 +123,38 @@ public class UserMapper {
                 .email(newRegisterUser.getEmail())
                 .build();
     }
+
+    public UserResponseForTourRequest mapUserToUserResponseForTourRequest(User ownerUser) {
+        return (UserResponseForTourRequest) UserResponseForTourRequest.builder()
+                .id(ownerUser.getId())
+                .username(ownerUser.getUsername())
+                .email(ownerUser.getEmail())
+                .build();
+
+
+
+    }
+
+
+    public User mapRegisterRequestToUser(RegisterRequest registerRequest) {
+        if (registerRequest == null) {
+            return null;
+        }
+
+        return User.builder()
+                .firstName(registerRequest.getFirstName())
+                .lastName(registerRequest.getLastName())
+                .email(registerRequest.getEmail())
+                .phone(registerRequest.getPhone())
+                .passwordHash(registerRequest.getPasswordHash()) // Şifre encode edilecek
+                .isBuiltIn(false) // Yeni kullanıcılar builtIn olarak false atanıyor
+                .build();
+    }
+
+
+
+
+
+
+
 }

@@ -1,9 +1,12 @@
 package com.project.controller.business;
 
+
+import com.project.entity.image.Images;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
-import com.project.payload.response.business.ImagesResponse;
+
+import com.project.payload.response.business.image.ImagesResponse;
 import com.project.service.business.ImagesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +17,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,8 +36,10 @@ public class ImagesController {
         httpHeaders.setContentType(MediaType.IMAGE_PNG);
         httpHeaders.add("Content-Type","images/png");
 
-        byte[] image = imagesService.getImageById(id).map(Images::getData).orElseThrow(()->
-                new ResourceNotFoundException(ErrorMessages.IMAGE_NOT_FOUND ));
+
+        byte[] image = imagesService.getImageById(id)
+                .map(Images::getData)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorMessages.IMAGE_NOT_FOUND));
 
         return new ResponseEntity<>(image, httpHeaders, HttpStatus.OK);
         //  return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
