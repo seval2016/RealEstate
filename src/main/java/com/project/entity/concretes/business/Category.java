@@ -1,74 +1,63 @@
-package com.project.entity.concretes.business;
+package com.project.entity.Category;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "categories")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
-public class Category {
+@Data
+public class Category  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+  //  @Setter(AccessLevel.NONE)  //id yi erişilmez kılar
     private Long id;
 
+    @NotNull(message = "title can not be null")
     @Column(nullable = false, length = 150)
     private String title;
 
-    @Column(length = 50)
+    @Column(nullable = false, length = 50)
     private String icon;
 
-    @Column(nullable = false)
-    private boolean builtIn=false;
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean builtIn = false;
 
-    @Column(nullable = false)
-    private int seq=0;
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int seq = 0;
 
-    @Column(nullable = false)
-    @Size(min = 5, max = 200)
+    @Column(nullable = false, length = 200)
     private String slug;
 
+    @NotNull(message = "is_active can not be null")
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
-    private boolean isActive;
+    private Boolean isActive = true;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
-    @Column(name = "create_at", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime createAt;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
-    @Column(name = "update_at")
+    @Column(nullable = true)
+
     private LocalDateTime updateAt;
 
-    // Advert listesi ekleniyor
-    @OneToMany(mappedBy = "category",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Advert> adverts= new ArrayList<>();
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<CategoryPropertyKey> categoryPropertyKeys = new HashSet<>();
-
-    @PrePersist
-    protected void onCreate() {
-        createAt = LocalDateTime.now();
-        updateAt = LocalDateTime.now();
+    public Set<CategoryPropertyKey> getCategoryPropertyKeys() {
+        return null;
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        updateAt = LocalDateTime.now();
+    public Boolean getisActive() {
+        return getisActive();
+
+    }
+
+
+    public Boolean getbuiltIn() {
+        return getbuiltIn();
     }
 }
-

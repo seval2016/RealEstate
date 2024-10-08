@@ -1,6 +1,6 @@
 package com.project.service.CategoryService;
 
-import com.project.entity.Category.CategoryPropertyKey;
+import com.project.entity.concretes.business.CategoryPropertyKey;
 import com.project.repository.CategoryRepository.CategoryPropertyKeyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,4 +46,9 @@ public class CategoryPropertyKeyService {
     public List<CategoryPropertyKey> getKeysByManagerId(Long managerId) {
         return categoryPropertyKeyRepository.findByManagerId(managerId);
     }
+
+    // Yeni bir CategoryPropertyKey oluşturma metodu
+
+
+
 }

@@ -1,7 +1,7 @@
 package com.project.service.CategoryService;
 
-import com.project.entity.Category.CategoryPropertyKey;
-import com.project.entity.Category.CategoryPropertyValue;
+import com.project.entity.concretes.business.CategoryPropertyKey;
+import com.project.entity.concretes.business.CategoryPropertyValue;
 import com.project.exception.ResourceNotFoundException;
 import com.project.repository.CategoryRepository.CategoryPropertyKeyRepository;
 import com.project.repository.CategoryRepository.CategoryPropertyValueRepository ;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class CategoryPropertyValueService {
 
     @Autowired
-    private CategoryPropertyValueRepository categoryPropertyValueRepository;
+    private static CategoryPropertyValueRepository categoryPropertyValueRepository;
 
     public CategoryPropertyValue createCategoryPropertyValue(CategoryPropertyValue value) {
         // C07 için eksik: 'builtIn' true olan category property value yaratılmamalı.
@@ -48,5 +48,14 @@ public class CategoryPropertyValueService {
 
     public List<CategoryPropertyValue> getValuesByCategoryPropertyKeyId(Long categoryPropertyKeyId) {
         return categoryPropertyValueRepository.findByCategoryPropertyKey_Id(categoryPropertyKeyId);
+    }
+    // Verilen keyId'ye göre ilişkili CategoryPropertyValue kayıtlarını getir
+    public static List<CategoryPropertyValue> getValuesByPropertyKeyId(Long keyId) {
+        return categoryPropertyValueRepository.findByCategoryPropertyKeyId(keyId);
+    }
+
+    // İlişkili CategoryPropertyValue kayıtlarını topluca sil
+    public static void deleteAll(List<CategoryPropertyValue> values) {
+        categoryPropertyValueRepository.deleteAll(values);
     }
 }

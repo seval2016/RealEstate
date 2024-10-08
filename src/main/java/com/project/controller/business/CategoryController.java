@@ -1,7 +1,8 @@
 package com.project.controller.CategoryController;
 
 import com.project.payload.request.CategoryRequest.CategoryRequest;
-import com.project.entity.Category.Category;
+import com.project.entity.concretes.business.Category;
+import com.project.payload.response.business.category.CategoryResponse;
 import com.project.service.CategoryService.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,24 +25,40 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping()  // *C01*  // Bu endpoint `q`, `page`, `size`, `sort` ve `type` parametrelerini bekliyor. Eksik olan parametreler eklenmeli.
-    public ResponseEntity<List<CategoryResponse>> getActiveCategories() {
-        List<Category> categories = categoryService.getActiveCategories();
-        List<CategoryResponse> response = categories.stream().map(CategoryResponse::new).toList();
+    @GetMapping() //*C01*
+    public ResponseEntity<Page<CategoryResponse>> getActiveCategories(
+            @RequestParam(required = false) String q,    // Arama parametresi (opsiyonel)
+            @RequestParam(defaultValue = "0") int page,  // Sayfa numarası, varsayılan 0
+            @RequestParam(defaultValue = "10") int size, // Sayfadaki öğe sayısı, varsayılan 10
+            @RequestParam(defaultValue = "id") String sort, // Sıralama kriteri, varsayılan "id"
+            @RequestParam(defaultValue = "asc") String type // Sıralama tipi, varsayılan "asc"
+    ) {
+        // Sıralama türü ayarlanıyor
+        Sort.Direction direction = type.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
+
+        // Kategoriler servis tarafından getirilir, arama varsa ona göre filtreleme yapılır
+
+        Page<Category> categories = categoryService.getActiveCategories(q, pageable);
+
+        // Category nesneleri CategoryResponse'a dönüştürülüyor
+        Page<CategoryResponse> response = categories.map(CategoryResponse::new);
+
         return ResponseEntity.ok(response);
     }
 
+
+
+
+
+
+
     @GetMapping("/admin")  // *C02* // Kategorileri başlıklarına ve sayfa numarasına ve sayfadaki kayıt sırasına göre getirir.
-    // 10,09,24'de eklendi. Postmanda denendi, çalışır durumda.
     public ResponseEntity<Page<CategoryResponse>> getAllCategories(
             @RequestParam(defaultValue = "id,asc") String[] sort,
             @RequestParam(required = false) String q,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
-
-        // **HATA:**
-        // `categoryService.getAllCategories((Sort) pageable);` kısmında hata var. `Pageable` `Sort`'a cast edilemez.
-        // `categoryService.getAllCategories(pageable)` olmalı.
 
         // Sıralama işlemi
         Sort sortOrder = Sort.by(Sort.Order.by(sort[0]));
@@ -57,7 +74,7 @@ public class CategoryController {
         if (q != null && !q.isBlank()) {
             categories = categoryService.searchCategoriesByTitle(q, pageable); // Arama işlemi
         } else {
-            categories = (Page<Category>) categoryService.getAllCategories((Sort) pageable);
+            categories = (Page<Category>) categoryService.getAllCategories(pageable); // Casting gerekmez
         }
 
         // CategoryResponse nesnesine dönüştür
@@ -94,14 +111,14 @@ public class CategoryController {
         Category createdCategory = categoryService.createCategory(category);
         CategoryResponse response = new CategoryResponse(createdCategory);
         return ResponseEntity.ok(response);
-    }
+    }//
 
     @PutMapping("/{id}")  // id ye opsiyonel değer gelir örn  :2  //Günceller *C05*
     public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest request) {
         Optional<Category> categoryOpt = categoryService.getCategoryById(id);
         if (categoryOpt.isPresent()) {
             Category category = categoryOpt.get();
-            if (category.getBuiltIn()) {
+            if (category.getbuiltIn()) {
                 return ResponseEntity.badRequest().body(null); // Built-in kategoriler güncellenemez.
             }
 
@@ -121,15 +138,13 @@ public class CategoryController {
     }
 
 
-
-
     @DeleteMapping("/{id}")  // *C06*
     public ResponseEntity<CategoryResponse> deleteCategory(@PathVariable Long id) {
         Optional<Category> categoryOpt = categoryService.getCategoryById(id);
         if (categoryOpt.isPresent()) {
             Category category = categoryOpt.get();
 
-            if (category.getBuiltIn()) {
+            if (category.getbuiltIn()) {
                 return ResponseEntity.badRequest().body(null); // Built-in kategoriler silinemez.
             }
 

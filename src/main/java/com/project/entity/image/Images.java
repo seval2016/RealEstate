@@ -1,5 +1,6 @@
 package com.project.entity.image;
 
+import com.project.entity.concretes.business.Advert;
 import lombok.*;
 
 import javax.persistence.*;

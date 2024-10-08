@@ -1,11 +1,10 @@
 package com.project.service.CategoryService;
 
-import com.project.entity.Category.Category;
+import com.project.entity.concretes.business.Category;
 import com.project.repository.CategoryRepository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -46,13 +45,11 @@ public class CategoryService {
         return categoryRepository.findById(id);
     }
 
-    public List<Category> getAllCategories(Sort sort) {
-        return categoryRepository.findAll(sort);
+    public List<Category> getAllCategories(Pageable pageable) {
+        return categoryRepository.findAll();
     }
 
-    public List<Category> getActiveCategories() {
-        return categoryRepository.findByIsActiveTrue();
-    }
+
 
     public boolean hasRelatedAdverts(Long id) {
         // C06'da ilanlarla ilişkili olup olmadığı kontrol edilmeli, şu an false dönüyor.
@@ -61,6 +58,8 @@ public class CategoryService {
     }
 
     // Kategori başlığına göre arama yapan metot
+
+
     public Page<Category> searchCategoriesByTitle(String title, Pageable pageable) {
         // C01 ve C02 için doğru; başlığa göre arama yapılabiliyor.
         return categoryRepository.findByTitleContainingIgnoreCase(title, pageable);
@@ -69,5 +68,17 @@ public class CategoryService {
     public Optional<Category> getCategoryBySlug(String slug) {
         return categoryRepository.findBySlug(slug);
     }
+
+    public Page<Category> getActiveCategories(String q, Pageable pageable) {
+        if (q != null && !q.isEmpty()) {
+            // Eğer arama parametresi varsa, isme göre filtreleme yapıyoruz.
+            return categoryRepository.findByNameContainingIgnoreCaseAndVisibleTrue(q, pageable);
+        }
+        // Eğer arama yoksa, sadece aktif kategoriler getiriliyor
+        return categoryRepository.findAllByVisibleTrue(pageable);
+    }
+
+
+
 }
 
