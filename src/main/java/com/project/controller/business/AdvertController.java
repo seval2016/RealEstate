@@ -202,6 +202,8 @@ public class AdvertController {
             HttpServletRequest httpServletRequest, @PathVariable Long id) {
         return advertService.updateAuthenticatedAdvert(advertRequest, files, httpServletRequest, id);
     }
+
+
     /**
      * A12 - /adverts/admin/:id
      * Id'si verilen admin ve admin manager tüm ilanları güncelleyebilmesine olanak tanır. kendi reklamlarını güncellemelerine olanak tanır.

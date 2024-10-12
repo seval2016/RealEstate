@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Email;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,14 +41,16 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<AuthResponse> authenticateUser(LoginRequest loginRequest) {
+
+
         // Kullanıcı adı ve şifreyi al
 
-        String email = loginRequest.getEmail();
-       // String username = loginRequest.getUsername();
+         String email = loginRequest.getEmail() ;
+      //    String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
 
         // Kullanıcıyı email veya username ile bul
-        User user  = userRepository.findByUsernameOrEmail ( email, password);
+        Optional<User> user = userRepository.findByEmail(email);
 
         if (email == null) {
             throw new BadRequestException("Kullanıcı adı veya email bulunamadı");
@@ -71,18 +74,24 @@ public class AuthenticationService {
                 .collect(Collectors.toSet());
 
 
+
+
         Optional<String> role = roles.stream().findFirst();
 
         AuthResponse.AuthResponseBuilder authResponse = AuthResponse.builder();
-        authResponse.username(userDetails.getUsername());
+       // authResponse.username(userDetails.getUsername());
         authResponse.token(token.substring(7));
         authResponse.name(userDetails.getFirstName());
+        authResponse.email(userDetails.getEmail());
 
         // Rol bilgisi varsa AuthResponse nesnesine ekle
         role.ifPresent(authResponse::role);
 
         return ResponseEntity.ok(authResponse.build());
     }
+
+
+
 
     public UserResponse findByUsername(String username) {
         User user = userRepository.findByUsername(username);
@@ -92,6 +101,7 @@ public class AuthenticationService {
     public void updatePassword(UpdatePasswordRequest updatePasswordRequest, HttpServletRequest request) {
         String userName = (String) request.getAttribute("username");
         User user = userRepository.findByUsername(userName);
+
 
         // Built-In kontrolü
         if(Boolean.TRUE.equals(user.getIsBuiltIn())){
@@ -108,6 +118,8 @@ public class AuthenticationService {
         user.setPasswordHash(hashedPassword);
         userRepository.save(user);
     }
+
+
 
     public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
         User user = userRepository.findByEmail(forgotPasswordRequest.getEmail())

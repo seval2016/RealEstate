@@ -133,6 +133,7 @@ public class CategoryController {
 
 
     @PostMapping()  // kategori ekler  *C04*
+
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody @Valid CategoryRequest request) {
         Category category = new Category();
         category.setTitle(request.getTitle());

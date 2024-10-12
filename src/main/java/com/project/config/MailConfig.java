@@ -18,7 +18,7 @@ public class MailConfig {
         mailSender.setHost("smtp.example.com"); // SMTP sunucusunun adresini buraya ekleyin
         mailSender.setPort(587); // SMTP portunu ayarlayın (genellikle 587 veya 465)
 
-        mailSender.setUsername("projelermaili@gmail.com"); // SMTP kullanıcı adınızı buraya ekleyin
+        mailSender.setUsername("Admin"); // SMTP kullanıcı adınızı buraya ekleyin
         mailSender.setPassword("12345678"); // SMTP şifrenizi buraya ekleyin
 
         // E-posta ayarları

@@ -32,13 +32,12 @@ public class AuthenticationController {
 
 
 
+
     @PostMapping("/login") // http://localhost:8080/auth/login  + POST + JSON
     public ResponseEntity<AuthResponse> authenticateUser(@RequestBody @Valid LoginRequest loginRequest) {
-        // Email doğrulama veya başka işlemler yapabiliriz.
+        // Artık sadece email ve password ile giriş yapılıyor
         return authenticationService.authenticateUser(loginRequest);
     }
-
-
 
 
 
