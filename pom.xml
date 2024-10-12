@@ -130,6 +130,8 @@
 		</dependency>
 	</dependencies>
 
+
+
 	<!-- Build kısmı: Maven build ayarları -->
 	<build>
 		<plugins>
@@ -148,4 +150,6 @@
 			</plugin>
 		</plugins>
 	</build>
+
+
 </project>
