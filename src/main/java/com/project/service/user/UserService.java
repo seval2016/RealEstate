@@ -58,7 +58,7 @@ public class UserService {
         if(userRole.equalsIgnoreCase(RoleType.ADMIN.name())){
             //!!! Rol bilgisi admin ise builtin true yapılıyor
             if(Objects.equals(userRequest.getUsername(),"Admin")){
-                user.setBuiltIn(true);
+                user.setIsBuiltIn(true);
             }
             //!!! admin rolu veriliyor
             user.setUserRole(List.of(userRoleService.getUserRole(RoleType.ADMIN)));
@@ -116,7 +116,7 @@ public class UserService {
         User user2 = userRepository.findByUsernameEquals(userName);
 
         //!!! builtIn ve Role kontrolu
-        if(Boolean.TRUE.equals(user.getBuiltIn())){
+        if(Boolean.TRUE.equals(user.getIsBuiltIn())){
             throw  new BadRequestException(ErrorMessages.NOT_PERMITTED_METHOD_MESSAGE);
 
         } else if (user2.getUserRole().stream()

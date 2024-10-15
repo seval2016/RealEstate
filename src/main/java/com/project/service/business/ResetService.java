@@ -68,7 +68,7 @@ public class ResetService {
 
         List<User> allUser=userRepository.findAll();
         for (User user:allUser){
-            if (!user.getBuiltIn()){
+            if (!user.getIsBuiltIn()){
                 userRepository.delete(user);
             }
         }

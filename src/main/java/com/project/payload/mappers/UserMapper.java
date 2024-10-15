@@ -44,7 +44,7 @@ public class UserMapper {
                 .passwordHash(userRequest.getPasswordHash())
                 .phone(userRequest.getPhone())
                 .email(userRequest.getEmail())
-                .builtIn(userRequest.getBuiltIn())
+                .isBuiltIn(userRequest.getBuiltIn())
                 .build();
     }
 
@@ -110,7 +110,7 @@ public class UserMapper {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .phone(request.getPhone())
-                .builtIn(request.getBuiltIn())
+                .isBuiltIn(request.getBuiltIn())
                 .build();
 
     }

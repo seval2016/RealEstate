@@ -8,6 +8,7 @@ import com.project.entity.concretes.business.TourRequest;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -55,7 +56,8 @@ public class User {
     @Column(name = "reset_password_code")
     private String resetPasswordCode;
 
-    private Boolean builtIn = false;
+
+
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH-mm", timezone = "Turkey")
     private LocalDateTime createAt;

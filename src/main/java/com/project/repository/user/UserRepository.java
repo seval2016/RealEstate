@@ -5,6 +5,7 @@ import com.project.entity.enums.RoleType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -45,8 +46,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
 
-    @Query("DELETE FROM User u WHERE u.builtIn=false")
-    void deleteAllUsersExceptBuiltIn ();
+    @Modifying
+    @Query("DELETE FROM User u WHERE u.isBuiltIn = false")
+    void deleteAllUsersExceptBuiltIn();
 
     List<User> findByUserRole_Role(RoleType roleType);
 
