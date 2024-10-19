@@ -7,7 +7,7 @@ import com.project.entity.concretes.business.City;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.CityMapper;
 import com.project.payload.messages.ErrorMessages;
-import com.project.payload.response.business.CityForAdvertsResponse;
+
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,12 +26,7 @@ public class CityService {
     private final CityMapper cityMapper;
     private final MethodHelper methodHelper;
 
-    public List<CityForAdvertsResponse> getAllCityForAdverts() {
 
-        List<City> cityList = cityRepository.findAll();
-
-        return cityList.stream().map(cityMapper::mapperCityToCityForAdvertsResponse).collect(Collectors.toList());
-    }
 
 
     public List<City> getAllCity() {

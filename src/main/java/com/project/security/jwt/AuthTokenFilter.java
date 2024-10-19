@@ -32,17 +32,30 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
         try {
             String jwt = parseJwt(request);
             if(jwt !=null && jwtUtils.validateJwtToken(jwt) ){
 
-                String userName = jwtUtils.getUserNameFromJwtToken(jwt);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-                request.setAttribute("username", userName);
+                String mail = jwtUtils.getUserNameFromJwtToken(jwt);
+
+                UserDetails userDetails = userDetailsService.loadUserByUsername(mail);
+                request.setAttribute("email", mail);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
                 );
@@ -55,6 +68,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request,response);
     }
 
+
+
     private String parseJwt(HttpServletRequest request){
 
         String headerAuth = request.getHeader("Authorization");
@@ -64,4 +79,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
+
+
+
 }

@@ -1,7 +1,9 @@
 package com.project.controller.business;
 
+import com.project.entity.concretes.business.District;
 import com.project.payload.response.business.DistrictResponse;
 import com.project.payload.response.business.ResponseMessage;
+import com.project.service.business.DistrictService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;

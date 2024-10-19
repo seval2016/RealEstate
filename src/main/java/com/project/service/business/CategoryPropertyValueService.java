@@ -1,13 +1,9 @@
-package com.project.service.CategoryService;
+package com.project.service.business;
 
-import com.project.entity.Category.CategoryPropertyKey;
-import com.project.entity.Category.CategoryPropertyValue;
-import com.project.exception.ResourceNotFoundException;
-import com.project.repository.CategoryRepository.CategoryPropertyKeyRepository;
-import com.project.repository.CategoryRepository.CategoryPropertyValueRepository ;
+import com.project.entity.concretes.business.CategoryPropertyValue;
+import com.project.repository.business.CategoryPropertyValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +12,7 @@ import java.util.Optional;
 public class CategoryPropertyValueService {
 
     @Autowired
-    private CategoryPropertyValueRepository categoryPropertyValueRepository;
+    private static CategoryPropertyValueRepository categoryPropertyValueRepository;
 
     public CategoryPropertyValue createCategoryPropertyValue(CategoryPropertyValue value) {
         // C07 için eksik: 'builtIn' true olan category property value yaratılmamalı.
@@ -43,10 +39,28 @@ public class CategoryPropertyValueService {
     }
 
     public List<CategoryPropertyValue> getValuesByAdvertId(Long advertId) {
-        return categoryPropertyValueRepository.findByAdvertAdvertId(advertId);
+        return categoryPropertyValueRepository.findByAdvert_Id(advertId);
     }
 
     public List<CategoryPropertyValue> getValuesByCategoryPropertyKeyId(Long categoryPropertyKeyId) {
         return categoryPropertyValueRepository.findByCategoryPropertyKey_Id(categoryPropertyKeyId);
     }
+    // Verilen keyId'ye göre ilişkili CategoryPropertyValue kayıtlarını getir
+    public static List<CategoryPropertyValue> getValuesByPropertyKeyId(Long keyId) {
+        return categoryPropertyValueRepository.findByCategoryPropertyKeyId(keyId);
+    }
+
+    // İlişkili CategoryPropertyValue kayıtlarını topluca sil
+    public static void deleteAll(List<CategoryPropertyValue> values) {
+        categoryPropertyValueRepository.deleteAll(values);
+    }
+    public CategoryPropertyValue saveCategoryPropertyValue(CategoryPropertyValue categoryPropertyValue) {
+        return categoryPropertyValueRepository.save(categoryPropertyValue);
+    }
+
+
+    public List<CategoryPropertyValue> categoryFindAllByValue(String value) {
+        return categoryPropertyValueRepository.findAllByValue(value);
+    }
+
 }

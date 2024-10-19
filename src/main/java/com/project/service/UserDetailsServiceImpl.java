@@ -21,7 +21,59 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+
+
+
     @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        // E-posta ile kullanıcıyı bul
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
+                new ResourceNotFoundException(String.format(ErrorMessages.USER_IS_NOT_FOUND_BY_EMAIL, email)));
+
+        // Kullanıcıyı bulduktan sonra granted authority set'i oluştur
+        Set<GrantedAuthority> authorities = user.getUserRole().stream()
+                .map(userRole -> new SimpleGrantedAuthority(userRole.getRole().name())) // Rol adını al
+                .collect(Collectors.toSet());
+
+        // UserDetailsImpl nesnesini döndür
+        return new UserDetailsImpl(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getIsBuiltIn(),
+                user.getPasswordHash(),
+                authorities,
+                user.getPhone()
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ /*   @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                 new ResourceNotFoundException(String.format(ErrorMessages.USER_IS_NOT_FOUND_BY_EMAIL, email)));
@@ -37,13 +89,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     user.getFirstName(),
                     user.getLastName(),
                     user.getEmail(),
-                    user.isBuiltIn(),
+                    user.getIsBuiltIn(),
                     user.getPasswordHash(),
                     authorities,
                     user.getPhone()
             );
         }
 
+
+
+
         throw new UsernameNotFoundException("User '" + email + "' not found");
-    }
+    }*/
+
+
+
+
+
+
 }

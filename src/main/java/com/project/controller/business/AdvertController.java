@@ -1,8 +1,10 @@
 package com.project.controller.business;
 
+import com.project.entity.concretes.business.Advert;
 import com.project.payload.request.business.AdvertRequest;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.advert.*;
+import com.project.payload.response.business.category.CategoryAdvertResponse;
 import com.project.service.business.AdvertService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -114,12 +116,13 @@ public class AdvertController {
      * Yönetici ve yöneticiler için ilanları belirli kriterlere göre filtreleyip sayfalı ve sıralı bir şekilde döndürür.
      * http://localhost:8080/adverts/admin/?q=beyoğlu&category_id=12&advert_type_id=3&price_start=500&price_end=1500&status=1;page
      * =1&size=10&sort=date&type=asc
+     *
      * @return List of AdvertResponse
      */
 
     @GetMapping("/adverts/admin")
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
-    public ResponseEntity<Page<AdvertResponse>> getAdverts(
+    public ResponseEntity<Page<Advert>> getAdverts(
             @RequestParam(value = "query", required = false) String query,
             @RequestParam(value = "category_id", required = false) Long categoryId,
             @RequestParam(value = "advert_type_id", required = false) Long advertTypeId,
@@ -199,6 +202,8 @@ public class AdvertController {
             HttpServletRequest httpServletRequest, @PathVariable Long id) {
         return advertService.updateAuthenticatedAdvert(advertRequest, files, httpServletRequest, id);
     }
+
+
     /**
      * A12 - /adverts/admin/:id
      * Id'si verilen admin ve admin manager tüm ilanları güncelleyebilmesine olanak tanır. kendi reklamlarını güncellemelerine olanak tanır.

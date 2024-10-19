@@ -1,12 +1,8 @@
 package com.project.payload.response.business.tourRequest;
 
-import com.project.entity.concretes.business.Advert;
-import com.project.entity.concretes.business.City;
-import com.project.entity.concretes.business.Country;
-import com.project.entity.concretes.business.District;
+import com.project.entity.concretes.business.*;
 import com.project.entity.concretes.user.User;
-import com.project.entity.enums.Status;
-import com.project.payload.response.image.ImageResponse;
+import com.project.entity.image.Images;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -29,10 +25,10 @@ public class TourRequestResponse {
     private User guestUser;
     private Advert advert;
     private String advertTitle;
-    private ImageResponse featuredImage;
     private District advertDistrict;
     private City advertCity;
     private Country advertCountry;
-    private ImageResponse image;
+    private Images images ;
+
 
 }

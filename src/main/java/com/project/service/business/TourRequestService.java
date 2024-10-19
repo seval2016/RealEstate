@@ -118,7 +118,7 @@ public class TourRequestService {
         createdTourRequest.setGuestUser(user);
         createdTourRequest.setOwnerUser(advert.getUser());
 
-        createdTourRequest.setStatusStatus(TourRequestStatus.PENDING.getTourStatusValue());  //default'u setledim
+        createdTourRequest.setStatus(TourRequestStatus.PENDING);  //default'u setledim
         createdTourRequest.setAdvert(advert);
 
 
@@ -164,7 +164,7 @@ public class TourRequestService {
 
         TourRequest tourRequest = tourRequestRepository.findByIdForGuestUser(user.getId(),tourRequestId);
 
-        tourRequest.setStatusStatus(TourRequestStatus.CANCELED.getTourStatusValue());
+        tourRequest.setStatus(TourRequestStatus.CANCELED);
 
         tourRequest = tourRequestRepository.save(tourRequest);
 
@@ -185,7 +185,7 @@ public class TourRequestService {
 
         TourRequest tourRequest = tourRequestRepository.findByIdForOwnerUser(user.getId(),tourRequestId);
 
-        tourRequest.setStatusStatus(TourRequestStatus.APPROVED.getTourStatusValue());
+        tourRequest.setStatus(TourRequestStatus.APPROVED);
 
         tourRequest = tourRequestRepository.save(tourRequest);
 
@@ -205,7 +205,7 @@ public class TourRequestService {
 
         TourRequest tourRequest = tourRequestRepository.findByIdForOwnerUser(user.getId(),tourRequestId);
 
-        tourRequest.setStatusStatus(TourRequestStatus.DECLINED.getTourStatusValue());
+        tourRequest.setStatus(TourRequestStatus.DECLINED);
 
         tourRequest = tourRequestRepository.save(tourRequest);
 
@@ -269,7 +269,7 @@ public class TourRequestService {
     }
 
     public void checkConflictTourRequestByGuestUser(User guestUser, TourRequestRequest tourRequestRequest) {
-        for(TourRequest tourRequest : guestUser.getTourRequests()){
+        for(TourRequest tourRequest : guestUser.getGuestTourRequests()){
             if(tourRequest.getTourDate().equals(tourRequestRequest.getTourDate())){
                 throw new ConflictException(ErrorMessages.CONFLICT_TOUR_DATE);
             }
@@ -278,7 +278,7 @@ public class TourRequestService {
     }
 
     public void checkConflictTourRequestByOwnerUser(User ownerUser, TourRequestRequest tourRequestRequest) {
-        for (TourRequest tourRequest : ownerUser.getTourRequests()){
+        for (TourRequest tourRequest : ownerUser.getOwnerTourRequests()){
             if(tourRequest.getTourDate().equals(tourRequestRequest.getTourDate())){
                 throw new ConflictException(ErrorMessages.CONFLICT_TOUR_DATE);
             }

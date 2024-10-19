@@ -4,17 +4,17 @@ import com.project.entity.concretes.business.*;
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.LogEnum;
 import com.project.entity.enums.RoleType;
+import com.project.entity.image.Images;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.AdvertMapper;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.business.AdvertRequest;
-import com.project.payload.request.business.CreateAdvertPropertyRequest;
 import com.project.payload.response.business.ResponseMessage;
 import com.project.payload.response.business.advert.*;
-import com.project.payload.response.business.image.ImageResponse;
+import com.project.payload.response.business.category.CategoryAdvertResponse;
+import com.project.payload.response.business.image.ImagesResponse;
 import com.project.repository.business.AdvertRepository;
-import com.project.service.CategoryService.CategoryPropertyValueService;
 import com.project.service.helper.AdvertHelper;
 import com.project.service.helper.CategoryPropertyKeyHelper;
 import com.project.service.helper.MethodHelper;
@@ -29,15 +29,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Service
 @Lazy
@@ -52,6 +51,15 @@ public class AdvertService {
     private final CategoryPropertyKeyHelper categoryPropertyKeyHelper;
     private final LogService logService;
     private final AdvertHelper advertHelper;
+
+
+    public Page<AdvertResponse> getAdverts(Pageable pageable) {
+        Page<Advert> advertPage = advertRepository.findAll(pageable);
+
+        // AdvertResponse'e dönüştürme işlemi
+        return advertPage.map(advertMapper::mapAdvertToAdvertResponseForAll);
+    }
+
 
     //A01
     public Page<AdvertListResponse> getAdvertsByPage(String query, Long categoryId, Long advertTypeId,BigDecimal priceStart, BigDecimal priceEnd,Integer status, Pageable pageable) {
@@ -71,6 +79,7 @@ public class AdvertService {
     }
 
     //A04
+    //A04
     public List<PopularAdvertResponse> getPopularAdverts(Integer amount) {
         if (amount == null || amount <= 0) {
             amount = 10;
@@ -82,7 +91,7 @@ public class AdvertService {
         return popularAdverts.stream()
                 .map(response -> {
                     Advert advert = advertHelper.getAdvertById(response.getId());
-                    ImageResponse imageResponse = advertHelper.getFeaturedImage(advert.getImages());
+                   ImagesResponse imageResponse = advertHelper.getFeaturedImages(advert.getImages());
                     return response.toBuilder()
                             .featuredImage(imageResponse)
                             .build();
@@ -90,7 +99,10 @@ public class AdvertService {
                 .collect(Collectors.toList());
     }
 
+
     //A05
+
+
     public Page<AdvertResponseForCustomer> getAllAdvertForAuthUser(HttpServletRequest httpServletRequest, int page, int size, String sort, String type) {
         // Sayfalama ve sıralama bilgilerini içeren Pageable nesnesi oluşturuluyor
         Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
@@ -111,7 +123,7 @@ public class AdvertService {
     }
 
     //A06 - Yönetici ve yöneticiler için ilanları belirli kriterlere göre filtreleyip sayfalı ve sıralı bir şekilde döndürür.
-    public Page<AdvertResponse> getFilteredAdverts(String query, Long categoryId, Long advertTypeId, Double priceStart, Double priceEnd, Integer status, int page, int size, String sort, String type) {
+    public Page<Advert> getFilteredAdverts(String query, Long categoryId, Long advertTypeId, Double priceStart, Double priceEnd, Integer status, int page, int size, String sort, String type) {
 
         // Sort nesnesi oluşturulur
         Sort.Direction direction = Sort.Direction.fromString(type);
@@ -124,7 +136,7 @@ public class AdvertService {
         Page<Advert> advertPage = advertRepository.findByAdvertByQuery(query, categoryId, advertTypeId, priceStart, priceEnd, status, pageable);
 
         // Advert entity'lerini AdvertResponse DTO'larına dönüştürür
-        return advertPage.map(advertMapper::mapAdvertToAdvertResponse);
+        return advertPage;
     }
 
     //A07
@@ -159,7 +171,7 @@ public class AdvertService {
     }
 
     //A10
-    public AdvertResponse createAdvert(AdvertRequest advertRequest, HttpServletRequest request,MultipartFile[] files) {
+    public AdvertResponse createAdvert(AdvertRequest advertRequest, HttpServletRequest request, MultipartFile[] files) {
 
         // İlanın detaylarını tutacak bir map oluşturuyoruz
         Map<String, Object> detailsMap = new HashMap<>();
@@ -181,10 +193,10 @@ public class AdvertService {
         List<CategoryPropertyValue> advertValueList = new ArrayList<>();
 
         // Gelen özellik isteklerini döngü ile işliyoruz
-        for (CreateAdvertPropertyRequest request1 : advertRequest.getProperties()) {
+        for (String request1 : advertRequest.getProperties()) {
 
             // Veritabanından bu keyId'ye karşılık gelen CategoryPropertyKey'i buluyoruz
-            CategoryPropertyKey categoryPropertyKeyFromDb = categoryPropertyKeyHelper.findPropertyKeyById(request1.getKeyId());
+            CategoryPropertyKey categoryPropertyKeyFromDb = categoryPropertyKeyHelper.findPropertyKeyById(request1.getBytes());
 
             if (categoryPropertyKeyFromDb != null) {
                 // Eğer key bulunduysa, log mesajı yazıyoruz
@@ -194,8 +206,8 @@ public class AdvertService {
                 CategoryPropertyValue categoryPropertyValue = new CategoryPropertyValue();
 
                 // İstekten gelen değeri (value) CategoryPropertyValue nesnesine setliyoruz
-                categoryPropertyValue.setValue(request1.getValue());
-                System.out.println("Setting value: " + request1.getValue());
+                categoryPropertyValue.setValue(Arrays.toString(request1.getBytes()));
+                System.out.println("Setting value: " + request1.getBytes());
 
                 // Bulduğumuz CategoryPropertyKey'i CategoryPropertyValue nesnesine setliyoruz
                 categoryPropertyValue.setCategoryPropertyKey(categoryPropertyKeyFromDb);
@@ -240,12 +252,13 @@ public class AdvertService {
         // Slug oluşturduktan sonra ilanı tekrar kaydediyoruz
         advertRepository.save(savedAdvert);
 
+
         // Resimleri işlemek için advert_id'yi ayarlıyoruz ve resimleri kaydediyoruz
-        List<Image> imageList = methodHelper.getImagesForAdvert(files, savedAdvert.getImages());
-        for (Image image : imageList) {
-            image.setAdvert(savedAdvert); // Her bir resme ilgili ilanı setliyoruz
+        List<Images> imagesList = methodHelper.getImagesForAdvert(files,savedAdvert.getImages());
+        for (Images images : imagesList) {
+            images.setAdvert(savedAdvert); // Her bir resme ilgili ilanı setliyoruz
         }
-        savedAdvert.setImages(imageList); // Resim listesini ilana ekliyoruz
+        savedAdvert.setImages(imagesList); // Resim listesini ilana ekliyoruz
 
         // Log sistemi ile yeni bir ilan oluşturulduğunu kayıt altına alıyoruz
         logService.createLogEvent(savedAdvert.getUser(), savedAdvert, LogEnum.CREATED);
@@ -254,8 +267,10 @@ public class AdvertService {
         savedAdvert = advertRepository.save(savedAdvert);
 
         // Kaydedilen ilanı AdvertResponse'a dönüştürüp geri döndürüyoruz
-        return advertMapper.mapAdvertToAdvertResponse(savedAdvert);
+        return advertMapper.mapAdvertToAdvertResponseForAll(advert);
     }
+
+
 
     //A11
     public ResponseMessage<AdvertResponse> updateAuthenticatedAdvert(AdvertRequest advertRequest, MultipartFile[] files, HttpServletRequest httpServletRequest, Long id) {
@@ -274,16 +289,16 @@ public class AdvertService {
 
         List<CategoryPropertyValue> advertValueList = new ArrayList<>();
 
-        for (CreateAdvertPropertyRequest request1 : advertRequest.getProperties()) {
-            List<CategoryPropertyValue> values = categoryPropertyValueService.categoryFindAllByValue(request1.getValue());
+        for (String request1 : advertRequest.getProperties()) {
+            List<CategoryPropertyValue> values = categoryPropertyValueService.categoryFindAllByValue(Arrays.toString(request1.getBytes()));
             advertValueList.addAll(values);
         }
 
-        List<Image> imageList = methodHelper.getImagesForAdvert(files, advert != null ? advert.getImages() : null);
+        List<Images> imageList = methodHelper.getImagesForAdvert(files, advert != null ? advert.getImages() : null);
         if (imageList != null && advert != null) {
-            for (Image image : imageList) {
-                if (image != null) {
-                    image.setAdvert(advert);
+            for (Images images : imageList) {
+                if (images != null) {
+                    images.setAdvert(advert);
                 }
             }
         }
@@ -312,7 +327,7 @@ public class AdvertService {
 
         return ResponseMessage.<AdvertResponse>builder()
                 .message(SuccessMessages.ADVERT_UPDATED)
-                .object(advertMapper.mapAdvertToAdvertResponse(returnedAdvert))
+                .object(advertMapper.mapAdvertToAdvertResponseForAll(returnedAdvert))
                 .httpStatus(HttpStatus.OK)
                 .build();
     }
@@ -332,16 +347,16 @@ public class AdvertService {
 
         // Kategoriye bağlı property'ler alınır ve ilan ile ilişkilendirilir
         List<CategoryPropertyValue> advertValueList = new ArrayList<>();
-        for (CreateAdvertPropertyRequest request1 : advertRequest.getProperties()) {
-            List<CategoryPropertyValue> values = categoryPropertyValueService.categoryFindAllByValue(request1.getValue());
+        for (String request1 : advertRequest.getProperties()) {
+            List<CategoryPropertyValue> values = categoryPropertyValueService.categoryFindAllByValue(Arrays.toString(request1.getBytes()));
             advertValueList.addAll(values);
         }
 
         // Yeni resimler eklenir, mevcut resimler güncellenir
-        List<Image> imageList = methodHelper.getImagesForAdvert(files, advert.getImages());
+        List<Images> imageList = methodHelper.getImagesForAdvert(files, advert.getImages());
         if (imageList != null && advert != null) {
-            for (Image image : imageList) {
-                image.setAdvert(advert); // Resimler ilana eklenir
+            for (Images images : imageList) {
+                images.setAdvert(advert); // Resimler ilana eklenir
             }
         }
 
@@ -368,7 +383,7 @@ public class AdvertService {
         // Başarı mesajı ve güncellenen ilan dönülür
         return ResponseMessage.<AdvertResponse>builder()
                 .message(SuccessMessages.ADVERT_UPDATED)
-                .object(advertMapper.mapAdvertToAdvertResponse(savedAdvert))
+                .object(advertMapper.mapAdvertToAdvertResponseForAll(savedAdvert))
                 .httpStatus(HttpStatus.OK)
                 .build();
     }
@@ -384,7 +399,13 @@ public class AdvertService {
         }
         advertRepository.deleteById(id);
 
-        return advertMapper.mapAdvertToAdvertResponse(advert);
+        return advertMapper.mapAdvertToAdvertResponseForAll(advert);
     }
+
+    public Advert getAdvertById(Long id) {
+        return advertRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Advert not found with id: " + id));
+    }
+
 
 }

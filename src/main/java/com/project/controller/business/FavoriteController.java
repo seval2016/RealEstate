@@ -1,4 +1,7 @@
+package com.project.controller.business;
+
 import com.project.entity.concretes.business.Advert;
+import com.project.payload.response.business.advert.AdvertResponse;
 import com.project.service.business.FavoriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,15 +27,22 @@ public class FavoriteController {
         return ResponseEntity.ok(favoriteService.getAuthenticatedUserFavorites(request));
     }//K01
 
-    @GetMapping("/admin/{id}") //kullanıcı favorilerini getiren kod
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')") //http://localhost:8080/favorites/admin/3
+    @GetMapping("/admin/{id}") // Kullanıcı favorilerini getiren kod
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')") // http://localhost:8080/favorites/admin/3
     public ResponseEntity<List<AdvertResponse>> getUserFavorites(@PathVariable Long id) {
         List<Advert> favorites = favoriteService.getUserFavorites(id);
+
         List<AdvertResponse> response = favorites.stream()
-                .map(advert -> new AdvertResponse(advert.getId(), advert.getTitle())) // Gereken alanları belirleyin
+                .map(advert -> AdvertResponse.builder()
+                        .id(advert.getId())
+                        .title(advert.getTitle())
+                        .build())
                 .collect(Collectors.toList());
+
         return ResponseEntity.ok(response);
-    }//K02
+    }
+
+
 
     @PostMapping("/{id}/auth")
     @PreAuthorize("hasRole('CUSTOMER')")//http://localhost:8080/favorites/12/auth
@@ -57,7 +67,10 @@ public class FavoriteController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred while deleting favorites for user with ID " + userId);
         }
-    }//K05
+
+    }    //K05
+
+
 
     @DeleteMapping("/{id}/admin")//http://localhost:8080/favorites/12/admin
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")//id numarasına sahip bir favori kaydı silmek için kullanılır.

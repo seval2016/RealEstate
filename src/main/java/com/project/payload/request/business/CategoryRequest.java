@@ -21,7 +21,7 @@ public class CategoryRequest {
     @Size(max = 150, message = "Title max length is 150 characters")
     private String title;
 
-    @NotBlank(message = "Icon cannot be blank")
+     // @NotBlank(message = "Icon cannot be blank")
     @Size(max = 50, message = "Icon max length is 50 characters")
     private String icon;
 
@@ -43,5 +43,12 @@ public class CategoryRequest {
 
     private LocalDateTime updateAt;
 
+
+
     private Set<CategoryPropertyKeyRequest> categoryPropertyKeys;
+
+
+
+
+
 }

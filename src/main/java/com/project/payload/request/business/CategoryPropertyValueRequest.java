@@ -1,4 +1,4 @@
-package com.project.payload.request.CategoryRequest;
+package com.project.payload.request.business;
 
 
 import lombok.AllArgsConstructor;

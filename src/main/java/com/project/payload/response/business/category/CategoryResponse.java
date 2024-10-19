@@ -1,6 +1,7 @@
 package com.project.payload.response.business.category;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.project.entity.concretes.business.Category;
 import com.project.entity.concretes.business.CategoryPropertyKey;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,4 +28,7 @@ public class CategoryResponse {
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private Set<CategoryPropertyKey> categoryPropertyKeys;
+
+
+
 }

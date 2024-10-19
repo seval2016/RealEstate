@@ -1,21 +1,24 @@
 package com.project.service.helper;
 
 import com.project.entity.concretes.business.*;
-import com.project.entity.concretes.business.Image;
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.AdvertStatus;
+import com.project.entity.image.Images;
 import com.project.exception.BadRequestException;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.AdvertMapper;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.request.business.AdvertRequest;
 
-import com.project.payload.response.business.image.ImageResponse;
+import com.project.payload.response.business.image.ImagesResponse;
+
 import com.project.repository.business.AdvertRepository;
-import com.project.service.CategoryService.CategoryService;
+import com.project.service.business.CategoryService;
 import com.project.service.business.*;
 import com.project.service.validator.DateTimeValidator;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -27,13 +30,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class AdvertHelper {
 
     private final AdvertRepository advertRepository;
-    private final AdvertMapper advertMapper;
+
     private final CategoryService categoryService;
     private final MethodHelper methodHelper;
     private final CityService cityService;
@@ -41,6 +46,10 @@ public class AdvertHelper {
     private final AdvertTypesService advertTypesService;
     private final DateTimeValidator dateTimeValidator;
     private final DistrictService districtService;
+
+
+
+
 
 
     /**
@@ -68,7 +77,7 @@ public class AdvertHelper {
         if (detailsMap == null) {
             detailsMap = new HashMap<>();
         }
-        Category category = categoryService.getCategoryById(advertRequest.getCategoryId());
+        Optional<Category> category = categoryService.getCategoryById(advertRequest.getCategoryId());
         City city = cityService.getCityById(advertRequest.getCityId());
         User user = methodHelper.getUserByHttpRequest(httpServletRequest);
         Country country = countryService.getCountryById(advertRequest.getCountryId());
@@ -165,30 +174,81 @@ public class AdvertHelper {
      *
      * @return ImageResponse veya null
      */
-    public ImageResponse getFeaturedImage(List<com.project.entity.concretes.business.Image> images) {
+    //!!! Bu metod Advert'teki resimlerden öne çıkanları döndürür
+
+
+    public ImagesResponse getFeaturedImages(List<Images> images) {
+        // Öne çıkan resimler bir mantığa göre seçilebilir, örneğin ilk resim öne çıkan olabilir
+        return (ImagesResponse) images.stream()
+                .filter(Images::getFeatured) // Eğer resimlerin öne çıkan olduğunu belirten bir alan varsa
+                .map(image -> ImagesResponse.builder()
+                        .id(image.getId())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* public   ImagesResponse getFeaturedImages     (List<com.project.entity.concretes.business.Image> images) {
         if (images == null || images.isEmpty()) {
             return null;
+
         }
         // Featured image seçme mantığı: 'featured' flag'ine göre veya ilk resmi seç
         return images.stream()
                 .filter(com.project.entity.concretes.business.Image::getFeatured)
                 .findFirst()
-                .map(img -> ImageResponse.builder()
+                .map(img -> ImagesResponse.builder()
                         .id(img.getId())
                         .name(img.getName())
                         .type(img.getType())
                         .featured(img.getFeatured())
                         .build())
+
                 .orElseGet(() -> {
                     Image firstImage = images.get(0);
-                    return ImageResponse.builder()
+                    return ImagesResponse.builder()
                             .id(firstImage.getId())
                             .name(firstImage.getName())
                             .type(firstImage.getType())
                             .featured(firstImage.getFeatured())
                             .build();
                 });
-    }
+    }*/
+
+
+
+
+
+
 
     public int updateAdvertStatus(int caseNumber, Advert advert) {
         AdvertStatus status;
@@ -220,4 +280,7 @@ public class AdvertHelper {
         return advertRepository.getMostPopularAdverts(amount,pageable);
 
     }
+
+
+
 }

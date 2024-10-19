@@ -8,11 +8,13 @@ import com.project.payload.mappers.UserMapper;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.messages.SuccessMessages;
 import com.project.payload.request.business.UpdatePasswordRequest;
+import com.project.payload.request.user.RegisterRequest;
 import com.project.payload.request.user.UserRequest;
 import com.project.payload.request.user.UserRequestWithoutPassword;
 import com.project.payload.response.UserResponse;
 import com.project.payload.response.abstracts.BaseUserResponse;
 import com.project.payload.response.business.ResponseMessage;
+import com.project.payload.response.user.RegisterResponse;
 import com.project.repository.user.UserRepository;
 import com.project.service.helper.MethodHelper;
 import com.project.service.helper.PageableHelper;
@@ -56,7 +58,7 @@ public class UserService {
         if(userRole.equalsIgnoreCase(RoleType.ADMIN.name())){
             //!!! Rol bilgisi admin ise builtin true yapılıyor
             if(Objects.equals(userRequest.getUsername(),"Admin")){
-                user.setBuiltIn(true);
+                user.setIsBuiltIn(true);
             }
             //!!! admin rolu veriliyor
             user.setUserRole(List.of(userRoleService.getUserRole(RoleType.ADMIN)));
@@ -114,7 +116,7 @@ public class UserService {
         User user2 = userRepository.findByUsernameEquals(userName);
 
         //!!! builtIn ve Role kontrolu
-        if(Boolean.TRUE.equals(user.getBuiltIn())){
+        if(Boolean.TRUE.equals(user.getIsBuiltIn())){
             throw  new BadRequestException(ErrorMessages.NOT_PERMITTED_METHOD_MESSAGE);
 
         } else if (user2.getUserRole().stream()
@@ -223,4 +225,39 @@ public class UserService {
     public List<User> getUsersByRoleType(RoleType roleType) {
         return userRepository.findByUserRole_Role(roleType);
     }
-}
+
+
+    public ResponseMessage<RegisterResponse> registerUser(RegisterRequest registerRequest) {
+
+        //!!! Girilen username,email ve phone alanlarının unique olup olmadığını kontrol eder
+        uniquePropertyValidator.checkDuplicate(
+                registerRequest.getFirstName(),
+                registerRequest.getEmail(),
+                registerRequest.getPhone());
+
+        //!!! DTO --> Entity
+        User user = userMapper.mapRegisterRequestToUser(registerRequest);
+
+        //!!! Rol bilgisi ekleniyor
+        RoleType roleType = RoleType.valueOf(registerRequest.getRole().toString());
+        user.setUserRole(List.of(userRoleService.getUserRole(roleType)));
+
+        //!!! Şifre encode ediliyor
+        user.setPasswordHash(passwordEncoder.encode(registerRequest.getPasswordHash()));
+
+        //!!! Kullanıcı kaydediliyor
+        User savedUser = userRepository.save(user);
+
+        //!!! Response oluşturuluyor
+        RegisterResponse registerResponse = userMapper.userToRegisterResponse(savedUser);
+
+        return ResponseMessage.<RegisterResponse>builder()
+                .message(SuccessMessages.USER_CREATED)
+                .object(registerResponse)
+                .httpStatus(HttpStatus.CREATED)
+                .build();
+    }
+
+
+
+    }

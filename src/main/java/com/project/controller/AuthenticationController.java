@@ -29,10 +29,25 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final UserMapper userMapper;
 
+
+
+
+
     @PostMapping("/login") // http://localhost:8080/auth/login  + POST + JSON
+    public ResponseEntity<AuthResponse> authenticateUser(@RequestBody @Valid LoginRequest loginRequest) {
+        // Artık sadece email ve password ile giriş yapılıyor
+        return authenticationService.authenticateUser(loginRequest);
+    }
+
+
+
+ /*   @PostMapping("/login") // http://localhost:8080/auth/login  + POST + JSON
     public ResponseEntity<AuthResponse> authenticateUser(@RequestBody @Valid LoginRequest loginRequest){
         return authenticationService.authenticateUser(loginRequest);
-    } //F01
+    } //F01*/
+
+
+
 
     @GetMapping("/user") // http://localhost:8080/auth/user + GET
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER','CUSTOMER')")
