@@ -1,7 +1,5 @@
 package com.project.payload.response.abstracts;
 
-import com.project.payload.response.business.AdvertResponse;
-import com.project.payload.response.business.TourRequestResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,10 +19,5 @@ public abstract class BaseUserResponse {
     private String lastname;
     private String email;
     private String phone;
-    private List<String> userRole;
-
-    private List<AdvertResponse> advert;
-
-    private List<TourRequestResponse> tourRequestsResponse;
-    private List<Long> favoritesList;
+    private List<String> userRole; // Liste olarak güncellendi
 }

@@ -1,32 +1,30 @@
 package com.project.contactmessage.entity;
 
+
+
 public enum ContactStatus {
 
-    NOT_OPENED(0, "It is not opened by admins yet"),
-    OPENED(1, "It was opened and read");
+    UNREAD(0),
+    READ(1);
 
-    private final int statusValue;
-    private final String statusDescription;
+    private final int value;
 
-    ContactStatus(int statusValue, String statusDescription) {
-        this.statusValue = statusValue;
-        this.statusDescription = statusDescription;
+    ContactStatus(int value) {
+        this.value = value;
     }
 
-    public int getStatusValue() {
-        return statusValue;
+
+    public int getValue() {
+        return value;
     }
 
-    public String getStatusDescription() {
-        return statusDescription;
-    }
-
-    public static ContactStatus fromValue(int statusValue) {
-        for (ContactStatus status : ContactStatus.values()) {
-            if (status.getStatusValue() == statusValue) {
-                return status;
+    public static ContactStatus fromValue(int value) {
+        for (ContactStatus contactStatus : ContactStatus.values()) {
+            if (contactStatus.getValue() == value) {
+                return contactStatus;
             }
         }
-        throw new IllegalArgumentException("Invalid status value: " + statusValue);
+        throw new IllegalArgumentException("Invalid status value: " + value);
     }
+
 }

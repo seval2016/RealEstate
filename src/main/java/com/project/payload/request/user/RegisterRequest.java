@@ -45,4 +45,6 @@ public class RegisterRequest {
     private String passwordHash;
 
     private Set<RoleType> role;
+
+
 }

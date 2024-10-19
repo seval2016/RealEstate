@@ -19,6 +19,7 @@ public class AuthenticatedUsersRequest {
     @NotNull(message = "Last name can not be a null")
     @Size(min = 2, max = 30, message = "Last name '${validatedValue}' must be between {min} and {max}")
     private String lastName;
+
     @Email
     @NotNull(message = "Email can not be a null")
     private String email;

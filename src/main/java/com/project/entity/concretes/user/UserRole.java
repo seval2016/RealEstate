@@ -1,7 +1,7 @@
 package com.project.entity.concretes.user;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.project.entity.enums.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

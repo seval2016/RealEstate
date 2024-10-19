@@ -1,15 +1,12 @@
 package com.project.service.business;
 
-
 import com.project.entity.concretes.business.District;
 import com.project.exception.ResourceNotFoundException;
 import com.project.payload.mappers.DistrictMapper;
 import com.project.payload.messages.ErrorMessages;
 import com.project.payload.response.business.DistrictResponse;
-import com.project.payload.response.business.ResponseMessage;
 import com.project.repository.business.DistrictRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,22 +20,11 @@ public class DistrictService {
     private final DistrictMapper districtMapper;
     private final CityService cityService;
 
-    public List<DistrictResponse> getAllDistrict() {
+    public List<DistrictResponse> getAllDistricts() {
         return districtRepository.findAll()
                 .stream()
                 .map(districtMapper::mapDistrictToDistrictResponse)
                 .collect(Collectors.toList());
-    }
-
-    public ResponseMessage<List<District>> getByDistrict(Long cityId) {
-        // Belirtilen cityId'ye ait ilçeleri getir
-        List<District> districtList = districtRepository.getByDistrict(cityId);
-
-        return ResponseMessage.<List<District>>builder()
-                .httpStatus(HttpStatus.OK)
-                .object(districtList)
-                .message("Districts were brought successfully.")
-                .build();
     }
 
     public District getDistrictByIdForAdvert(Long districtId) {
@@ -58,8 +44,11 @@ public class DistrictService {
         Long districtId = 1L;
 
         District district = districtRepository.findById(districtId).orElseThrow(() -> new RuntimeException(ErrorMessages.DISTRICT_NOT_FOUND));
-        district.setBuiltIn(Boolean.TRUE);
+        district.setBuilt_in(Boolean.TRUE);
         districtRepository.save(district);
     }
 
-}
+    public List<District> getByDistrict(Long cityId) {
+        return districtRepository.getByDistrict(cityId);
+
+    }}

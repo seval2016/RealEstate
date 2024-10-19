@@ -39,14 +39,14 @@ public class ResetService {
 
         List<Advert> alladverts= advertRepository.findAll();
         for(Advert advert : alladverts){
-            if(!advert.isBuiltIn()){
+            if(!advert.getBuiltIn()){
                 advertRepository.delete(advert);
             }
         }
 
         List<Category> allCategory=categoryRepository.findAll();
         for (Category category:allCategory){
-            if (!category.isBuiltIn()){
+            if (!category.getBuiltIn()){
                 categoryRepository.delete(category);
             }
         }
@@ -61,14 +61,14 @@ public class ResetService {
 
         List<CategoryPropertyKey> allCategoryPropertyKey =categoryPropertyKeyRepository.findAll();
         for (CategoryPropertyKey categoryPropertyKey:allCategoryPropertyKey){
-            if (!categoryPropertyKey.isBuiltIn()){
+            if (!categoryPropertyKey.getBuiltIn()){
                 categoryPropertyKeyRepository.delete(categoryPropertyKey);
             }
         }
 
         List<User> allUser=userRepository.findAll();
         for (User user:allUser){
-            if (!user.isBuiltIn()){
+            if (!user.getIsBuiltIn()){
                 userRepository.delete(user);
             }
         }

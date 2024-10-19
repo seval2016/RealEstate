@@ -1,73 +1,76 @@
 package com.project.security.jwt;
 
 import com.project.entity.concretes.user.User;
-import com.project.security.service.UserDetailsImpl;
+import com.project.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.security.SecureRandom;
 import java.util.Date;
 
 @Component
 public class JwtUtils {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtUtils.class);
-
     private static final int RESET_CODE_LENGTH = 6;
     private static final String RESET_CODE_CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     @Value("${backendapi.app.jwtExpirationMs}")
     private long jwtExpirationMs;
 
-    @Value("${backendapi.app.jwtSecret}")
-    private String jwtSecret;
+    // Güvenli bir anahtar oluşturma
 
+    private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+
+
+    // JWT token oluşturma
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return generateTokenFromUsername(userDetails.getUsername());
+        return generateTokenFromEmail(userDetails.getEmail());
     }
 
-    public String generateTokenFromUsername(String username) {
+    public String generateTokenFromEmail(String mail) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(mail)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret.getBytes()) // Ensure the secret is in bytes
+                .signWith(key)  // Anahtar burada kullanılıyor
                 .compact();
     }
 
+
+    // JWT token doğrulama
     public boolean validateJwtToken(String jwtToken) {
         try {
-            Jwts.parser()
-                    .setSigningKey(jwtSecret.getBytes()) // Anahtarın byte dizisi olarak kullanılması
+            Jwts.parserBuilder()
+                    .setSigningKey(key)  // Anahtar burada kullanılıyor
+                    .build()
                     .parseClaimsJws(jwtToken);
             return true;
-        } catch (ExpiredJwtException e) {
-            LOGGER.error("Jwt token is expired: {}", e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            LOGGER.error("Jwt token is unsupported: {}", e.getMessage());
-        } catch (MalformedJwtException e) {
-            LOGGER.error("Jwt token is invalid: {}", e.getMessage());
-        } catch (SignatureException e) {
-            LOGGER.error("Jwt Signature is invalid: {}", e.getMessage());
-        } catch (IllegalArgumentException e) {
-            LOGGER.error("Jwt is empty: {}", e.getMessage());
+        } catch (JwtException e) {
+            LOGGER.error("JWT Token validation error: {}", e.getMessage());
         }
         return false;
     }
 
+    // Token'dan kullanıcı adını alma
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtSecret.getBytes()) // Anahtarın byte dizisi olarak kullanılması
+        return Jwts.parserBuilder()
+                .setSigningKey(key)  // Anahtar burada kullanılıyor
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
     }
 
+
+    // Reset kodu oluşturma
     public String generateResetCode(User user) {
         SecureRandom random = new SecureRandom();
         StringBuilder resetCode = new StringBuilder(RESET_CODE_LENGTH);
@@ -77,13 +80,12 @@ public class JwtUtils {
             resetCode.append(RESET_CODE_CHARACTERS.charAt(index));
         }
 
-        // Generate JWT token using the reset code
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("resetCode", resetCode.toString())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + jwtExpirationMs)) // Expiration can be adjusted
-                .signWith(SignatureAlgorithm.HS512, jwtSecret.getBytes())
+                .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
+                .signWith(key)  // Anahtar burada kullanılıyor
                 .compact();
     }
 }

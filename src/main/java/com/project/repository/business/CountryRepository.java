@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CountryRepository extends JpaRepository<Country, Long> {
+public interface CountryRepository extends JpaRepository<Country,Long> {
+
 
     @Query("SELECT COUNT(c) FROM Country c")
-    int countAllCountries();
+    int cuntAllCountries();
 }

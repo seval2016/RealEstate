@@ -1,17 +1,17 @@
 package com.project.service.business;
 
-import com.project.entity.concretes.business.Advert;
 import com.project.entity.concretes.business.Favorite;
+import com.project.payload.response.business.advert.AdvertResponse;
+import com.project.service.AuthenticationService;
+import com.project.entity.concretes.business.Advert;
 import com.project.entity.concretes.user.User;
 import com.project.payload.mappers.AdvertMapper;
 import com.project.payload.mappers.UserMapper;
 import com.project.payload.messages.SuccessMessages;
 import com.project.payload.response.abstracts.BaseUserResponse;
-import com.project.payload.response.business.AdvertResponse;
 import com.project.repository.business.AdvertRepository;
 import com.project.repository.business.FavoriteRepository;
 import com.project.repository.user.UserRepository;
-import com.project.service.AuthenticationService;
 import com.project.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class FavoriteService {
 
         // Convert Favorite entities to AdvertResponse DTOs
         return favorites.stream()
-                .map(favorite -> advertMapper.mapAdvertToAdvertResponse(favorite.getAdvert()))
+                .map(favorite -> advertMapper.mapAdvertToAdvertResponseForAll(favorite.getAdvert()))
                 .collect(Collectors.toList());
     }
 
@@ -71,7 +71,7 @@ public class FavoriteService {
             favoriteRepository.save(favorite);
         }
 
-        return advertMapper.mapAdvertToAdvertResponse(advert);
+        return advertMapper.mapAdvertToAdvertResponseForAll(advert);
     }
 
     public String deleteAllFavorites(HttpServletRequest request) {
@@ -98,11 +98,11 @@ public class FavoriteService {
         return SuccessMessages.ALL_FAVORITES_DELETED;
     }
 
-       public String deleteAllFavoritesByUserId(long userId) {
-             List<Favorite> favorites = favoriteRepository.findAllByUserId(userId);
-             favoriteRepository.deleteAll(favorites);
-             return SuccessMessages.ALL_FAVORITES_DELETED_BY_ID;
-       }
+    public String deleteAllFavoritesByUserId(long userId) {
+        List<Favorite> favorites = favoriteRepository.findAllByUserId(userId);
+        favoriteRepository.deleteAll(favorites);
+        return SuccessMessages.ALL_FAVORITES_DELETED_BY_ID;
+    }
 
     public String deleteFavoriteByAdmin(Long id) {
         Favorite favorite = favoriteRepository.findById(id)

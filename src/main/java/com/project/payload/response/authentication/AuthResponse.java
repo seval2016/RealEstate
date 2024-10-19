@@ -1,15 +1,7 @@
 package com.project.payload.response.authentication;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.project.payload.response.business.AdvertResponse;
-import com.project.payload.response.business.TourRequestResponse;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
-import java.util.Set;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -17,26 +9,10 @@ import java.util.Set;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AuthResponse {
-    private Long id;
 
-    private String firstName;
-
-    private String lastName;
-
+  //  private String username;
     private String email;
-
-    private String phone;
-
-    private Boolean builtIn = false;
-
-    private Set<String> userRole;
-
+    private String role;
     private String token;
-
-
-    private Set<AdvertResponse> advert;
-
-    private Set<TourRequestResponse>tourRequestsResponse;
-
-    private List<Long> favoritesList;
+    private String name;
 }

@@ -25,7 +25,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     // Kategori başlığına göre arama yapan sorgu
     Page<Category> findByTitleContainingIgnoreCase(String title, Pageable pageable);
-*/
+
     Optional<Category> findBySlug(String slug);
 
     /*
@@ -45,4 +45,17 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     boolean existsBySlug(String slug);
 
     Optional<List<Category>> findByTitle(String title);
+
+    // Kategori başlığına göre arama yapan sorgu
+    Page<Category> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+
+
+    Page<Category> findByNameContainingIgnoreCaseAndVisibleTrue(String q, Pageable pageable);
+
+    Page<Category> findAllByVisibleTrue(Pageable pageable);
+
+//    Optional<Category> findBySlug(String slug);
+
+        Optional<Category> findBySlug(String slug);
+
 }

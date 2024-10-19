@@ -1,11 +1,16 @@
 package com.project.entity.concretes.business;
 
-
+import antlr.build.ANTLR;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.entity.concretes.user.User;
 import com.project.entity.enums.AdvertStatus;
-import com.project.service.helper.SlugUtils;
+
+import com.project.entity.image.Images;
+import com.project.payload.request.business.UserResponseForTourRequest;
+import com.project.payload.response.business.advert.AdvertResponse;
+import com.project.payload.response.business.image.ImagesResponse;
+import com.project.utils.SlugUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +18,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "adverts")
@@ -29,7 +36,7 @@ public class Advert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 150)
     @Size(min = 5, max = 150)
     private String title;
 
@@ -40,23 +47,26 @@ public class Advert {
     @Size(min = 5, max = 200)
     private String slug;
 
-    @Column(nullable = false)
-    private Double price = 0.0;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
 
     @Column(nullable = false)
-    private int status = AdvertStatus.PENDING.getValue();
+    private int status;
 
     @Column(nullable = false)
-    private boolean builtIn = false;  // normalde default deger false
+    @Builder.Default
+    private Boolean builtIn = false;
 
     @Column(nullable = false)
-    private boolean isActive = true;
+    @Builder.Default
+    private Boolean isActive = true;
 
     @Column(nullable = false)
-    private int viewCount = 0;
+    @Builder.Default
+    private Integer viewCount = 0;
 
-    @Column(nullable = false)
-    private String location;
+    @Column(nullable = false, length = 255)
+    private String location; // Google embed kodu
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Turkey")
     @Column(nullable = false)
@@ -84,60 +94,61 @@ public class Advert {
         }
     }
 
-
-    //------------İlişkili sütunlar -------------
-
-    //ManyToOne
-    @ManyToOne(fetch = FetchType.LAZY)
+    // İlişkiler
+    @ManyToOne
     @JoinColumn(name = "advert_type_id", nullable = false)
     private AdvertType advertType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "district_id", nullable = false)
     private District district;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
-    @JoinColumn(name="user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    //----OneToMany
-
     @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Images> images;
+    @JsonIgnore
+    private List<Images> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<TourRequest> tourRequestList;
 
-    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
+    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
+    private List<CategoryPropertyValue> categoryPropertyValuesList;
+
+    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
     private List<Favorite> favoritesList;
 
     @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<CategoryPropertyValue> categoryPropertyValuesList;
-
-    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Images> imagesList = new ArrayList<>();
-
-    // Corrected mapping
-    @OneToMany(mappedBy = "advert", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Log> logList;
 
+    // Yeni eklenen alanlar
+
+    // Properties alanı
+    @ElementCollection
+    @CollectionTable(name = "advert_properties", joinColumns = @JoinColumn(name = "advert_id"))
+    @MapKeyColumn(name = "property_key")
+    @Column(name = "property_value")
+    private Map<String, String> properties;
+
+    // Featured Images alanı
+    @ManyToOne
+    @JoinColumn(name = "featured_image_id")
+    private Images featuredImages;
 
 }
+

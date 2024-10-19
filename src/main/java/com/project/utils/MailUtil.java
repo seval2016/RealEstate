@@ -1,7 +1,9 @@
 package com.project.utils;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+
 public class MailUtil {
     private static final String LOGO_PATH = "/static/logo.png";
 
