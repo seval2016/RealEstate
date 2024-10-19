@@ -1,9 +1,9 @@
 package com.project.controller.business;
 
-import com.project.payload.request.business.AdvertTypeRequest;
-import com.project.payload.response.business.AdvertTypeResponse;
+import com.project.payload.request.business.AdvertTypesRequest;
 import com.project.payload.response.business.ResponseMessage;
-import com.project.service.business.AdvertTypeService;
+import com.project.payload.response.business.advert.AdvertTypesResponse;
+import com.project.service.business.AdvertTypesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +15,18 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class AdvertTypeController {
 
-    private final AdvertTypeService advertTypeService;
+    private final AdvertTypesService advertTypesService;
 
     @PostMapping("/save") //  http://localhost:8080/advertTypes/save + JSON + POST
     @PreAuthorize("hasAnyAuthority('ADMIN','MANAGER')")
-    public ResponseMessage<AdvertTypeResponse> saveAdvertType(@RequestBody @Valid AdvertTypeRequest advertTypeRequest){
-        return advertTypeService.saveAdvertType(advertTypeRequest);
+    public ResponseMessage<AdvertTypesResponse> saveAdvertType(@RequestBody @Valid AdvertTypesRequest advertTypesRequest){
+        return advertTypesService.saveAdvertType(advertTypesRequest);
     }
 
     @GetMapping("/{id}") //  http://localhost:8080/advertTypes/1 + GET
     @PreAuthorize("hasAnyAuthority('CUSTOMER','ADMIN','MANAGER')")
-    public AdvertTypeResponse getAdvertTypeById(@PathVariable Long id){
-        return advertTypeService.getAdvertTypeById(id);
+    public AdvertTypesResponse getAdvertTypeById(@PathVariable Long id){
+        return advertTypesService.getAdvertTypeById(id);
     }
 
 
